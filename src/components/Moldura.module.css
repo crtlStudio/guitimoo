@@ -1,0 +1,53 @@
+.moldura {
+  /* Espessura da moldura */
+  --lado: clamp(10px, 2.8vh, 26px);
+  --topo: var(--lado);
+
+  /* Botões redondos da faixa de cima (voltar, som) */
+  --botao-tam: max(44px, calc(var(--topo) * 0.78));
+  --botao-top: calc((var(--topo) - var(--botao-tam)) / 2);
+
+  --dourado: #f5c96a;
+  --dourado-escuro: #c9912f;
+  --castanho: #5a3912;
+
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh; /* exclui a barra do browser no mobile */
+  overflow: hidden;
+  background: radial-gradient(ellipse at 50% 40%, #5cb85c, #2f7d32 75%);
+  /* Borda dourada no limite do ecrã */
+  box-shadow:
+    inset 0 0 0 3px var(--dourado),
+    inset 0 0 0 5px var(--dourado-escuro);
+}
+
+/* Com título/botões em cima, a faixa de cima é mais larga */
+.comTopo {
+  --topo: clamp(56px, 15vh, 110px);
+}
+
+/* Imagem 16:9 inteira, o maior possível dentro da moldura */
+.janela {
+  --disp-l: calc(100vw - 2 * var(--lado));
+  --disp-a: calc(100dvh - var(--topo) - var(--lado));
+  --jan-l: min(var(--disp-l), calc(var(--disp-a) * 16 / 9));
+  --jan-a: calc(var(--jan-l) * 9 / 16);
+
+  position: absolute;
+  left: 50%;
+  top: calc(var(--topo) + (var(--disp-a) - var(--jan-a)) / 2);
+  transform: translateX(-50%);
+  width: var(--jan-l);
+  height: var(--jan-a);
+  background: linear-gradient(to bottom, #a9dcf5, #dff3fb 60%, #cfe9b0); /* sem imagem ainda */
+  background-size: 100% 100%;
+  border-radius: clamp(8px, 1.6vh, 16px);
+  /* Contorno dourado com aresta castanha à volta da imagem */
+  box-shadow:
+    0 0 0 3px var(--dourado),
+    0 0 0 5px var(--dourado-escuro),
+    0 4px 14px 5px rgba(0, 0, 0, 0.3);
+  container-type: inline-size; /* cqw = 1% da largura da imagem */
+}

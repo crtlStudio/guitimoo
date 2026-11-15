@@ -1,0 +1,125 @@
+/*
+ * Contador de estrelas: em cima ao centro, à altura dos botões redondos
+ * (mesmas medidas da PaginaMascote), com o efeito vidro dos botões.
+ * Centrado com margens (e não com transform), porque os filhos usam motion.
+ */
+.contador {
+  --espaco: clamp(8px, 2vh, 16px);
+  --redondo: clamp(44px, 12vh, 64px);
+
+  position: absolute;
+  z-index: 2;
+  top: var(--espaco);
+  left: 0;
+  right: 0;
+  width: fit-content;
+  height: var(--redondo);
+  margin: 0 auto;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0 1em 0 0.7em;
+  font-family: 'Fredoka', system-ui, sans-serif;
+  font-weight: 600;
+  font-size: max(1rem, 2.4cqw);
+  color: #5a3912;
+  border-radius: 999px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.4));
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0.4cqw 1.2cqw rgba(0, 0, 0, 0.18);
+  pointer-events: none;
+}
+
+.estrela {
+  display: inline-block;
+  font-size: 1.4em;
+  line-height: 1;
+}
+
+.total {
+  min-width: 2ch;
+  font-size: 1.25em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Bolinhas das perguntas do jogo */
+.perguntas {
+  display: flex;
+  gap: 0.25em;
+  margin-left: 0.2em;
+}
+
+.pergunta {
+  width: 0.65em;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.8);
+  border: 2px solid #f5c96a;
+}
+
+.feita {
+  background: #ffc83d;
+  border-color: #e0a100;
+}
+
+/* Errou na pergunta atual: já não dá estrelas, mas continua (sem drama) */
+.atualErrada {
+  border-style: dashed;
+}
+
+/* "+5 ⭐" grande, por baixo do contador, ao centro (centrado com margens:
+   o transform é do motion, para o pulo) */
+.mais {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  width: fit-content;
+  margin: 0.3em auto 0;
+  display: flex;
+  align-items: center;
+  gap: 0.15em;
+  padding: 0.05em 0.45em;
+  font-size: 2.6em;
+  line-height: 1.15;
+  color: #fff;
+  white-space: nowrap;
+  background: linear-gradient(to bottom, #ffd23f, #ff9f00);
+  border: 0.08em solid #fff;
+  border-radius: 999px;
+  text-shadow: 0 0.06em 0 #c66f00;
+  box-shadow:
+    0 0 0.6em rgba(255, 200, 40, 0.9),
+    0 0.15em 0.4em rgba(0, 0, 0, 0.25);
+}
+
+/* ---------- Na coluna de um jogo (ex.: por baixo das palavras do Panda) ---------- */
+/* Fica no seu lugar, com a largura da coluna e a altura das palavras da lista */
+.naColuna {
+  position: relative;
+  top: auto;
+  left: auto;
+  right: auto;
+  width: 100%;
+  height: 5.4cqw;
+  min-height: 30px;
+  margin: 0;
+  justify-content: center;
+  font-size: max(0.9rem, 2.2cqw);
+  border-radius: 1.6cqw;
+}
+
+/* Aqui o "+5" aparece por cima do contador (por baixo já não há espaço) */
+.naColuna .mais {
+  top: auto;
+  bottom: 100%;
+  margin: 0 auto 0.3em;
+}
+
+.maisEstrela {
+  font-size: 0.85em;
+  text-shadow: none;
+}

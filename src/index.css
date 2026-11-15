@@ -1,0 +1,29 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  /* Sem "puxar para atualizar" nem deslizar a página para lá dos limites */
+  overscroll-behavior: none;
+}
+
+body {
+  font-family: system-ui, sans-serif;
+  overflow: hidden;
+
+  /* É um jogo: sem zoom ao tocar duas vezes, sem selecionar texto,
+     sem menu ao manter o dedo e sem o retângulo azul do toque */
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* As imagens não podem ser arrastadas com o dedo ou o rato */
+img {
+  -webkit-user-drag: none;
+}

@@ -1,0 +1,53 @@
+/*
+ * Festa da Coruja. A coruja está pintada na imagem de fundo, sempre no mesmo
+ * sítio: corpo de ~76% a ~88% da largura, ombros a ~73% da altura.
+ * As posições são em % da imagem, para acertar em qualquer ecrã.
+ * As asas "nascem" dos lados do corpo e batem para cima e para baixo.
+ */
+.festa {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.asa {
+  position: absolute;
+  top: 73%;
+  width: 6.5cqw;
+  height: 10cqw;
+}
+
+.desenho {
+  display: block;
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 0.3cqw 0.4cqw rgba(0, 0, 0, 0.25));
+}
+
+/* Esquerda: o ombro (canto de cima à direita) encosta ao lado esquerdo do corpo */
+.esquerda {
+  left: calc(76.5% - 6.5cqw);
+  transform-origin: 100% 8%;
+}
+
+/* Direita: desenho ao espelho; o ombro (canto de cima à esquerda) encosta ao lado direito */
+.direita {
+  left: 88%;
+  transform-origin: 0% 8%;
+}
+
+.direita .desenho {
+  transform: scaleX(-1);
+}
+
+/* Penas: saem do peito da coruja */
+.pena {
+  position: absolute;
+  left: 81.5%;
+  top: 76%;
+  font-size: max(1rem, 2.6cqw);
+  line-height: 1;
+}

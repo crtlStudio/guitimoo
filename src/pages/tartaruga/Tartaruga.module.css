@@ -1,0 +1,36 @@
+/*
+ * Botão de vidro em cima, à esquerda do botão de som (mesma altura e espaços
+ * dos botões redondos da PaginaMascote), longe das letras e da lista.
+ */
+.mudarIdade {
+  --espaco: clamp(8px, 2vh, 16px);
+  --redondo: clamp(44px, 12vh, 64px);
+
+  position: absolute;
+  z-index: 1;
+  top: var(--espaco);
+  right: calc(var(--espaco) * 2 + var(--redondo));
+  height: var(--redondo);
+  min-height: 44px;
+  padding: 0.4em 1em;
+  cursor: pointer;
+  font-family: 'Fredoka', system-ui, sans-serif;
+  font-weight: 600;
+  font-size: max(0.9rem, 1.8cqw);
+  color: #5a3912;
+  border-radius: 999px;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.6),
+    rgba(255, 255, 255, 0.3)
+  );
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 0 0.4cqw 1.2cqw rgba(0, 0, 0, 0.18);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mudarIdade:active {
+  transform: scale(0.95);
+}

@@ -1,0 +1,104 @@
+/*
+ * Todas as medidas em cqw (1% da largura da imagem dentro da moldura),
+ * para o ecrã ficar igual em telemóvel, tablet e computador.
+ * O painel fica na relva e no céu à esquerda, longe do panda (à direita).
+ */
+.painel {
+  position: absolute;
+  left: 4%;
+  width: 60%;
+  top: 22%;
+  bottom: 6%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3cqw;
+  font-family: 'Fredoka', system-ui, sans-serif;
+  font-weight: 600;
+}
+
+/* Texto dourado com contorno castanho, como os títulos */
+.pergunta,
+.idade,
+.anos {
+  color: #f5c96a;
+  --contorno: #5a3912;
+  text-shadow:
+    -0.05em -0.05em 0 var(--contorno),
+    0.05em -0.05em 0 var(--contorno),
+    -0.05em 0.05em 0 var(--contorno),
+    0.05em 0.05em 0 var(--contorno),
+    0 -0.05em 0 var(--contorno),
+    0 0.05em 0 var(--contorno),
+    -0.05em 0 0 var(--contorno),
+    0.05em 0 0 var(--contorno),
+    0 0.12em 0.1em rgba(0, 0, 0, 0.3);
+}
+
+.pergunta {
+  margin: 0;
+  font-size: max(1.2rem, 4.2cqw);
+}
+
+.botoes {
+  display: flex;
+  gap: 3cqw;
+}
+
+/* Botões grandes e quadrados, com efeito vidro */
+.botao {
+  position: relative;
+  width: 16cqw;
+  min-width: 88px;
+  aspect-ratio: 1;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2cqw;
+  cursor: pointer;
+  font: inherit;
+  border-radius: 2.5cqw;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.45),
+    rgba(255, 255, 255, 0.18)
+  );
+  -webkit-backdrop-filter: blur(8px) saturate(140%);
+  backdrop-filter: blur(8px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    0 0.6cqw 1.6cqw rgba(0, 0, 0, 0.2);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* O escalão da última vez tem contorno dourado */
+.ultimo {
+  border: max(2px, 0.35cqw) solid #f5c96a;
+}
+
+.estrela {
+  position: absolute;
+  top: -1.4cqw;
+  right: -1.4cqw;
+  font-size: max(1rem, 3cqw);
+  filter: drop-shadow(0 0.2cqw 0.3cqw rgba(0, 0, 0, 0.3));
+}
+
+.emoji {
+  font-size: max(1.4rem, 4.5cqw);
+  line-height: 1;
+}
+
+.idade {
+  font-size: max(1.4rem, 4.6cqw);
+  line-height: 1;
+}
+
+.anos {
+  font-size: max(0.8rem, 1.8cqw);
+  line-height: 1;
+}

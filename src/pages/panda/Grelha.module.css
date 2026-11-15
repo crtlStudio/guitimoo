@@ -1,0 +1,57 @@
+/*
+ * A grelha é quadrada e ocupa a altura toda da caixa onde for posta
+ * (quem a usa decide a posição e o tamanho dessa caixa).
+ */
+.grelha {
+  height: 100%;
+  aspect-ratio: 1;
+  display: grid;
+  grid-template-columns: repeat(var(--tamanho), 1fr);
+  grid-template-rows: repeat(var(--tamanho), 1fr);
+  /* Espaços pequenos: o espaço vai quase todo para as células */
+  gap: 2px;
+  padding: 3px;
+  box-sizing: border-box;
+  background: rgba(255, 253, 246, 0.94);
+  border: max(2px, 0.35cqw) solid #f5c96a;
+  border-radius: 1.8cqw;
+  box-shadow: 0 0.6cqw 1.6cqw rgba(0, 0, 0, 0.2);
+
+  /* Sem isto, arrastar o dedo faria a página deslizar ou fazer zoom */
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  cursor: pointer;
+
+  /* As células medem as letras pela grelha (cqh = 1% da altura da grelha) */
+  container-type: size;
+}
+
+.celula {
+  display: grid;
+  place-items: center;
+  font-family: 'Fredoka', system-ui, sans-serif;
+  font-weight: 600;
+  /* Letra com cerca de metade da altura da célula */
+  font-size: calc(100cqh / var(--tamanho) * 0.55);
+  line-height: 1;
+  color: #5a3912;
+  border-radius: calc(100cqh / var(--tamanho) * 0.2);
+  transition: background-color 0.15s, color 0.15s, transform 0.15s;
+}
+
+/* Letras de uma palavra já encontrada: fundo com a cor dessa palavra */
+.celula[data-encontrada] {
+  background: var(--cor);
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+/* Letras a ser selecionadas agora: amarelo e um pouco maiores */
+.selecionada {
+  background: #ffd84d;
+  color: #5a3912;
+  text-shadow: none;
+  transform: scale(1.08);
+}

@@ -1,0 +1,117 @@
+/* Camada por cima do jogo, um pouco escurecida (os botões de cima ficam acessíveis) */
+.fundo {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  border-radius: inherit;
+  background: rgba(30, 20, 5, 0.3);
+}
+
+.cartao {
+  position: relative;
+  z-index: 3;
+  width: min(64cqw, 100% - 32px);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2cqw;
+  margin-top: 4cqw; /* abaixo dos botões de cima */
+  padding: 1.6cqw 2.6cqw 2cqw;
+  font-family: 'Fredoka', system-ui, sans-serif;
+  font-weight: 600;
+  color: #5a3912;
+  background: rgba(255, 253, 246, 0.97);
+  border: max(2px, 0.4cqw) solid #f5c96a;
+  border-radius: 3cqw;
+  box-shadow: 0 0.8cqw 2.4cqw rgba(0, 0, 0, 0.3);
+}
+
+.titulo {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  margin: 0;
+  font-size: max(1.2rem, 3.8cqw);
+  line-height: 1.1;
+  color: #2f7d32;
+}
+
+.mascote {
+  display: inline-block;
+  font-size: 1.3em;
+  line-height: 1;
+}
+
+/* As contas das estrelas */
+.contas {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: max(0.85rem, 2.2cqw);
+}
+
+.contas li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1em;
+  padding: 0.35em 0.2em;
+  border-bottom: 2px dashed rgba(245, 201, 106, 0.6);
+}
+
+.contas strong {
+  white-space: nowrap;
+  color: #c98a00;
+}
+
+/* A soma final, maior */
+.contas .soma {
+  border-bottom: 0;
+  font-size: 1.25em;
+}
+
+.soma strong {
+  display: inline-block;
+  font-size: 1.2em;
+}
+
+.botoes {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.6cqw;
+  white-space: nowrap;
+}
+
+/* "Mudar idade": botão secundário, branco com contorno dourado */
+.mudarIdade {
+  min-height: 44px;
+  padding: 0.35em 1em;
+  cursor: pointer;
+  font: inherit;
+  font-size: max(0.9rem, 2.4cqw);
+  color: #5a3912;
+  background: #fff;
+  border: max(2px, 0.3cqw) solid #f5c96a;
+  border-radius: 999px;
+  box-shadow: 0 0.18em 0 #e0a100;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.outraVez {
+  min-height: 44px;
+  padding: 0.35em 1.1em;
+  cursor: pointer;
+  font: inherit;
+  font-size: max(1rem, 2.8cqw);
+  color: #fff;
+  background: #4caf50;
+  border: 0;
+  border-radius: 999px;
+  box-shadow: 0 0.18em 0 #2e7d32;
+  -webkit-tap-highlight-color: transparent;
+}

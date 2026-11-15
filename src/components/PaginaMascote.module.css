@@ -1,0 +1,45 @@
+/* Os botões redondos ficam dentro da área da moldura, nos cantos de cima */
+.cantos {
+  --lado: clamp(8px, 2vh, 16px);
+  --botao-top: var(--lado);
+  --botao-tam: clamp(44px, 12vh, 64px);
+}
+
+/* Título ao centro em cima, com o estilo dourado dos botões */
+.titulo {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  height: calc(clamp(44px, 12vh, 64px) + 2 * clamp(8px, 2vh, 16px));
+  display: flex;
+  align-items: center;
+  margin: 0;
+  white-space: nowrap;
+  font-family: 'Fredoka', system-ui, sans-serif;
+  font-size: clamp(1.3rem, 7vh, 2.8rem);
+  font-weight: 600;
+  line-height: 1.1;
+  color: #f5c96a;
+  --contorno: #5a3912;
+  text-shadow:
+    -0.05em -0.05em 0 var(--contorno),
+    0.05em -0.05em 0 var(--contorno),
+    -0.05em 0.05em 0 var(--contorno),
+    0.05em 0.05em 0 var(--contorno),
+    0 -0.05em 0 var(--contorno),
+    0 0.05em 0 var(--contorno),
+    -0.05em 0 0 var(--contorno),
+    0.05em 0 0 var(--contorno),
+    0 0.12em 0.1em rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+}
+
+/* Título invisível no ecrã, mas lido pelos leitores de ecrã */
+.escondido {
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}

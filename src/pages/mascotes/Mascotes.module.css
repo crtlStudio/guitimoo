@@ -1,0 +1,94 @@
+.botao {
+  /* Por baixo de cada mascote, em % da imagem (cqw = 1% da largura da imagem) */
+  position: absolute;
+  top: 83%;
+  transform: translateX(-50%);
+  width: 19cqw;
+  box-sizing: border-box;
+  padding: 0.7cqw 0.6cqw;
+  font-family: 'Fredoka', system-ui, sans-serif;
+  font-size: max(0.85rem, 2.3cqw);
+  font-weight: 600;
+  line-height: 1.05;
+  text-align: center;
+  /* Sempre 2 linhas, uma por baixo da outra */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+
+  /* Efeito vidro */
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.35),
+    rgba(255, 255, 255, 0.12)
+  );
+  -webkit-backdrop-filter: blur(8px) saturate(140%);
+  backdrop-filter: blur(8px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 1.6cqw;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    0 0.4cqw 1.2cqw rgba(0, 0, 0, 0.18);
+
+  /* Só texto: amarelo-dourado com contorno castanho e sombra suave */
+  color: #f5c96a;
+  --contorno: #5a3912;
+  text-shadow:
+    -0.05em -0.05em 0 var(--contorno),
+    0.05em -0.05em 0 var(--contorno),
+    -0.05em 0.05em 0 var(--contorno),
+    0.05em 0.05em 0 var(--contorno),
+    0 -0.05em 0 var(--contorno),
+    0 0.05em 0 var(--contorno),
+    -0.05em 0 0 var(--contorno),
+    0.05em 0 0 var(--contorno),
+    0 0.12em 0.1em rgba(0, 0, 0, 0.3);
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.1s;
+}
+
+.botao:active {
+  transform: translateX(-50%) scale(0.94);
+}
+
+/* Centro de cada mascote na imagem */
+.sapo { left: 15%; }
+.panda { left: 38.5%; }
+.coruja { left: 61%; }
+.tartaruga { left: 84.5%; }
+
+.linha {
+  white-space: nowrap;
+}
+
+/* Título na faixa de cima da moldura, com o estilo do texto dos botões */
+.titulo {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  height: var(--topo);
+  display: flex;
+  align-items: center;
+  margin: 0;
+  white-space: nowrap;
+  font-family: 'Fredoka', system-ui, sans-serif;
+  font-size: min(calc(var(--topo) * 0.5), 6.5vw);
+  font-weight: 600;
+  line-height: 1.1;
+  color: #f5c96a;
+  --contorno: #5a3912;
+  text-shadow:
+    -0.05em -0.05em 0 var(--contorno),
+    0.05em -0.05em 0 var(--contorno),
+    -0.05em 0.05em 0 var(--contorno),
+    0.05em 0.05em 0 var(--contorno),
+    0 -0.05em 0 var(--contorno),
+    0 0.05em 0 var(--contorno),
+    -0.05em 0 0 var(--contorno),
+    0.05em 0 0 var(--contorno),
+    0 0.12em 0.1em rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+}

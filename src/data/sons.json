@@ -1,0 +1,25 @@
+{
+  "sons": [
+    { "id": "cao", "nome": "Cão", "emoji": "🐶", "categoria": "animais", "ficheiro": "cao.mp3", "parecidos": "casa" },
+    { "id": "gato", "nome": "Gato", "emoji": "🐱", "categoria": "animais", "ficheiro": "gato.mp3", "parecidos": "casa" },
+    { "id": "cavalo", "nome": "Cavalo", "emoji": "🐴", "categoria": "animais", "ficheiro": "cavalo.mp3", "parecidos": "quinta" },
+    { "id": "ovelha", "nome": "Ovelha", "emoji": "🐑", "categoria": "animais", "ficheiro": "ovelha.mp3", "parecidos": "quinta" },
+    { "id": "galo", "nome": "Galo", "emoji": "🐓", "categoria": "animais", "ficheiro": "galo.mp3", "parecidos": "aves" },
+    { "id": "passaro", "nome": "Pássaros", "emoji": "🐦", "categoria": "animais", "ficheiro": "passaro.mp3", "parecidos": "aves" },
+    { "id": "pato", "nome": "Pato", "emoji": "🦆", "categoria": "animais", "ficheiro": "pato.mp3", "parecidos": "lago" },
+    { "id": "sapo", "nome": "Sapo", "emoji": "🐸", "categoria": "animais", "ficheiro": "sapo.mp3", "parecidos": "lago" },
+
+    { "id": "chuva", "nome": "Chuva", "emoji": "🌧️", "categoria": "natureza", "ficheiro": "chuva.mp3", "parecidos": "agua" },
+    { "id": "rio", "nome": "Rio", "emoji": "🏞️", "categoria": "natureza", "ficheiro": "rio.mp3", "parecidos": "agua" },
+    { "id": "mar", "nome": "Mar", "emoji": "🌊", "categoria": "natureza", "ficheiro": "mar.mp3", "parecidos": "agua" },
+    { "id": "vento", "nome": "Vento", "emoji": "🌬️", "categoria": "natureza", "ficheiro": "vento.mp3", "parecidos": "tempestade" },
+    { "id": "trovao", "nome": "Trovão", "emoji": "⛈️", "categoria": "natureza", "ficheiro": "trovao.mp3", "parecidos": "tempestade" },
+
+    { "id": "ambulancia", "nome": "Ambulância", "emoji": "🚑", "categoria": "cidade", "ficheiro": "ambulancia.mp3", "parecidos": "sirenes" },
+    { "id": "sirene", "nome": "Sirene", "emoji": "🚨", "categoria": "cidade", "ficheiro": "sirene.mp3", "parecidos": "sirenes" },
+    { "id": "comboio", "nome": "Comboio", "emoji": "🚂", "categoria": "cidade", "ficheiro": "comboio.mp3", "parecidos": "sirenes" },
+    { "id": "campainha", "nome": "Campainha", "emoji": "🔔", "categoria": "cidade", "ficheiro": "campainha.mp3", "parecidos": "toques" },
+    { "id": "telefone", "nome": "Telefone", "emoji": "☎️", "categoria": "cidade", "ficheiro": "telefone.mp3", "parecidos": "toques" },
+    { "id": "relogio", "nome": "Relógio", "emoji": "⏰", "categoria": "cidade", "ficheiro": "relogio.mp3", "parecidos": "toques" }
+  ]
+}

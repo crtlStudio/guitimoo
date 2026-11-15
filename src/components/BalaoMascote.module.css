@@ -1,0 +1,31 @@
+/* Aspeto do balão; a posição vem de cada jogo (className) */
+.balao {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.6cqw;
+  padding: 0.4cqw 1.4cqw 0.4cqw 0.6cqw;
+  font-family: 'Fredoka', system-ui, sans-serif;
+  font-weight: 600;
+  font-size: max(0.85rem, 2cqw);
+  white-space: nowrap;
+  color: #5a3912;
+  background: rgba(255, 253, 246, 0.96);
+  border: max(2px, 0.3cqw) solid #f5c96a;
+  border-radius: 999px;
+  box-shadow: 0 0.4cqw 1cqw rgba(0, 0, 0, 0.18);
+}
+
+/* Acertou: verde */
+.feliz {
+  color: #fff;
+  background: #4caf50;
+  border-color: #2e7d32;
+}
+
+.mascote {
+  display: inline-block;
+  font-size: 1.5em;
+  line-height: 1;
+  transform-origin: 50% 80%;
+}

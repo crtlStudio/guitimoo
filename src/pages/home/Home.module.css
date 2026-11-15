@@ -1,0 +1,18 @@
+/*
+ * Botão na relva entre o sapo e a tartaruga, posicionado e dimensionado
+ * em % da imagem (cqw = 1% da largura da imagem dentro da moldura).
+ */
+.botaoJogar {
+  position: absolute;
+  left: 50%;
+  top: 80%;
+  transform: translate(-50%, -50%);
+  padding: 0.35em 1.1em;
+  font-size: max(1.3rem, 3.8cqw);
+  font-weight: bold;
+  color: white;
+  background: #4caf50;
+  border-radius: 50px;
+  text-decoration: none;
+  box-shadow: 0 0.18em 0 #2e7d32;
+}

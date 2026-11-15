@@ -1,0 +1,97 @@
+/*
+ * Medidas em % e cqw da imagem (1cqw = 1% da largura da imagem).
+ * Na imagem do panda: o panda está à direita (cerca de 65–80% da largura),
+ * o céu está em cima e a relva livre em baixo, à esquerda.
+ */
+
+/* ---------- Balão de fala, à esquerda do panda ---------- */
+.balao {
+  position: absolute;
+  right: 37%; /* termina antes do panda */
+  top: 21%; /* abaixo do título */
+  min-width: 15cqw;
+  padding: 1.2cqw 2.4cqw 1.6cqw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: 'Fredoka', system-ui, sans-serif;
+  font-weight: 600;
+  background: #fffdf6;
+  border: max(2px, 0.4cqw) solid #f5c96a;
+  border-radius: 3cqw;
+  box-shadow: 0 0.6cqw 1.6cqw rgba(0, 0, 0, 0.2);
+  transform-origin: right center;
+}
+
+/* Bico do balão, a apontar para o panda */
+.balao::after {
+  content: '';
+  position: absolute;
+  right: -2.2cqw;
+  top: 40%;
+  border-style: solid;
+  border-width: 1.4cqw 0 1.4cqw 2.4cqw;
+  border-color: transparent transparent transparent #f5c96a;
+}
+
+.letraGrande {
+  font-size: max(3rem, 11cqw);
+  line-height: 1;
+  color: #2f7d32;
+}
+
+.exemplo {
+  font-size: max(0.9rem, 2.2cqw);
+  color: #5a3912;
+  white-space: nowrap;
+}
+
+.destaque {
+  color: #2f7d32;
+  font-size: 1.25em;
+}
+
+/* ---------- Posição do balão do Panda (o aspeto está no BalaoMascote) ---------- */
+.mensagem {
+  position: absolute;
+  right: 37%;
+  top: 56%;
+}
+
+/* ---------- Fila de letras, na relva ---------- */
+.fila {
+  position: absolute;
+  left: 3%;
+  width: 62%;
+  bottom: 9%;
+  display: flex;
+  justify-content: center;
+  gap: 1.4cqw;
+}
+
+/* Cada letra é um botão grande, para dedos pequenos */
+.letra {
+  width: 9cqw;
+  min-width: 48px;
+  aspect-ratio: 1;
+  padding: 0;
+  cursor: pointer;
+  font-family: 'Fredoka', system-ui, sans-serif;
+  font-weight: 600;
+  font-size: max(1.6rem, 6cqw);
+  line-height: 1;
+  color: #5a3912;
+  background: #fffdf6;
+  border: max(2px, 0.35cqw) solid #f5c96a;
+  border-radius: 2cqw;
+  box-shadow: 0 0.5cqw 0 #c9912f;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* A letra certa fica verde */
+.certa {
+  color: #fff;
+  background: #4caf50;
+  border-color: #2e7d32;
+  box-shadow: 0 0.5cqw 0 #2e7d32;
+}

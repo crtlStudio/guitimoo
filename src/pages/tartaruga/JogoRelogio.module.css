@@ -1,0 +1,135 @@
+/*
+ * Disposição dos jogos com relógio (5–6 e 7–8).
+ * Medidas em cqw (1% da largura da imagem; a altura é 56.25cqw).
+ * A tartaruga grande está à esquerda da imagem (até ~34cqw): o relógio fica
+ * ao centro, a pergunta e os botões à direita, o caminho em baixo.
+ */
+
+.zonaRelogio {
+  position: absolute;
+  left: 36.5cqw;
+  top: 8.5cqw;
+  width: 33cqw;
+  height: 33cqw;
+}
+
+.lado {
+  position: absolute;
+  left: 71.5cqw;
+  right: 2.5cqw;
+  top: 9.5cqw;
+  bottom: 9cqw;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  gap: 1.4cqw;
+  font-family: 'Fredoka', system-ui, sans-serif;
+  font-weight: 600;
+}
+
+/* Cartão com a pergunta da tartaruga */
+.pergunta {
+  margin: 0;
+  padding: 1cqw 1.4cqw;
+  font-size: max(0.8rem, 2.15cqw);
+  line-height: 1.25;
+  text-align: center;
+  color: #5a3912;
+  background: rgba(255, 253, 246, 0.96);
+  border: max(2px, 0.35cqw) solid #f5c96a;
+  border-radius: 2cqw;
+  box-shadow: 0 0.5cqw 1.2cqw rgba(0, 0, 0, 0.18);
+}
+
+.emojiPergunta {
+  display: block;
+  font-size: max(1.4rem, 4.6cqw);
+  line-height: 1.1;
+}
+
+/* Ajuda (5–6): "ponteiro pequeno no" e, por baixo, o número em laranja */
+.ajuda {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5cqw;
+  font-size: max(0.8rem, 1.9cqw);
+  color: #5a3912;
+  text-align: center;
+}
+
+.numeroAlvo {
+  width: 6cqw;
+  min-width: 36px;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  font-size: max(1.3rem, 3.8cqw);
+  color: #fff;
+  background: #ff8a3d;
+  border: max(2px, 0.35cqw) solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 0.4cqw 1cqw rgba(0, 0, 0, 0.2);
+}
+
+/* Botão verde "Já está!" */
+.pronto {
+  min-height: 44px;
+  padding: 0.3em 0.8em;
+  cursor: pointer;
+  font: inherit;
+  font-size: max(1.1rem, 3cqw);
+  color: #fff;
+  background: #4caf50;
+  border: 0;
+  border-radius: 999px;
+  box-shadow: 0 0.18em 0 #2e7d32;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.pronto:disabled {
+  opacity: 0.6;
+}
+
+/* Opções em relógio digital (7–8, "ler o relógio") */
+.opcoes {
+  display: flex;
+  flex-direction: column;
+  gap: 1cqw;
+}
+
+.opcao {
+  min-height: 44px;
+  padding: 0.2em 0.4em;
+  cursor: pointer;
+  font-family: 'Courier New', ui-monospace, monospace;
+  font-weight: 700;
+  font-size: max(1.3rem, 3.6cqw);
+  letter-spacing: 0.06em;
+  color: #7dff9b;
+  text-shadow: 0 0 0.3em rgba(125, 255, 155, 0.6);
+  background: #1e2a3a;
+  border: max(2px, 0.35cqw) solid #f5c96a;
+  border-radius: 1.4cqw;
+  box-shadow: 0 0.4cqw 0 #c9912f;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.opcaoCerta {
+  color: #fff;
+  text-shadow: none;
+  background: #4caf50;
+  border-color: #2e7d32;
+}
+
+/* Balão da tartaruga: no céu, por cima da tartaruga grande */
+.mensagem {
+  position: absolute;
+  left: 2.5cqw;
+  top: 16cqw;
+  max-width: 33cqw;
+  white-space: normal;
+}

@@ -1,0 +1,124 @@
+/* Cartão com o objetivo do jogo, no céu à esquerda da coruja */
+.cartao {
+  position: absolute;
+  left: 4cqw;
+  width: 64cqw;
+  top: 50%;
+  translate: 0 -46%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9cqw;
+  padding: 1.4cqw 2.4cqw 1.8cqw;
+  text-align: center;
+  font-family: 'Fredoka', system-ui, sans-serif;
+  font-weight: 600;
+  color: #5a3912;
+  background: rgba(255, 253, 246, 0.95);
+  border: max(2px, 0.4cqw) solid #f5c96a;
+  border-radius: 3cqw;
+  box-shadow: 0 0.8cqw 2cqw rgba(0, 0, 0, 0.22);
+}
+
+.titulo {
+  margin: 0;
+  font-size: max(1.15rem, 3.8cqw);
+  line-height: 1.1;
+  color: #2f7d32;
+}
+
+.frase,
+.nota {
+  margin: 0;
+  font-size: max(0.8rem, 2.1cqw);
+  line-height: 1.25;
+}
+
+.nota {
+  font-size: max(0.75rem, 1.8cqw);
+  color: #8a6a3a;
+}
+
+/* ---------- Demonstração ---------- */
+.demo {
+  display: flex;
+  align-items: center;
+  gap: 1.4cqw;
+  min-height: 8cqw;
+}
+
+.altifalante {
+  font-size: max(1.4rem, 4.4cqw);
+  line-height: 1;
+}
+
+.seta {
+  font-size: max(1rem, 2.8cqw);
+  color: #c9912f;
+}
+
+.legenda {
+  min-width: 13cqw;
+  padding: 0.3cqw 1cqw;
+  font-size: max(0.75rem, 1.8cqw);
+  white-space: nowrap;
+  border-radius: 999px;
+  background: #fff3b0;
+}
+
+.legendaContrario {
+  color: #fff;
+  background: #ff7043;
+}
+
+/* Mini cartão da demonstração */
+.mini {
+  position: relative;
+  width: 6.4cqw;
+  min-width: 36px;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  font-size: max(1.1rem, 3.4cqw);
+  line-height: 1;
+  background: #fffdf6;
+  border: max(2px, 0.3cqw) solid #f5c96a;
+  border-radius: 1.2cqw;
+  transition:
+    background-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.miniAcesa {
+  background: #fff3b0;
+  border-color: #ffb300;
+  box-shadow: 0 0 1.6cqw rgba(255, 193, 7, 0.9);
+}
+
+.miniCerto {
+  background: #eaffdf;
+  border-color: #7ed957;
+}
+
+.dedo {
+  position: absolute;
+  right: -1.6cqw;
+  bottom: -1.8cqw;
+  font-size: max(0.9rem, 2.6cqw);
+}
+
+/* ---------- Botão ---------- */
+.comecar {
+  min-height: 44px;
+  padding: 0.35em 1.4em;
+  cursor: pointer;
+  font: inherit;
+  font-size: max(1.2rem, 3.2cqw);
+  color: #fff;
+  background: #4caf50;
+  border: 0;
+  border-radius: 999px;
+  box-shadow: 0 0.18em 0 #2e7d32;
+  -webkit-tap-highlight-color: transparent;
+}

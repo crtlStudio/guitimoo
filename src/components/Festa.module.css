@@ -1,0 +1,43 @@
+/* Camada por cima de tudo, sem bloquear toques */
+.festa {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+/* Ponto de onde os confetes rebentam (a posição vem do jogo) */
+.origem {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+.papel,
+.emoji {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+/* Tirinha de papel colorido */
+.papel {
+  width: 1.4cqw;
+  height: 0.8cqw;
+  margin: -0.4cqw 0 0 -0.7cqw;
+  border-radius: 0.2cqw;
+}
+
+.redondo {
+  width: 1cqw;
+  height: 1cqw;
+  border-radius: 50%;
+}
+
+.emoji {
+  margin: -1.2cqw 0 0 -1.2cqw;
+  font-size: max(1rem, 2.6cqw);
+  line-height: 1;
+}

@@ -1,0 +1,193 @@
+/*
+ * 3–4 anos. Medidas em cqw (1% da largura da imagem; a altura é 56.25cqw).
+ * Zona de jogo à direita da tartaruga grande: de 36cqw a 97cqw,
+ * entre os botões de cima (~9cqw) e o caminho de baixo (~48cqw).
+ */
+
+.diaNoite,
+.rotina {
+  position: absolute;
+  left: 37cqw;
+  right: 3cqw;
+  top: 9.5cqw;
+  bottom: 9.5cqw;
+  font-family: 'Fredoka', system-ui, sans-serif;
+  font-weight: 600;
+  color: #5a3912;
+}
+
+.perguntaCurta {
+  margin: 0;
+  font-size: max(0.95rem, 2.6cqw);
+  text-align: center;
+  color: #5a3912;
+  background: rgba(255, 253, 246, 0.9);
+  border-radius: 999px;
+  padding: 0.3cqw 1.6cqw;
+}
+
+/* ---------- Dia ou noite ---------- */
+.diaNoite {
+  display: flex;
+  align-items: center;
+  gap: 3cqw;
+}
+
+.cena {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1cqw;
+  padding: 1.6cqw;
+  text-align: center;
+  background: rgba(255, 253, 246, 0.96);
+  border: max(2px, 0.4cqw) solid #f5c96a;
+  border-radius: 3cqw;
+  box-shadow: 0 0.6cqw 1.6cqw rgba(0, 0, 0, 0.2);
+}
+
+.cenaEmoji {
+  font-size: max(3rem, 12cqw);
+  line-height: 1;
+}
+
+.cenaTexto {
+  font-size: max(0.95rem, 2.6cqw);
+  line-height: 1.2;
+}
+
+.escolha {
+  width: 26cqw;
+  display: flex;
+  flex-direction: column;
+  gap: 1.6cqw;
+}
+
+.botaoMomento {
+  min-height: 56px;
+  height: 11cqw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2cqw;
+  cursor: pointer;
+  font: inherit;
+  font-size: max(1.3rem, 4cqw);
+  border: max(2px, 0.4cqw) solid #f5c96a;
+  border-radius: 3cqw;
+  box-shadow: 0 0.5cqw 0 rgba(0, 0, 0, 0.25);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.dia {
+  color: #7a4a00;
+  background: linear-gradient(#fff3b0, #ffd84d);
+}
+
+.noite {
+  color: #fff;
+  background: linear-gradient(#3a4a8a, #1e2a5a);
+}
+
+/* ---------- Rotina ---------- */
+.rotina {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.lugares,
+.cartas {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 2cqw;
+}
+
+.lugar,
+.carta,
+.cartaVazia {
+  width: 16cqw;
+  min-width: 72px;
+  height: 14.5cqw;
+  min-height: 64px;
+  border-radius: 2.4cqw;
+}
+
+/* Lugar vazio: tracejado com o número */
+.lugar {
+  display: grid;
+  place-items: center;
+  border: max(2px, 0.4cqw) dashed #f5c96a;
+  background: rgba(255, 253, 246, 0.45);
+}
+
+.lugarCheio {
+  border-style: solid;
+  border-color: #7ed957;
+  background: transparent;
+}
+
+.numeroLugar {
+  font-size: max(1.6rem, 6cqw);
+  color: #fff;
+  -webkit-text-stroke: max(1px, 0.25cqw) #c9912f;
+}
+
+.carta,
+.cartaPosta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4cqw;
+  padding: 0.6cqw;
+  font: inherit;
+  color: #5a3912;
+  background: #fffdf6;
+  border: max(2px, 0.4cqw) solid #f5c96a;
+  border-radius: 2.4cqw;
+  box-shadow: 0 0.5cqw 1.2cqw rgba(0, 0, 0, 0.2);
+}
+
+.carta {
+  cursor: grab;
+  touch-action: none; /* arrastar a carta não desliza a página */
+  -webkit-tap-highlight-color: transparent;
+}
+
+.cartaPosta {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  background: #eaffdf;
+  border-color: #7ed957;
+}
+
+.cartaVazia {
+  visibility: hidden;
+}
+
+.cartaEmoji {
+  font-size: max(1.6rem, 6cqw);
+  line-height: 1;
+}
+
+.cartaTexto {
+  font-size: max(0.7rem, 1.6cqw);
+  line-height: 1.1;
+  text-align: center;
+}
+
+/* ---------- Balão da tartaruga (no céu, por cima da tartaruga grande) ---------- */
+.mensagem {
+  position: absolute;
+  left: 2.5cqw;
+  top: 16cqw;
+  max-width: 33cqw;
+  white-space: normal;
+}

@@ -1,0 +1,49 @@
+/* Canto superior esquerdo, efeito vidro como o botão de som */
+.voltar {
+  position: absolute;
+  z-index: 1;
+  top: var(--botao-top, max(12px, env(safe-area-inset-top)));
+  left: var(--lado, max(12px, env(safe-area-inset-left)));
+  width: var(--botao-tam, clamp(44px, 12vh, 72px));
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.35),
+    rgba(255, 255, 255, 0.12)
+  );
+  -webkit-backdrop-filter: blur(8px) saturate(140%);
+  backdrop-filter: blur(8px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    0 4px 12px rgba(0, 0, 0, 0.18);
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.1s;
+}
+
+.voltar:active {
+  transform: scale(0.92);
+}
+
+/* Seta dourada com contorno castanho */
+.voltar svg {
+  width: 55%;
+  height: 55%;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  overflow: visible;
+}
+
+.setaContorno {
+  stroke: #5a3912;
+  stroke-width: 5.5;
+}
+
+.seta {
+  stroke: #f5c96a;
+  stroke-width: 3;
+}

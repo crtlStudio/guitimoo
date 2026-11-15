@@ -1,0 +1,109 @@
+.relogio {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 0.6cqw 1.2cqw rgba(0, 0, 0, 0.25));
+  /* Arrastar o dedo roda o ponteiro, não desliza a página */
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.ativo {
+  cursor: grab;
+}
+
+.aArrastar {
+  cursor: grabbing;
+}
+
+.aro {
+  fill: #ff8a3d;
+  stroke: #f5c96a;
+  stroke-width: 4;
+}
+
+.mostrador {
+  fill: #fffdf6;
+}
+
+.traco {
+  stroke: #c9b48a;
+  stroke-width: 1;
+}
+
+.tracoGrande {
+  stroke: #8a6a3a;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.numero {
+  font-family: 'Fredoka', system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 17px;
+  fill: #5a3912;
+  text-anchor: middle;
+  dominant-baseline: central;
+  pointer-events: none;
+}
+
+/* Os ponteiros rodam à volta do centro do relógio (o ponto 0,0) */
+.ponteiro {
+  transform-box: view-box;
+  transform-origin: 0 0;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); /* encaixe com um ressalto */
+  pointer-events: none;
+}
+
+/* Enquanto o dedo arrasta, o ponteiro segue-o sem atraso */
+.aArrastar .ponteiro {
+  transition: transform 0.05s linear;
+}
+
+.horas {
+  stroke: #ff8a3d;
+  stroke-width: 10;
+  stroke-linecap: round;
+}
+
+.minutos {
+  stroke: #2e86de;
+  stroke-width: 6;
+  stroke-linecap: round;
+}
+
+/* Bolinha na ponta do ponteiro que se pode rodar, a pulsar */
+.pega {
+  fill: #fff;
+  stroke: currentColor;
+  stroke-width: 4;
+  animation: pulsar 1.2s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.ponteiroAtivo:has(.horas) .pega {
+  color: #ff8a3d;
+}
+
+.ponteiroAtivo:has(.minutos) .pega {
+  color: #2e86de;
+}
+
+.centro {
+  fill: #5a3912;
+  stroke: #f5c96a;
+  stroke-width: 3;
+}
+
+@keyframes pulsar {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.3);
+  }
+}

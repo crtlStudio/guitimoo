@@ -1,0 +1,152 @@
+/* ---------- Posição do balão do Sapo (o aspeto está no BalaoMascote) ---------- */
+/* À esquerda, por cima do prato onde a criança põe os sapinhos (o centro de
+   cima fica livre para o contador e para o "+5 ⭐") */
+.mensagem {
+  position: absolute;
+  z-index: 2;
+  top: 12cqw;
+  left: 5cqw;
+  max-width: 26cqw;
+  white-space: normal;
+}
+
+/* ---------- 5–6 e 7–8: balão à direita (à esquerda está o cartão da conta) ---------- */
+.mensagemContas {
+  position: absolute;
+  z-index: 2;
+  top: 11cqw;
+  right: 4cqw;
+  max-width: 27cqw;
+  white-space: normal;
+}
+
+/* ---------- Em cima à esquerda: o cartão da conta e o «Já está!», lado a lado ---------- */
+.linhaDaConta {
+  position: absolute;
+  z-index: 2;
+  top: 10.5cqw;
+  left: 4cqw;
+  display: flex;
+  align-items: center;
+  gap: 1.6cqw;
+}
+
+.cartao {
+  display: flex;
+  align-items: center;
+  gap: 0.25em;
+  padding: 0.15em 0.5em;
+  font-family: 'Fredoka', system-ui, sans-serif;
+  font-weight: 600;
+  font-size: max(1.4rem, 5.2cqw);
+  line-height: 1.1;
+  color: #5a3912;
+  background: rgba(255, 253, 246, 0.95);
+  border: max(2px, 0.4cqw) solid #f5c96a;
+  border-radius: 2.4cqw;
+  box-shadow: 0 0.6cqw 1.6cqw rgba(0, 0, 0, 0.2);
+  white-space: nowrap;
+}
+
+.cartao span {
+  display: inline-block;
+}
+
+/* As cores dos números (as mesmas das instruções) */
+.azul {
+  color: #2f8fdc;
+}
+
+.verde {
+  color: #3f9c43;
+}
+
+.resposta {
+  min-width: 0.7em;
+  text-align: center;
+  color: #e0a100;
+}
+
+.sinal {
+  color: #8a6a3a;
+}
+
+/* ---------- Botão "Já está!": a seguir ao cartão da conta ---------- */
+.jaEsta {
+  flex: none;
+  min-height: 44px;
+  padding: 0.3em 1em;
+  cursor: pointer;
+  font-family: 'Fredoka', system-ui, sans-serif;
+  font-weight: 600;
+  font-size: max(1.1rem, 3cqw);
+  color: #fff;
+  background: #4caf50;
+  border: 0;
+  border-radius: 999px;
+  box-shadow: 0 0.18em 0 #2e7d32;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ---------- Os números para escolher: em baixo ao centro, por cima do chão ---------- */
+.opcoes {
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  right: 0;
+  bottom: 2.2cqw;
+  width: fit-content;
+  margin: 0 auto;
+  display: flex;
+  gap: 1.6cqw;
+  padding: 1cqw 1.6cqw;
+  background: rgba(255, 253, 246, 0.85);
+  border: max(2px, 0.3cqw) solid #f5c96a;
+  border-radius: 2.6cqw;
+  box-shadow: 0 0.6cqw 1.6cqw rgba(0, 0, 0, 0.2);
+}
+
+/* Números grandes, com o estilo dourado do jogo */
+.opcao {
+  width: 10cqw;
+  min-width: 48px;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  cursor: pointer;
+  font-family: 'Fredoka', system-ui, sans-serif;
+  font-weight: 600;
+  font-size: max(1.6rem, 6.4cqw);
+  line-height: 1;
+  color: #f5c96a;
+  --contorno: #5a3912;
+  text-shadow:
+    -0.04em -0.04em 0 var(--contorno),
+    0.04em -0.04em 0 var(--contorno),
+    -0.04em 0.04em 0 var(--contorno),
+    0.04em 0.04em 0 var(--contorno),
+    0 -0.04em 0 var(--contorno),
+    0 0.04em 0 var(--contorno),
+    -0.04em 0 0 var(--contorno),
+    0.04em 0 0 var(--contorno),
+    0 0.08em 0.08em rgba(0, 0, 0, 0.3);
+  background: #fff;
+  border: max(2px, 0.35cqw) solid #f5c96a;
+  border-radius: 2cqw;
+  box-shadow: 0 0.4cqw 0 #e0a100;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Já escolhido e errado: fica apagado (não se volta a escolher) */
+.opcaoErrada {
+  opacity: 0.35;
+  cursor: default;
+}
+
+/* O certo, no fim: verde */
+.opcaoCerta {
+  background: #7ed957;
+  border-color: #4caf50;
+  box-shadow: 0 0.4cqw 0 #2e7d32;
+}
