@@ -1,0 +1,52 @@
+/*
+ * Nível médio do Detetive: as 3 lupas em fila, em cima (abaixo do contador
+ * de estrelas). As pessoas estão no EscolherPessoa.module.css.
+ */
+
+.pistas {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 13%;
+  display: flex;
+  justify-content: center;
+  gap: 4cqw;
+  perspective: 600px; /* para a pista "virar" ao destapar */
+}
+
+.sitio {
+  /* espaço para o cabo da lupa, que sai para baixo e para a direita */
+  padding: 0 2.4cqw 2.4cqw 0;
+}
+
+.lupa {
+  --tam: 12cqw;
+}
+
+/* A lupa tapada é um botão (só a seguinte se pode tocar) */
+.tapada {
+  padding: 0;
+  cursor: pointer;
+  background: none;
+  border: 0;
+  border-radius: 50%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tapada:disabled {
+  cursor: default;
+  opacity: 0.55;
+}
+
+.tapada:focus-visible {
+  outline: 3px solid #4caf50;
+  outline-offset: 4px;
+}
+
+/* O "?" dentro da lupa tapada */
+.interrogacao {
+  font-family: 'Fredoka', system-ui, sans-serif;
+  font-weight: 600;
+  color: #c9912f;
+  text-shadow: 0 0.2cqw 0 #fff;
+}

@@ -69,3 +69,18 @@ export function doDa(chamada) {
   if (chamada.startsWith('a ')) return `da ${chamada.slice(2)}`
   return `de ${chamada}`
 }
+
+const UNIDADES = ['', 'um', 'dois', 'três', 'quatro', 'cinco', 'seis', 'sete', 'oito', 'nove']
+const DEZENAS = ['', '', 'vinte', 'trinta', 'quarenta', 'cinquenta', 'sessenta', 'setenta', 'oitenta', 'noventa']
+
+/**
+ * Um número de 20 a 99 escrito por extenso (para a proteção dos adultos:
+ * quem ainda não lê não consegue escrever o número).
+ *   porExtenso(73) → 'setenta e três'      porExtenso(40) → 'quarenta'
+ */
+export function porExtenso(n) {
+  if (!Number.isInteger(n) || n < 20 || n > 99) throw new RangeError(`Só de 20 a 99: ${n}`)
+  const dezena = DEZENAS[Math.floor(n / 10)]
+  const unidade = UNIDADES[n % 10]
+  return unidade ? `${dezena} e ${unidade}` : dezena
+}

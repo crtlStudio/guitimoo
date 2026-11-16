@@ -52,9 +52,17 @@
 }
 
 .icone {
-  font-size: max(1.6rem, 5.5cqw);
+  width: 9cqw;
+  min-width: 44px;
+  aspect-ratio: 1;
+  object-fit: contain;
+  font-size: max(1.6rem, 5.5cqw); /* se for emoji */
   line-height: 1;
+  text-align: center;
+  filter: drop-shadow(0 0.3cqw 0.4cqw rgba(0, 0, 0, 0.3));
 }
+
+/* Jogo inativo: o ícone também a cinzento (vem do .inativo) */
 
 /* Nome em branco com contorno escuro, para se ler em qualquer cor */
 .nome {
@@ -80,4 +88,11 @@
   background: #f5c96a;
   border-radius: 999px;
   box-shadow: 0 0.3cqw 0.6cqw rgba(0, 0, 0, 0.25);
+}
+
+/* O botão da construção, em baixo à esquerda */
+.construcao {
+  position: absolute;
+  left: 2cqw;
+  bottom: 2cqw;
 }

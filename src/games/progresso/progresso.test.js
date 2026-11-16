@@ -1,9 +1,10 @@
-import { afterEach, describe, expect, it } from 'vitest'
+import { afterAll, beforeEach, describe, expect, it } from 'vitest'
 import { ESTRELAS_POR_PECA, JOGOS, PECAS_POR_COR } from './config'
 import {
   VERSAO,
   adicionarEstrelas,
   corEstaCompleta,
+  corQueMaisFalta,
   criarProgresso,
   dataDeHoje,
   escolherMascote,
@@ -11,24 +12,28 @@ import {
   escolherNivel,
   guardarNaReserva,
   limparProgresso,
+  marcarComoVistas,
   nivelDoEscalao,
   nivelDosEscaloesAntigos,
   pecasEmFalta,
+  pecasNovas,
   perfilAtivo,
   projetoAtual,
   projetoEstaCompleto,
   projetosAcabados,
   repararProgresso,
+  resumoDoProgresso,
   somarPremios,
 } from './progresso'
 
 const HOJE = '2026-11-16'
+const E = ESTRELAS_POR_PECA // as estrelas de 1 peça (75)
 const ATIVOS = ['matematica', 'portugues', 'memoria', 'horas']
 
 /** Progresso com a mascote já escolhida. */
 const comMascote = (id = 'sapo') => escolherMascote(criarProgresso('medio'), id)
 
-/** Dá `n` peças de um jogo (n × 10 estrelas). */
+/** Dá `n` peças de um jogo (n × ESTRELAS_POR_PECA estrelas). */
 const darPecas = (progresso, jogoId, n) =>
   adicionarEstrelas(progresso, jogoId, n * ESTRELAS_POR_PECA, HOJE)
 
@@ -39,9 +44,15 @@ function quaseCompleto(progresso, menos) {
   return p
 }
 
-// Os testes do Detetive ligam-no; no fim volta a ficar desligado
-afterEach(() => {
-  JOGOS.find((j) => j.id === 'detetive').ativo = false
+// Estes testes contam com 4 jogos ativos (o Detetive desligado); os testes
+// do Detetive ligam-no. No fim, o config volta a ficar como estava.
+const detetive = JOGOS.find((j) => j.id === 'detetive')
+const detetiveNoConfig = detetive.ativo
+beforeEach(() => {
+  detetive.ativo = false
+})
+afterAll(() => {
+  detetive.ativo = detetiveNoConfig
 })
 
 describe('criarProgresso', () => {
@@ -113,15 +124,21 @@ describe('níveis antigos', () => {
 })
 
 describe('adicionarEstrelas', () => {
-  it('cada 10 estrelas dão 1 peça; o resto fica guardado', () => {
-    const r1 = adicionarEstrelas(comMascote(), 'matematica', 25, HOJE)
+  it('cada ESTRELAS_POR_PECA estrelas dão 1 peça; o resto fica guardado', () => {
+    const r1 = adicionarEstrelas(comMascote(), 'matematica', 2 * E + 5, HOJE)
     expect(r1.pecasGanhas).toBe(2)
-    expect(perfilAtivo(r1.progresso).estrelas.matematica).toEqual({ total: 25, resto: 5 })
+    expect(perfilAtivo(r1.progresso).estrelas.matematica).toEqual({ total: 2 * E + 5, resto: 5 })
 
-    const r2 = adicionarEstrelas(r1.progresso, 'matematica', 5, HOJE)
+    const r2 = adicionarEstrelas(r1.progresso, 'matematica', E - 5, HOJE)
     expect(r2.pecasGanhas).toBe(1)
-    expect(perfilAtivo(r2.progresso).estrelas.matematica).toEqual({ total: 30, resto: 0 })
+    expect(perfilAtivo(r2.progresso).estrelas.matematica).toEqual({ total: 3 * E, resto: 0 })
     expect(projetoAtual(r2.progresso).pecas.matematica).toBe(3)
+  })
+
+  it('um jogo inteiro bem feito (40 estrelas) ainda não chega para 1 peça', () => {
+    const r = adicionarEstrelas(comMascote(), 'matematica', 40, HOJE)
+    expect(r.pecasGanhas).toBe(0)
+    expect(perfilAtivo(r.progresso).estrelas.matematica).toEqual({ total: 40, resto: 40 })
   })
 
   it('não muda o progresso que recebe', () => {
@@ -132,7 +149,7 @@ describe('adicionarEstrelas', () => {
   })
 
   it('o resto é do jogo: continua a contar depois de trocar de mascote', () => {
-    let p = adicionarEstrelas(comMascote('sapo'), 'memoria', 7, HOJE).progresso
+    let p = adicionarEstrelas(comMascote('sapo'), 'memoria', E - 3, HOJE).progresso
     p = escolherMascote(p, 'panda')
     const r = adicionarEstrelas(p, 'memoria', 3, HOJE)
     expect(r.pecasGanhas).toBe(1)
@@ -153,11 +170,11 @@ describe('adicionarEstrelas', () => {
   })
 
   it('sem mascote ativa: as estrelas contam, mas não há peças', () => {
-    const r = adicionarEstrelas(criarProgresso(), 'portugues', 20, HOJE)
+    const r = adicionarEstrelas(criarProgresso(), 'portugues', 2 * E, HOJE)
     expect(r.semPecas).toBe('sem-mascote')
     expect(r.pecasGanhas).toBe(0)
     expect(r.pecasExtra).toBe(0)
-    expect(perfilAtivo(r.progresso).estrelas.portugues).toEqual({ total: 20, resto: 0 })
+    expect(perfilAtivo(r.progresso).estrelas.portugues).toEqual({ total: 2 * E, resto: 0 })
   })
 
   it('jogo inativo: as estrelas contam, mas não há peças', () => {
@@ -188,6 +205,16 @@ describe('projetos', () => {
     const { porCor, total } = pecasEmFalta(p)
     expect(porCor.portugues).toBe(2)
     expect(total).toBe(ATIVOS.length * PECAS_POR_COR - 3)
+  })
+
+  it('a cor que mais falta: a com menos peças; no empate, a primeira', () => {
+    expect(corQueMaisFalta(comMascote())).toBe('matematica')
+    let p = darPecas(comMascote(), 'matematica', 2).progresso
+    p = darPecas(p, 'portugues', 1).progresso
+    expect(corQueMaisFalta(p)).toBe('memoria')
+    p = quaseCompleto(p, 'horas')
+    p = darPecas(p, 'horas', 4).progresso
+    expect(corQueMaisFalta(p)).toBe('horas')
   })
 
   it('a última peça acaba o projeto, marca a data e começa um novo', () => {
@@ -275,6 +302,79 @@ describe('projetos', () => {
   })
 })
 
+describe('peças novas (construção)', () => {
+  it('no início não há nada de novo', () => {
+    expect(pecasNovas(comMascote())).toEqual({
+      projetosNovos: 0,
+      porCor: { matematica: 0, portugues: 0, memoria: 0, horas: 0 },
+      total: 0,
+    })
+  })
+
+  it('as peças ganhas são novas até a criança as ver', () => {
+    let p = darPecas(comMascote(), 'portugues', 3).progresso
+    p = darPecas(p, 'horas', 1).progresso
+    expect(pecasNovas(p).porCor).toMatchObject({ portugues: 3, horas: 1 })
+    expect(pecasNovas(p).total).toBe(4)
+
+    p = marcarComoVistas(p)
+    expect(pecasNovas(p).total).toBe(0)
+
+    // ganha mais 1 azul: só essa é nova
+    p = darPecas(p, 'portugues', 1).progresso
+    expect(pecasNovas(p)).toMatchObject({ projetosNovos: 0, total: 1, porCor: { portugues: 1 } })
+  })
+
+  it('projeto acabado sem ser visto: festa, e as peças do novo são todas novas', () => {
+    let p = darPecas(comMascote(), 'matematica', PECAS_POR_COR).progresso
+    p = marcarComoVistas(p)
+    p = guardarNaReserva(p, 'matematica', 2) // entram sozinhas no projeto seguinte
+    p = quaseCompleto(p, 'matematica') // o vermelho já estava: a casa fica acabada
+
+    const novas = pecasNovas(p)
+    expect(novas.projetosNovos).toBe(1)
+    expect(novas.porCor.matematica).toBe(2) // as da reserva, já no projeto novo
+    expect(novas.total).toBe(2)
+
+    p = marcarComoVistas(p)
+    expect(pecasNovas(p)).toMatchObject({ projetosNovos: 0, total: 0 })
+    expect(perfilAtivo(p).mascotes.sapo.vistas.projeto).toBe(1)
+  })
+
+  it('cada mascote tem as suas peças vistas', () => {
+    let p = darPecas(comMascote('sapo'), 'memoria', 2).progresso
+    p = escolherMascote(p, 'panda')
+    p = darPecas(p, 'memoria', 1).progresso
+    p = marcarComoVistas(p) // só a do panda (a ativa)
+    expect(pecasNovas(p, 'panda').total).toBe(0)
+    expect(pecasNovas(p, 'sapo').total).toBe(2)
+  })
+
+  it('se já estava tudo visto, devolve o mesmo progresso (não grava)', () => {
+    const p = comMascote()
+    expect(marcarComoVistas(p)).toBe(p)
+    expect(marcarComoVistas(p, 'leao')).toBe(p)
+  })
+
+  it('não muda o progresso que recebe', () => {
+    const antes = darPecas(comMascote(), 'horas', 2).progresso
+    marcarComoVistas(antes)
+    expect(pecasNovas(antes).total).toBe(2)
+  })
+
+  it('sem mascote: nada de novo', () => {
+    expect(pecasNovas(criarProgresso()).total).toBe(0)
+  })
+
+  it('limparProgresso apaga também as vistas', () => {
+    const p = marcarComoVistas(darPecas(comMascote(), 'horas', 2).progresso)
+    expect(perfilAtivo(limparProgresso(p)).mascotes.sapo.vistas).toEqual({
+      projeto: 0,
+      pecas: { matematica: 0, portugues: 0, memoria: 0, horas: 0, detetive: 0 },
+    })
+  })
+})
+
 describe('somarPremios', () => {
   it('junta as peças de várias entregas do mesmo jogo', () => {
     const r1 = { pecasGanhas: 1, pecasExtra: 0, projetosAcabados: 0 }
@@ -297,6 +397,16 @@ describe('limparProgresso', () => {
     expect(perfil.mascotes.panda.reserva.memoria).toBe(0)
     // o original fica igual
     expect(perfilAtivo(p).estrelas.horas.total).toBeGreaterThan(0)
+  })
+
+  it('resumo: peças de todas as mascotes (projetos e reserva) e projetos acabados', () => {
+    expect(resumoDoProgresso(comMascote())).toEqual({ pecas: 0, projetos: 0 })
+    let p = darPecas(quaseCompleto(comMascote('sapo'), 'horas'), 'horas', PECAS_POR_COR).progresso // 20 peças, 1 casa
+    p = darPecas(p, 'memoria', 2).progresso
+    p = guardarNaReserva(p, 'matematica', 3)
+    p = darPecas(escolherMascote(p, 'coruja'), 'portugues', 1).progresso
+    expect(resumoDoProgresso(p)).toEqual({ pecas: 20 + 2 + 3 + 1, projetos: 1 })
+    expect(resumoDoProgresso(limparProgresso(p))).toEqual({ pecas: 0, projetos: 0 })
   })
 
   it('não toca nos outros perfis', () => {
@@ -327,7 +437,7 @@ describe('repararProgresso', () => {
         principal: {
           nivel: '5-6',
           mascoteAtiva: 'coruja',
-          estrelas: { matematica: { total: 42, resto: 12 }, portugues: { total: -3, resto: 'x' }, xadrez: { total: 9 } },
+          estrelas: { matematica: { total: 200, resto: E + 12 }, portugues: { total: -3, resto: 'x' }, xadrez: { total: 9 } },
           mascotes: {
             coruja: { projetos: [{ pecas: { memoria: 9, horas: 2.5 }, completoEm: 7 }], reserva: { horas: 3 } },
             leao: { projetos: [] },
@@ -340,7 +450,7 @@ describe('repararProgresso', () => {
     const perfil = perfilAtivo(r)
     expect(perfil.nivel).toBeNull()
     expect(perfil.mascoteAtiva).toBe('coruja')
-    expect(perfil.estrelas.matematica).toEqual({ total: 42, resto: 2 })
+    expect(perfil.estrelas.matematica).toEqual({ total: 200, resto: 12 }) // o resto é sempre menor que 1 peça
     expect(perfil.estrelas.portugues).toEqual({ total: 0, resto: 0 })
     expect(perfil.estrelas.xadrez).toBeUndefined()
     expect(perfil.estrelas.detetive).toEqual({ total: 0, resto: 0 })
@@ -351,6 +461,25 @@ describe('repararProgresso', () => {
     expect(coruja.reserva.horas).toBe(3)
     expect(perfil.mascotes.leao).toBeUndefined()
     expect(perfil.mascotes.sapo.projetos).toHaveLength(1)
+  })
+
+  it('progresso antigo sem vistas: fica no projeto atual, sem nenhuma peça vista', () => {
+    const p = darPecas(darPecas(quaseCompleto(comMascote(), 'horas'), 'horas', PECAS_POR_COR).progresso, 'memoria', 2).progresso
+    const guardado = JSON.parse(JSON.stringify(p))
+    delete guardado.perfis.principal.mascotes.sapo.vistas
+    const r = repararProgresso(guardado)
+    expect(perfilAtivo(r).mascotes.sapo.vistas.projeto).toBe(1)
+    // não repete a festa da casa acabada, mas as 2 peças caem
+    expect(pecasNovas(r)).toMatchObject({ projetosNovos: 0, total: 2 })
+  })
+
+  it('vistas estragadas são corrigidas', () => {
+    const p = comMascote()
+    p.perfis.principal.mascotes.sapo.vistas = { projeto: 9, pecas: { matematica: 99, horas: -1 } }
+    const vistas = perfilAtivo(repararProgresso(p)).mascotes.sapo.vistas
+    expect(vistas.projeto).toBe(0) // só há 1 projeto
+    expect(vistas.pecas.matematica).toBe(PECAS_POR_COR)
+    expect(vistas.pecas.horas).toBe(0)
   })
 
   it('mantém vários perfis', () => {

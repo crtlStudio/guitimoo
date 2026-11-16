@@ -1,0 +1,95 @@
+/*
+ * A fila de pessoas, em baixo na praça (níveis fácil e médio).
+ * Medidas em % e cqw da imagem (1cqw = 1% da largura).
+ */
+
+/* ---------- Balão da mascote (o aspeto está no BalaoMascote) ---------- */
+.mensagem {
+  position: absolute;
+  right: 4%;
+  top: 20%;
+}
+
+/* ---------- As pessoas ---------- */
+.pessoas {
+  --tam: 21cqw;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 5%;
+  display: flex;
+  justify-content: center;
+  gap: 4cqw;
+}
+
+/* Com 4 pessoas (nível médio), os cartões são um pouco mais pequenos */
+.quatro {
+  --tam: 18cqw;
+  gap: 2.4cqw;
+}
+
+/* Cada pessoa é um cartão grande, para dedos pequenos */
+.pessoa {
+  position: relative;
+  width: var(--tam);
+  min-width: 64px;
+  aspect-ratio: 1;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  background: rgba(255, 253, 246, 0.95);
+  border: max(3px, 0.45cqw) solid #f5c96a;
+  border-radius: 3cqw;
+  overflow: visible;
+  box-shadow:
+    0 0.6cqw 0 #c9912f,
+    0 1cqw 1.6cqw rgba(0, 0, 0, 0.25);
+  transition:
+    opacity 0.3s,
+    filter 0.3s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* A imagem da pessoa (ou o emoji, se ainda não houver imagem) */
+.retrato {
+  width: 96%;
+  height: 96%;
+  object-fit: contain;
+  display: grid;
+  place-items: center;
+  font-size: calc(var(--tam) * 0.65); /* se for emoji */
+  line-height: 1;
+}
+
+/* A certa: verde, como nos outros jogos */
+.certa {
+  background: #d9f7c9;
+  border-color: #3fa34d;
+  box-shadow:
+    0 0.6cqw 0 #2f7d32,
+    0 0 0 0.8cqw rgba(126, 217, 87, 0.45);
+}
+
+/* Depois de acertar, as outras ficam para trás */
+.apagada {
+  opacity: 0.45;
+  filter: grayscale(0.6);
+}
+
+/* A pista na "mão" da pessoa certa, no canto do cartão */
+.pistaNaMao {
+  position: absolute;
+  right: -1.6cqw;
+  bottom: -1.2cqw;
+  width: calc(var(--tam) * 0.42);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  font-size: calc(var(--tam) * 0.26);
+  line-height: 1;
+  background: #fffdf6;
+  border: max(2px, 0.35cqw) solid #3fa34d;
+  border-radius: 50%;
+  box-shadow: 0 0.4cqw 0.8cqw rgba(0, 0, 0, 0.25);
+}

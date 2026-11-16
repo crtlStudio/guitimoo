@@ -71,20 +71,28 @@
   color: #8a6a3a;
 }
 
-/* ---------- Botão "Já está!": a seguir ao cartão da conta ---------- */
+/* ---------- Botão ✓ ("já está!"): a seguir ao cartão da conta ---------- */
+/* Redondo e verde, só com o visto (as crianças pequenas não leem) */
 .jaEsta {
   flex: none;
-  min-height: 44px;
-  padding: 0.3em 1em;
+  width: 7cqw;
+  min-width: 48px;
+  aspect-ratio: 1;
+  padding: 0;
+  display: grid;
+  place-items: center;
   cursor: pointer;
   font-family: 'Fredoka', system-ui, sans-serif;
   font-weight: 600;
-  font-size: max(1.1rem, 3cqw);
+  font-size: max(1.5rem, 4cqw);
+  line-height: 1;
   color: #fff;
-  background: #4caf50;
-  border: 0;
-  border-radius: 999px;
-  box-shadow: 0 0.18em 0 #2e7d32;
+  background: linear-gradient(to bottom, #7ed957, #4caf50);
+  border: max(3px, 0.35cqw) solid #fff;
+  border-radius: 50%;
+  box-shadow:
+    0 0.45cqw 0 #2e7d32,
+    0 0.8cqw 1.4cqw rgba(0, 0, 0, 0.25);
   -webkit-tap-highlight-color: transparent;
 }
 

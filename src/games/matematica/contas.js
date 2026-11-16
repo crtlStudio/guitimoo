@@ -150,7 +150,7 @@ export function partesDaConta(conta, mostrarResposta = false) {
   return [n(conta.a, 'azul'), sinal(operacao), n(conta.b, 'verde'), sinal('='), resposta]
 }
 
-/** 1.ª validação ("Já está!"): o prato esquerdo tem o número certo de cubinhos? */
+/** 1.ª validação (o botão ✓, "já está!"): o prato esquerdo tem o número certo de cubinhos? */
 export function pratoCerto(conta, naEsquerda) {
   return naEsquerda === conta.alvoEsquerda
 }

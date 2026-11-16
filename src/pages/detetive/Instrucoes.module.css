@@ -1,0 +1,226 @@
+/*
+ * Cartão com o objetivo do jogo, ao centro (como nos outros jogos).
+ * Medidas em cqw (1% da largura da imagem; a altura da imagem é 56.25cqw).
+ */
+.cartao {
+  position: absolute;
+  left: 50%;
+  width: 52cqw;
+  top: 55%; /* centrado um pouco abaixo do meio: o contador de estrelas está em cima */
+  translate: -50% -50%; /* centrado (translate não choca com o motion) */
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8cqw;
+  padding: 1.4cqw 2.4cqw 1.8cqw;
+  text-align: center;
+  font-family: 'Fredoka', system-ui, sans-serif;
+  font-weight: 600;
+  color: #5a3912;
+  background: rgba(255, 253, 246, 0.95);
+  border: max(2px, 0.4cqw) solid #f5c96a;
+  border-radius: 3cqw;
+  box-shadow: 0 0.8cqw 2cqw rgba(0, 0, 0, 0.22);
+}
+
+.titulo {
+  margin: 0;
+  font-size: max(1.15rem, 4cqw);
+  line-height: 1.1;
+  color: #f07c1b; /* laranja: a cor do Detetive */
+}
+
+.frase {
+  margin: 0;
+  font-size: max(0.85rem, 2.2cqw);
+  line-height: 1.25;
+}
+
+/* ---------- Demonstração: lupa à esquerda, pessoas à direita ---------- */
+.demo {
+  display: flex;
+  align-items: center;
+  gap: 3cqw;
+  padding-bottom: 2.5cqw; /* espaço para o dedo, por baixo das pessoas */
+}
+
+.lupa {
+  --tam: 10cqw;
+}
+
+.pessoas {
+  position: relative;
+  display: flex;
+  gap: 1cqw;
+}
+
+.pessoa {
+  width: 8.5cqw;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  font-size: max(1.4rem, 4.6cqw);
+  line-height: 1;
+  border: max(2px, 0.3cqw) solid #f5c96a;
+  border-radius: 1.6cqw;
+  background: #fffdf6;
+}
+
+/* O dedo, por baixo da pessoa certa (o left vem do Instrucoes.jsx) */
+.dedo {
+  position: absolute;
+  top: 5cqw;
+  margin-left: -1.8cqw; /* centra o dedo */
+  font-size: max(1.4rem, 4cqw);
+  line-height: 1;
+  pointer-events: none;
+  filter: drop-shadow(0 0.3cqw 0.3cqw rgba(0, 0, 0, 0.3));
+}
+
+/* ---------- Botão ▶ ---------- */
+.comecar {
+  width: 8cqw;
+  min-width: 52px;
+  aspect-ratio: 1;
+  padding: 0 0 0 0.5cqw; /* o ▶ parece mais centrado assim */
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  font-size: max(1.4rem, 4cqw);
+  line-height: 1;
+  color: #fff;
+  background: linear-gradient(to bottom, #7ed957, #4caf50);
+  border: max(3px, 0.4cqw) solid white;
+  border-radius: 50%;
+  box-shadow:
+    0 0.5cqw 0 #2e7d32,
+    0 0.8cqw 1.4cqw rgba(0, 0, 0, 0.25);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ---------- Demonstração do nível médio: lupas em cima, pessoas em baixo ---------- */
+/* As medidas têm de ser iguais às do Instrucoes.jsx (LUPA, PESSOA, ...) */
+.demoPistas {
+  position: relative;
+  width: 32cqw;
+  height: calc(7.5cqw + 2.5cqw + 7cqw + 2.5cqw); /* lupas + espaço + pessoas + dedo */
+}
+
+.lupas {
+  display: flex;
+  justify-content: center;
+  gap: 2.5cqw;
+}
+
+.lupaPequena {
+  --tam: 7.5cqw;
+}
+
+/* O 2.º "?" e a pista, um em cima do outro (um aparece, o outro desaparece) */
+.troca {
+  display: grid;
+}
+
+.troca > * {
+  grid-area: 1 / 1;
+}
+
+.interrogacao {
+  font-family: 'Fredoka', system-ui, sans-serif;
+  font-weight: 600;
+  color: #c9912f;
+}
+
+.pessoasPequenas {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(7.5cqw + 2.5cqw);
+  display: flex;
+  justify-content: center;
+  gap: 1cqw;
+}
+
+.pessoaPequena {
+  width: 7cqw;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  font-size: max(1.2rem, 3.8cqw);
+  line-height: 1;
+  border: max(2px, 0.3cqw) solid #f5c96a;
+  border-radius: 1.4cqw;
+  background: #fffdf6;
+}
+
+/* O dedo: o motion move-o (x, y) a partir do canto de cima à esquerda */
+.dedoPistas {
+  position: absolute;
+  left: 0;
+  top: 0;
+  margin-left: -1.6cqw; /* a ponta do dedo fica no ponto indicado */
+  font-size: max(1.3rem, 3.6cqw);
+  line-height: 1;
+  pointer-events: none;
+  filter: drop-shadow(0 0.3cqw 0.3cqw rgba(0, 0, 0, 0.3));
+}
+
+/* ---------- Demonstração do nível difícil: locais em cima, pessoa a ser arrastada ---------- */
+/* As medidas têm de ser iguais às do Instrucoes.jsx (LOCAL, ALTURA, ...) */
+.demoArrastar {
+  position: relative;
+  width: 32cqw;
+  height: 18cqw;
+  margin-bottom: 1cqw;
+}
+
+.localPequeno {
+  width: 8.5cqw;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  font-size: max(1.3rem, 4.4cqw);
+  line-height: 1;
+  border: max(2px, 0.3cqw) dashed #c9912f;
+  border-radius: 1.4cqw;
+  background: #fffdf6;
+}
+
+/* A pessoa e o dedo: o motion move-os (x, y) a partir do canto de cima à esquerda */
+.pessoaArrastada,
+.dedoArrastar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.pessoaArrastada {
+  width: 7cqw;
+  aspect-ratio: 1;
+  margin: -3.5cqw 0 0 -3.5cqw; /* centrada no ponto indicado */
+  display: grid;
+  place-items: center;
+  font-size: max(1.2rem, 3.8cqw);
+  background: #fffdf6;
+  border: max(2px, 0.3cqw) solid #f5c96a;
+  border-radius: 1.4cqw;
+  box-shadow: 0 0.6cqw 1cqw rgba(0, 0, 0, 0.25);
+}
+
+.dedoArrastar {
+  margin: 0.4cqw 0 0 -1.2cqw; /* um pouco abaixo do centro da pessoa */
+  font-size: max(1.3rem, 3.6cqw);
+  filter: drop-shadow(0 0.3cqw 0.3cqw rgba(0, 0, 0, 0.3));
+}
+
+/* A imagem de cada pessoa nas demonstrações (ou o emoji, se não houver imagem) */
+.retrato {
+  width: 94%;
+  height: 94%;
+  object-fit: contain;
+  display: grid;
+  place-items: center;
+}

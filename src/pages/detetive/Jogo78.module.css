@@ -1,0 +1,166 @@
+/*
+ * Nível difícil do Detetive. Medidas em % e cqw da imagem (1cqw = 1% da largura).
+ * Os 3 locais em cima (abaixo do contador de estrelas); as 3 pessoas em baixo.
+ */
+
+/* ---------- Locais ---------- */
+.locais {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 18%; /* abaixo do contador de estrelas */
+  display: flex;
+  justify-content: center;
+  gap: 6cqw;
+}
+
+.local {
+  position: relative;
+  width: 20cqw;
+  min-width: 72px;
+  aspect-ratio: 1;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  background: rgba(255, 253, 246, 0.95);
+  border: max(3px, 0.45cqw) dashed #c9912f; /* tracejado: "à espera de alguém" */
+  border-radius: 3cqw;
+  box-shadow: 0 1cqw 1.6cqw rgba(0, 0, 0, 0.25);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* A imagem do local (ou o emoji, se ainda não houver imagem) */
+.localImagem {
+  width: 90%;
+  height: 90%;
+  object-fit: contain;
+  display: grid;
+  place-items: center;
+  font-size: max(2.4rem, 11cqw); /* se for emoji */
+  line-height: 1;
+}
+
+/* Com uma pessoa tocada, os locais vazios pulsam: "põe-na aqui" */
+.aEspera {
+  animation: chamar 1.1s ease-in-out infinite;
+}
+
+@keyframes chamar {
+  50% {
+    box-shadow:
+      0 0 0 0.9cqw rgba(240, 124, 27, 0.45),
+      0 1cqw 1.6cqw rgba(0, 0, 0, 0.25);
+  }
+}
+
+/* Local com a pessoa certa: verde */
+.localCerto {
+  cursor: default;
+  background: #d9f7c9;
+  border-style: solid;
+  border-color: #3fa34d;
+}
+
+/* A pessoa dentro do local, no canto */
+.pessoaNoLocal {
+  position: absolute;
+  right: -3cqw;
+  bottom: -2.5cqw;
+  width: 11cqw;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  font-size: max(1.6rem, 6cqw);
+  line-height: 1;
+  background: #fffdf6;
+  border: max(2px, 0.35cqw) solid #3fa34d;
+  border-radius: 2.4cqw;
+  box-shadow: 0 0.4cqw 0.8cqw rgba(0, 0, 0, 0.25);
+}
+
+/* ---------- Balão da mascote (o aspeto está no BalaoMascote) ---------- */
+.mensagem {
+  position: absolute;
+  right: 3%;
+  top: 48%;
+}
+
+/* ---------- Pessoas ---------- */
+.pessoas {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 4%;
+  display: flex;
+  justify-content: center;
+  gap: 6cqw;
+}
+
+.pessoa,
+.vazio {
+  width: 17cqw;
+  min-width: 60px;
+  aspect-ratio: 1;
+}
+
+.pessoa {
+  padding: 0;
+  display: grid;
+  place-items: center;
+  cursor: grab;
+  touch-action: none; /* o dedo arrasta a pessoa, não a página */
+  background: rgba(255, 253, 246, 0.95);
+  border: max(3px, 0.45cqw) solid #f5c96a;
+  border-radius: 3cqw;
+  box-shadow:
+    0 0.6cqw 0 #c9912f,
+    0 1cqw 1.6cqw rgba(0, 0, 0, 0.25);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.pessoa:active {
+  cursor: grabbing;
+}
+
+/* A pessoa tocada: contorno laranja (agora toca-se no local) */
+.selecionada {
+  border-color: #f07c1b;
+  box-shadow:
+    0 0.6cqw 0 #b85a10,
+    0 0 0 0.8cqw rgba(240, 124, 27, 0.4);
+}
+
+/* A imagem da pessoa (ou o emoji, se ainda não houver imagem) */
+.retrato {
+  width: 96%;
+  height: 96%;
+  object-fit: contain;
+  display: grid;
+  place-items: center;
+  font-size: max(2rem, 8.5cqw); /* se for emoji */
+  line-height: 1;
+  pointer-events: none; /* o dedo agarra o cartão, não a imagem */
+}
+
+.retratoNoLocal {
+  width: 92%;
+  height: 92%;
+  object-fit: contain;
+  display: grid;
+  place-items: center;
+  font-size: max(1.6rem, 6cqw); /* se for emoji */
+  line-height: 1;
+}
+
+/* O lugar de onde saiu uma pessoa (para as outras não mudarem de sítio) */
+.vazio {
+  border: max(2px, 0.3cqw) dashed rgba(255, 255, 255, 0.7);
+  border-radius: 3cqw;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aEspera {
+    animation: none;
+  }
+}

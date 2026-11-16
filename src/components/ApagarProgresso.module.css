@@ -1,0 +1,121 @@
+/* Dentro da janela das Definições (que já tem o fundo e a moldura) */
+.caixa {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(6px, 2vh, 14px);
+  text-align: center;
+}
+
+.titulo {
+  margin: 0;
+  font-size: clamp(1.2rem, 6vh, 1.8rem);
+  line-height: 1.1;
+  color: #5a3912;
+}
+
+.frase {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-size: clamp(0.95rem, 4.5vh, 1.2rem);
+}
+
+/* O número por extenso, em destaque */
+.numero {
+  font-size: 1.3em;
+  color: #c98a00;
+}
+
+.campo {
+  width: 4.5em;
+  min-height: 48px;
+  box-sizing: border-box;
+  font: inherit;
+  font-size: clamp(1.4rem, 7vh, 2rem);
+  text-align: center;
+  color: #5a3912;
+  background: #fff;
+  border: 3px solid #f5c96a;
+  border-radius: 14px;
+}
+
+.campo:focus-visible {
+  outline: 3px solid #4caf50;
+  outline-offset: 2px;
+}
+
+.campoErrado {
+  border-color: #e5483f;
+}
+
+.lista {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: clamp(1rem, 5vh, 1.3rem);
+  line-height: 1.5;
+}
+
+.nota {
+  margin: 0;
+  font-size: clamp(0.8rem, 3.8vh, 1rem);
+  opacity: 0.8;
+}
+
+.botoes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.cancelar,
+.continuar,
+.apagar {
+  min-height: 44px;
+  padding: 0.35em 1.4em;
+  font: inherit;
+  font-size: clamp(1rem, 5vh, 1.3rem);
+  cursor: pointer;
+  border-radius: 999px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Cancelar: o botão "seguro", verde e grande */
+.cancelar {
+  color: #fff;
+  background: #4caf50;
+  border: 0;
+  box-shadow: 0 0.18em 0 #2f7d32;
+}
+
+.continuar {
+  color: #5a3912;
+  background: #fff;
+  border: 3px solid #f5c96a;
+}
+
+.continuar:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+/* Apagar: vermelho, mais pequeno que o Cancelar */
+.apagar {
+  font-size: clamp(0.9rem, 4.2vh, 1.1rem);
+  color: #fff;
+  background: #e5483f;
+  border: 0;
+  box-shadow: 0 0.18em 0 #a8302a;
+}
+
+.cancelar:focus-visible,
+.continuar:focus-visible,
+.apagar:focus-visible {
+  outline: 3px solid #5a3912;
+  outline-offset: 3px;
+}

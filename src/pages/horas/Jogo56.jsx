@@ -124,13 +124,20 @@ function Jogo56({ aoAcertar, aoErrar }) {
           {quem} {atividade.texto} {aHora(alvo)}!
         </p>
 
-        <p className={styles.ajuda} style={{ margin: 0 }}>
-          Ponteiro pequeno no
-          <span className={styles.numeroAlvo}>{numeroAlvo}</span>
+        {/* A ajuda, sem texto: um ponteiro pequenino (igual ao do relógio) a apontar para o número */}
+        <p className={styles.ajuda} style={{ margin: 0 }} aria-label={`Ponteiro pequeno no ${numeroAlvo}`}>
+          <svg className={styles.miniPonteiro} viewBox="0 0 60 24" aria-hidden="true">
+            <line x1="8" y1="12" x2="46" y2="12" className={styles.miniHoras} />
+            <circle cx="47" cy="12" r="8" className={styles.miniPega} />
+            <circle cx="8" cy="12" r="6" className={styles.miniCentro} />
+          </svg>
+          <span className={styles.numeroAlvo} aria-hidden="true">
+            {numeroAlvo}
+          </span>
         </p>
 
-        <button type="button" className={styles.pronto} onClick={verificar} disabled={resolvida}>
-          Já está!
+        <button type="button" className={styles.pronto} onClick={verificar} disabled={resolvida} aria-label="Já está!">
+          <span aria-hidden="true">✓</span>
         </button>
       </div>
 

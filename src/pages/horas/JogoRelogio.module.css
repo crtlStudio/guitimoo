@@ -50,14 +50,55 @@
 
 /* Ajuda (5–6): "ponteiro pequeno no" e, por baixo, o número em laranja */
 .ajuda {
+  align-self: center; /* do tamanho do conteúdo, não da coluna toda */
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.5cqw;
-  font-size: max(0.8rem, 1.9cqw);
-  color: #5a3912;
-  text-align: center;
+  gap: 0.6cqw;
+  padding: 0.6cqw 1.2cqw;
+  background: rgba(255, 253, 246, 0.92);
+  border: max(2px, 0.3cqw) solid #f5c96a;
+  border-radius: 999px;
+  box-shadow: 0 0.4cqw 1cqw rgba(0, 0, 0, 0.18);
+}
+
+/* O ponteiro pequenino da ajuda: vai e vem, a apontar para o número */
+.miniPonteiro {
+  width: 9cqw;
+  min-width: 52px;
+  height: auto;
+  overflow: visible;
+  animation: apontar 1s ease-in-out infinite;
+}
+
+.miniHoras {
+  stroke: #ff8a3d; /* a cor do ponteiro das horas do relógio */
+  stroke-width: 8;
+  stroke-linecap: round;
+}
+
+.miniPega {
+  fill: #fff;
+  stroke: #ff8a3d;
+  stroke-width: 3.5;
+}
+
+.miniCentro {
+  fill: #5a3912;
+  stroke: #f5c96a;
+  stroke-width: 2;
+}
+
+@keyframes apontar {
+  50% {
+    transform: translateX(0.8cqw);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .miniPonteiro {
+    animation: none;
+  }
 }
 
 .numeroAlvo {
@@ -75,18 +116,27 @@
   box-shadow: 0 0.4cqw 1cqw rgba(0, 0, 0, 0.2);
 }
 
-/* Botão verde "Já está!" */
+/* Botão ✓ ("já está!"): redondo e verde, só com o visto (como na Matemática) */
 .pronto {
-  min-height: 44px;
-  padding: 0.3em 0.8em;
+  width: 7cqw;
+  min-width: 48px;
+  aspect-ratio: 1;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  align-self: center;
   cursor: pointer;
-  font: inherit;
-  font-size: max(1.1rem, 3cqw);
+  font-family: 'Fredoka', system-ui, sans-serif;
+  font-weight: 600;
+  font-size: max(1.5rem, 4cqw);
+  line-height: 1;
   color: #fff;
-  background: #4caf50;
-  border: 0;
-  border-radius: 999px;
-  box-shadow: 0 0.18em 0 #2e7d32;
+  background: linear-gradient(to bottom, #7ed957, #4caf50);
+  border: max(3px, 0.35cqw) solid #fff;
+  border-radius: 50%;
+  box-shadow:
+    0 0.45cqw 0 #2e7d32,
+    0 0.8cqw 1.4cqw rgba(0, 0, 0, 0.25);
   -webkit-tap-highlight-color: transparent;
 }
 

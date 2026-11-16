@@ -1,0 +1,86 @@
+/* O botão; a seta fica ao lado, sem empurrar nada */
+.sitio {
+  position: relative;
+  display: inline-flex;
+}
+
+/*
+ * O anel: um gradiente "em fatia de bolo" (conic-gradient) que fica verde
+ * até à fração das peças (--fracao, de 0 a 1) e branco no resto.
+ */
+.botao {
+  position: relative;
+  width: 9cqw;
+  min-width: 52px;
+  aspect-ratio: 1;
+  padding: 0.7cqw;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  border: 0;
+  border-radius: 50%;
+  background: conic-gradient(#3fa34d calc(var(--fracao) * 360deg), rgba(255, 255, 255, 0.7) 0);
+  box-shadow:
+    0 0 0 max(2px, 0.3cqw) white,
+    0 0.6cqw 1.2cqw rgba(0, 0, 0, 0.3);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* O miolo branco, com o ícone do projeto */
+.icone {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  font-size: max(1.4rem, 4.4cqw);
+  line-height: 1;
+  border-radius: 50%;
+  background: #fffdf6;
+}
+
+/* Bolinha vermelha: há novidades */
+.ponto {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 2.2cqw;
+  min-width: 12px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #e5483f;
+  border: max(2px, 0.3cqw) solid white;
+}
+
+/* A mão a apontar para o botão, aos saltinhos */
+.seta {
+  position: absolute;
+  top: 50%;
+  margin-top: -0.6em;
+  pointer-events: none;
+  font-size: max(1.4rem, 4cqw);
+  line-height: 1;
+  filter: drop-shadow(0 0.3cqw 0.3cqw rgba(0, 0, 0, 0.3));
+  animation: apontar 0.9s ease-in-out infinite;
+}
+
+.esquerda {
+  right: calc(100% + 0.6cqw);
+  --vai: 1cqw;
+}
+
+.direita {
+  left: calc(100% + 0.6cqw);
+  --vai: -1cqw;
+}
+
+@keyframes apontar {
+  50% {
+    transform: translateX(var(--vai));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .seta {
+    animation: none;
+  }
+}

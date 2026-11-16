@@ -208,3 +208,23 @@
   transform: translateY(3px);
   box-shadow: 0 1px 0 #2e7d32;
 }
+
+/* "Apagar o progresso": pequeno e discreto (é para os adultos) */
+.apagar {
+  min-height: 36px;
+  padding: 0.2em 0.8em;
+  font: inherit;
+  font-size: clamp(0.75rem, 3.4vh, 0.9rem);
+  color: rgba(90, 57, 18, 0.65);
+  background: none;
+  border: 0;
+  text-decoration: underline;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.apagar:focus-visible {
+  outline: 3px solid #4caf50;
+  outline-offset: 2px;
+  border-radius: 8px;
+}

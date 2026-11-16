@@ -21,6 +21,10 @@
 //             { pecas: { matematica: 2, ... }, completoEm: null },
 //           ],
 //           reserva: { matematica: 1, ... },  // peças guardadas para o próximo projeto
+//           vistas: {                 // o que a criança já viu no ecrã da construção
+//             projeto: 1,             // o n.º do projeto (0 = o primeiro)
+//             pecas: { matematica: 2, ... },  // as peças desse projeto que já viu
+//           },
 //         },
 //         ...
 //       },
@@ -73,7 +77,7 @@ function novoProjeto() {
 }
 
 function novaMascote() {
-  return { projetos: [novoProjeto()], reserva: zeroPorJogo() }
+  return { projetos: [novoProjeto()], reserva: zeroPorJogo(), vistas: { projeto: 0, pecas: zeroPorJogo() } }
 }
 
 function novoPerfil(nivel = null, mascoteAtiva = null) {
@@ -143,10 +147,64 @@ export function pecasEmFalta(progresso, mascoteId) {
   return { porCor, total }
 }
 
+/**
+ * O jogo cuja cor tem mais peças em falta (para a mascote apontar:
+ * "joga este!"). Num empate, o primeiro da lista. Se não faltar nada, null.
+ */
+export function corQueMaisFalta(progresso, mascoteId) {
+  const { porCor } = pecasEmFalta(progresso, mascoteId)
+  let melhor = null
+  for (const [id, faltam] of Object.entries(porCor)) {
+    if (faltam > 0 && faltam > (porCor[melhor] ?? 0)) melhor = id
+  }
+  return melhor
+}
+
 /** Quantos projetos a mascote já acabou. */
 export function projetosAcabados(progresso, mascoteId) {
   const mascote = perfilAtivo(progresso).mascotes[mascoteId]
   return mascote ? mascote.projetos.filter((p) => p.completoEm).length : 0
+}
+
+// ---------------- Peças novas (para a animação da construção) ----------------
+
+/**
+ * O que a mascote ganhou desde a última vez que a criança viu a construção:
+ *   { projetosNovos: 1, porCor: { matematica: 2, portugues: 0, ... }, total: 2 }
+ * - projetosNovos: projetos acabados que a criança ainda não viu (festa!)
+ * - porCor: as peças novas do projeto atual (só dos jogos ativos). Se o
+ *   projeto mudou, as peças que já lá estão são todas novas.
+ */
+export function pecasNovas(progresso, mascoteId = perfilAtivo(progresso).mascoteAtiva) {
+  const mascote = perfilAtivo(progresso).mascotes[mascoteId]
+  const vazio = Object.fromEntries(jogosAtivos().map((j) => [j.id, 0]))
+  if (!mascote) return { projetosNovos: 0, porCor: vazio, total: 0 }
+
+  const atual = mascote.projetos.length - 1
+  const projetosNovos = Math.max(0, atual - mascote.vistas.projeto)
+  const projeto = mascote.projetos[atual]
+  const porCor = Object.fromEntries(
+    jogosAtivos().map((j) => {
+      const jaVistas = projetosNovos > 0 ? 0 : mascote.vistas.pecas[j.id]
+      return [j.id, Math.max(0, projeto.pecas[j.id] - jaVistas)]
+    }),
+  )
+  const total = Object.values(porCor).reduce((soma, n) => soma + n, 0)
+  return { projetosNovos, porCor, total }
+}
+
+/**
+ * A criança viu a construção: tudo o que lá está deixa de ser novo
+ * (para a animação não se repetir). Se já estava tudo visto, devolve o
+ * mesmo progresso (assim não se grava nada sem precisar).
+ */
+export function marcarComoVistas(progresso, mascoteId = perfilAtivo(progresso).mascoteAtiva) {
+  const novas = pecasNovas(progresso, mascoteId)
+  if (!existeMascote(mascoteId) || (novas.projetosNovos === 0 && novas.total === 0)) return progresso
+  return mudarPerfil(progresso, (perfil) => {
+    const mascote = perfil.mascotes[mascoteId]
+    mascote.vistas = { projeto: mascote.projetos.length - 1, pecas: { ...mascote.projetos.at(-1).pecas } }
+  })
 }
 
 // ---------------- Escolhas ----------------
@@ -320,6 +378,26 @@ export function somarPremios(antes, jogoId, resultado) {
 // ---------------- Limpar ----------------
 
 /**
+ * O que o perfil ativo já juntou, para o adulto ver antes de apagar:
+ *   { pecas: 37, projetos: 1 }
+ * - pecas: todas as peças, de todas as mascotes (nos projetos e na reserva)
+ * - projetos: os projetos acabados, de todas as mascotes
+ */
+export function resumoDoProgresso(progresso) {
+  let pecas = 0
+  let projetos = 0
+  const soma = (contas) => Object.values(contas).reduce((s, n) => s + n, 0)
+  for (const mascote of Object.values(perfilAtivo(progresso).mascotes)) {
+    for (const projeto of mascote.projetos) {
+      pecas += soma(projeto.pecas)
+      if (projeto.completoEm) projetos += 1
+    }
+    pecas += soma(mascote.reserva)
+  }
+  return { pecas, projetos }
+}
+
+/**
  * Apaga as estrelas, peças e projetos do perfil ativo (para o botão dos
  * adultos). Mantém o nível e a mascote escolhida. Os outros perfis
  * (quando existirem) não são tocados.
@@ -348,7 +426,19 @@ function repararMascote(m) {
       }))
     : []
   if (projetos.length === 0) projetos.push(novoProjeto())
-  return { projetos, reserva: repararPecas(m.reserva) }
+  return { projetos, reserva: repararPecas(m.reserva), vistas: repararVistas(m.vistas, projetos) }
+}
+
+/**
+ * Sem `vistas` (progresso guardado antes de existirem): conta como se a
+ * criança estivesse no projeto atual sem ter visto nenhuma peça. Assim, na
+ * primeira visita, as peças caem todas, mas não se repete a festa dos
+ * projetos já acabados (essa já se fez no fim do jogo).
+ */
+function repararVistas(v, projetos) {
+  const atual = projetos.length - 1
+  if (!ehObjeto(v)) return { projeto: atual, pecas: zeroPorJogo() }
+  return { projeto: inteiro(v.projeto, atual), pecas: repararPecas(v.pecas, PECAS_POR_COR) }
 }
 
 function repararPerfil(p) {

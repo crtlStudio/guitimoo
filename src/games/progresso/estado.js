@@ -7,8 +7,9 @@
 // - mudarProgresso aplica uma função pura do progresso.js
 //   (ex.: escolherMascote) e guarda o resultado no telemóvel
 // ============================================================
+import { apagarTotal } from '../estrelas'
 import { guardarProgresso, lerProgresso } from './guardar'
-import { adicionarEstrelas, guardarNaReserva } from './progresso'
+import { adicionarEstrelas, guardarNaReserva, limparProgresso, marcarComoVistas } from './progresso'
 
 let progresso = null // null = ainda a ler do telemóvel
 let leitura = null // a "promessa" da leitura (para só ler uma vez)
@@ -68,6 +69,24 @@ export function ganharEstrelas(jogoId, quantas) {
 /** A criança disse "sim, guarda": as peças extra vão para a reserva da mascote. */
 export function guardarPecasNaReserva(jogoId, quantas) {
   mudarProgresso((p) => guardarNaReserva(p, jogoId, quantas))
+}
+
+/**
+ * A criança viu a construção da mascote (por omissão, a ativa): as peças
+ * que lá estão deixam de ser novas. Chama-se depois da animação acabar.
+ */
+export function marcarPecasVistas(mascoteId) {
+  mudarProgresso((p) => marcarComoVistas(p, mascoteId))
+}
+
+/**
+ * Botão dos adultos: apaga as estrelas, peças e projetos do perfil ativo
+ * e o total de estrelas do contador ⭐. O nível e a mascote ficam.
+ * (A memória das perguntas de cada jogo e os volumes não mudam.)
+ */
+export function apagarProgresso() {
+  mudarProgresso(limparProgresso)
+  apagarTotal()
 }
 
 /** Para os componentes React serem avisados quando muda. Devolve a função para sair. */

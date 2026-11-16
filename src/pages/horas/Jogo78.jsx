@@ -178,8 +178,14 @@ function Jogo78({ aoAcertar, aoErrar }) {
               </span>
               {quem} {atividade.texto} {aHora(alvo)}!
             </p>
-            <button type="button" className={styles.pronto} onClick={verificarRelogio} disabled={resolvida}>
-              Já está!
+            <button
+              type="button"
+              className={styles.pronto}
+              onClick={verificarRelogio}
+              disabled={resolvida}
+              aria-label="Já está!"
+            >
+              <span aria-hidden="true">✓</span>
             </button>
           </>
         ) : (

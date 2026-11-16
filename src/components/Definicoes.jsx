@@ -1,7 +1,9 @@
 import { AnimatePresence, motion } from 'motion/react'
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { tocarEfeito } from '../audio/efeitos'
 import { mudarVolume, useVolume, VOLUME_MAXIMO, VOLUME_MINIMO } from '../audio/volume'
+import ApagarProgresso from './ApagarProgresso'
 import styles from './Definicoes.module.css'
 
 // Roda dentada (ícone de definições)
@@ -59,15 +61,29 @@ function SeletorVolume({ tipo, nome, icone }) {
  * ao leão 🦁 (alto):
  *   Música  → a música de fundo e a de cada página
  *   Efeitos → os sons dos jogos (certo, erro, estrela, festa, toque, Memória...)
+ * Em baixo, pequenino, "Apagar o progresso" (só para adultos: ver ApagarProgresso).
  */
 function Definicoes() {
+  const navegar = useNavigate()
   const [aberta, setAberta] = useState(false)
+  // null = os volumes; um número = a pedir esse número para apagar o progresso
+  const [numeroApagar, setNumeroApagar] = useState(null)
+
+  function fechar() {
+    setAberta(false)
+    setNumeroApagar(null)
+  }
+
+  function pedirParaApagar() {
+    // Um número de 20 a 99, diferente de cada vez
+    setNumeroApagar(20 + Math.floor(Math.random() * 80))
+  }
 
   // Com a janela aberta, a tecla Esc (ou o botão "voltar" do teclado) fecha-a
   useEffect(() => {
     if (!aberta) return
     const aoCarregar = (evento) => {
-      if (evento.key === 'Escape') setAberta(false)
+      if (evento.key === 'Escape') fechar()
     }
     document.addEventListener('keydown', aoCarregar)
     return () => document.removeEventListener('keydown', aoCarregar)
@@ -95,7 +111,7 @@ function Definicoes() {
             className={styles.fundo}
             // Tocar fora da janela também a fecha
             onClick={(evento) => {
-              if (evento.target === evento.currentTarget) setAberta(false)
+              if (evento.target === evento.currentTarget) fechar()
             }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -116,15 +132,33 @@ function Definicoes() {
                 Definições
               </h2>
 
-              {/* Um seletor para cada tipo de som */}
-              <div className={styles.volumes}>
-                <SeletorVolume tipo="musica" nome="Música" icone="🎵" />
-                <SeletorVolume tipo="efeitos" nome="Efeitos" icone="🔔" />
-              </div>
+              {numeroApagar === null ? (
+                <>
+                  {/* Um seletor para cada tipo de som */}
+                  <div className={styles.volumes}>
+                    <SeletorVolume tipo="musica" nome="Música" icone="🎵" />
+                    <SeletorVolume tipo="efeitos" nome="Efeitos" icone="🔔" />
+                  </div>
 
-              <button type="button" className={styles.pronto} onClick={() => setAberta(false)}>
-                Pronto
-              </button>
+                  <button type="button" className={styles.pronto} onClick={fechar}>
+                    Pronto
+                  </button>
+
+                  {/* Discreto, de propósito: é para os adultos */}
+                  <button type="button" className={styles.apagar} onClick={pedirParaApagar}>
+                    🗑️ Apagar o progresso
+                  </button>
+                </>
+              ) : (
+                <ApagarProgresso
+                  numero={numeroApagar}
+                  aoCancelar={() => setNumeroApagar(null)}
+                  aoApagar={() => {
+                    fechar()
+                    navegar('/jogos')
+                  }}
+                />
+              )}
             </motion.div>
           </motion.div>
         )}

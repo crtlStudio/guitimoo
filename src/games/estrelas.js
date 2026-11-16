@@ -84,16 +84,19 @@ function avisarOuvintes() {
   ouvintes.forEach((avisar) => avisar())
 }
 
+let leitura = null // a "promessa" da leitura: vários pedidos ao mesmo tempo esperam pela mesma
+
 /** Lê o total guardado (só vai ao telemóvel da primeira vez). */
 export async function lerTotal() {
-  if (!lido) {
-    const { value } = await Preferences.get({ key: CHAVE_TOTAL })
+  leitura ??= Preferences.get({ key: CHAVE_TOTAL }).then(({ value }) => {
+    if (lido) return // entretanto o total foi apagado: o que estava guardado já não conta
     const numero = Number.parseInt(value ?? '0', 10)
     // Se entretanto já se somaram estrelas, junta-as ao que estava guardado
     total += Number.isInteger(numero) && numero > 0 ? numero : 0
     lido = true
     avisarOuvintes()
-  }
+  })
+  await leitura
   return total
 }
 
@@ -105,6 +108,14 @@ export function somarEstrelas(quantas) {
   if (lido) Preferences.set({ key: CHAVE_TOTAL, value: String(total) })
   else lerTotal().then(() => Preferences.set({ key: CHAVE_TOTAL, value: String(total) }))
   return total
+}
+
+/** Põe o total a 0 e guarda (botão "Apagar o progresso", só para adultos). */
+export function apagarTotal() {
+  total = 0
+  lido = true // o que estava guardado deixa de interessar
+  avisarOuvintes()
+  Preferences.set({ key: CHAVE_TOTAL, value: '0' }).catch(() => {})
 }
 
 /** O total atual (sem ir ao telemóvel). */
@@ -126,5 +137,6 @@ export function inscrever(avisar) {
 export function _recomecarParaTestes() {
   total = 0
   lido = false
+  leitura = null
   ouvintes.clear()
 }

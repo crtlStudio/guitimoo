@@ -4,7 +4,7 @@ import { usePerfil } from '../../components/useProgresso'
 import { MASCOTES } from '../../games/progresso/config'
 import { mudarProgresso } from '../../games/progresso/estado'
 import { escolherMascote } from '../../games/progresso/progresso'
-import imagemMascotes from '../../assets/mascotes.webp'
+import imagemMascotes from '../../assets/fundo_mascotes.webp'
 import styles from './Mascotes.module.css'
 
 // Onde fica cada mascote na imagem (da esquerda para a direita)

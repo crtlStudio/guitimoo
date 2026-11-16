@@ -5,6 +5,14 @@ import { escalaoDoNivel, perfilAtivo } from '../games/progresso/progresso'
 import { comMaiuscula } from '../games/progresso/textos'
 
 /**
+ * O progresso inteiro (para as funções do progresso.js), ou null enquanto
+ * ainda está a ler do telemóvel. Volta a desenhar-se quando muda.
+ */
+export function useProgresso() {
+  return useSyncExternalStore(inscrever, progressoAtual)
+}
+
+/**
  * O perfil de quem está a jogar ({ nivel, mascoteAtiva, estrelas, mascotes }),
  * ou null enquanto ainda está a ler do telemóvel. O componente volta a
  * desenhar-se sozinho sempre que o progresso muda.

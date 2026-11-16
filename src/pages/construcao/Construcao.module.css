@@ -1,0 +1,401 @@
+/*
+ * Ecrã da construção. Medidas em cqw (1% da largura da imagem 16:9 dentro
+ * da moldura; a altura da imagem é 56,25cqw).
+ *
+ *   mascote + balão │   projeto    │ torres (5 cores) │ ▶
+ *   reserva         │  prateleira  │ botões dos jogos │
+ */
+
+/* ---------- Mascote e balão ---------- */
+
+.mascote {
+  position: absolute;
+  left: 2cqw;
+  top: 9cqw;
+  width: 18cqw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1cqw;
+}
+
+/* O que salta quando cai uma peça (a imagem vai lá dentro) */
+.mascoteSalta {
+  display: block;
+}
+
+/* A caricatura da mascote (ou o emoji, se não houver imagem) */
+.mascoteImagem {
+  display: block;
+  height: 20cqw;
+  max-width: 15cqw;
+  object-fit: contain;
+  font-size: max(2.6rem, 13cqw); /* se for emoji */
+  line-height: 1;
+  filter: drop-shadow(0 0.6cqw 0.6cqw rgba(0, 0, 0, 0.25));
+}
+
+/* O título: a mascote pequenina e o projeto (🏠) */
+.titulo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25em;
+}
+
+.tituloMascote {
+  height: 1.15em;
+  width: auto;
+  font-size: 1em; /* se for emoji */
+  filter: drop-shadow(0 0.05em 0.05em rgba(0, 0, 0, 0.3));
+}
+
+/* Balão: [quadrado da cor] ➜ [ícone do jogo]. É um botão: leva ao jogo. */
+.balao {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.8cqw;
+  padding: 0.8cqw 1.4cqw;
+  font-size: max(1.2rem, 3.6cqw);
+  line-height: 1;
+  color: #5a3912;
+  cursor: pointer;
+  background: #fffdf6;
+  border: max(2px, 0.4cqw) solid var(--cor);
+  border-radius: 2.4cqw;
+  box-shadow: 0 0.5cqw 1cqw rgba(0, 0, 0, 0.25);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* O "bico" do balão, a apontar para a mascote */
+.balao::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -1.4cqw;
+  transform: translateX(-50%);
+  border: 1.4cqw solid transparent;
+  border-top-color: var(--cor);
+  border-bottom: 0;
+}
+
+.balaoCor {
+  display: inline-block;
+  width: 3.4cqw;
+  aspect-ratio: 1;
+  border-radius: 22%;
+  background: var(--cor);
+}
+
+/* ---------- Reserva ---------- */
+
+.reserva {
+  position: absolute;
+  left: 2cqw;
+  bottom: 2.5cqw;
+  width: 18cqw;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.4cqw;
+}
+
+.reservaPeca {
+  position: relative;
+  display: inline-block;
+}
+
+.numero {
+  position: absolute;
+  top: -1.2cqw;
+  right: -1.4cqw;
+  padding: 0.2cqw 0.7cqw;
+  font-family: 'Fredoka', system-ui, sans-serif;
+  font-weight: 600;
+  font-size: max(0.75rem, 1.8cqw);
+  color: #5a3912;
+  background: #f5c96a;
+  border-radius: 999px;
+  box-shadow: 0 0.3cqw 0.6cqw rgba(0, 0, 0, 0.25);
+}
+
+.reserva .pecaPequena {
+  width: 5cqw;
+  min-width: 28px;
+  font-size: max(0.9rem, 2.8cqw);
+}
+
+/* ---------- Projeto ---------- */
+
+.projeto {
+  position: absolute;
+  left: 20cqw;
+  top: 6.5cqw;
+  width: 31cqw;
+  height: 42cqw;
+  display: grid;
+  place-items: center;
+}
+
+/* As duas camadas ficam uma em cima da outra */
+.fantasma,
+.colorido {
+  grid-area: 1 / 1;
+  font-size: max(6rem, 27cqw);
+  line-height: 1;
+}
+
+/* Sem cor: cinzento clarinho, como um desenho por pintar */
+.fantasma {
+  filter: grayscale(1) brightness(1.35);
+  opacity: 0.45;
+}
+
+.colorido {
+  filter: drop-shadow(0 0.8cqw 0.8cqw rgba(0, 0, 0, 0.25));
+}
+
+/* ---------- Prateleira dos projetos acabados ---------- */
+
+.prateleira {
+  position: absolute;
+  left: 21.5cqw;
+  width: 28cqw;
+  bottom: 2.5cqw;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.6cqw;
+  padding: 0 1cqw 0.6cqw;
+  /* a tábua de madeira por baixo */
+  border-bottom: max(5px, 1cqw) solid #a8692a;
+  box-shadow: 0 0.6cqw 0.4cqw -0.3cqw rgba(0, 0, 0, 0.3);
+}
+
+.acabado {
+  padding: 0;
+  font-size: max(1.4rem, 4.6cqw);
+  line-height: 1;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ---------- Torres ---------- */
+
+.torres {
+  position: absolute;
+  left: 52cqw;
+  top: 4.5cqw;
+  bottom: 1cqw;
+  display: flex;
+  gap: 1.2cqw; /* 5 torres: até 88,8cqw, antes do ▶ */
+}
+
+.torre {
+  position: relative;
+  width: 6.4cqw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1cqw;
+}
+
+/* Espaço do ✓, para as torres não mudarem de altura */
+.certoLugar {
+  height: 5.6cqw;
+  display: grid;
+  place-items: center;
+}
+
+.certo {
+  display: grid;
+  place-items: center;
+  width: 5.6cqw;
+  aspect-ratio: 1;
+  font-family: 'Fredoka', system-ui, sans-serif;
+  font-weight: 600;
+  font-size: max(1.3rem, 3.8cqw);
+  color: white;
+  background: #3fa34d;
+  border: max(2px, 0.3cqw) solid white;
+  border-radius: 50%;
+  box-shadow: 0 0.3cqw 0.6cqw rgba(0, 0, 0, 0.3);
+}
+
+/* 5 lugares de baixo para cima (o 1.º lugar é o de baixo) */
+.lugares {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 1.2cqw; /* espaço entre as linhas de blocos */
+  padding: 0.6cqw;
+  border-radius: 1.4cqw;
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.vazio,
+.cheio {
+  display: block;
+  width: 5.2cqw;
+  aspect-ratio: 1;
+}
+
+/* Lugar por encher: contorno tracejado na cor do jogo */
+.vazio {
+  padding: 0;
+  cursor: pointer;
+  border-radius: 22%;
+  border: max(2px, 0.35cqw) dashed var(--cor);
+  background: color-mix(in srgb, var(--cor), transparent 82%);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* A torre para onde a mão aponta: os lugares vazios piscam */
+.lugaresApontados .vazio {
+  animation: piscar 1.2s ease-in-out infinite;
+}
+
+@keyframes piscar {
+  50% {
+    background: color-mix(in srgb, var(--cor), transparent 45%);
+    transform: scale(1.06);
+  }
+}
+
+.cheio {
+  cursor: pointer;
+}
+
+.lugares .pecaLugar {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  font-size: max(0.9rem, 3cqw);
+}
+
+/* Botão redondo do jogo, na cor do jogo */
+.jogo {
+  position: relative;
+  width: 6.4cqw;
+  min-width: 34px; /* no telemóvel, as 5 torres têm pouco espaço */
+  aspect-ratio: 1;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  font-size: max(1.2rem, 3.8cqw);
+  line-height: 1;
+  cursor: pointer;
+  border-radius: 50%;
+  background: linear-gradient(to bottom, color-mix(in srgb, var(--cor), white 22%), var(--cor));
+  border: max(2px, 0.35cqw) solid white;
+  box-shadow:
+    0 0.5cqw 0 color-mix(in srgb, var(--cor), black 30%),
+    0 0.8cqw 1.2cqw rgba(0, 0, 0, 0.25);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* O jogo apontado: um anel que pulsa à volta */
+.alvo::after {
+  content: '';
+  position: absolute;
+  inset: -1cqw;
+  border-radius: 50%;
+  border: max(3px, 0.5cqw) solid var(--cor);
+  animation: anel 1.2s ease-out infinite;
+  pointer-events: none;
+}
+
+@keyframes anel {
+  from {
+    transform: scale(0.9);
+    opacity: 1;
+  }
+  to {
+    transform: scale(1.45);
+    opacity: 0;
+  }
+}
+
+/* A mão 👆 por baixo do jogo apontado, aos saltinhos */
+.mao {
+  margin-top: -1.4cqw; /* encostada ao botão */
+  font-size: max(1.4rem, 4.2cqw);
+  line-height: 1;
+  pointer-events: none;
+  filter: drop-shadow(0 0.3cqw 0.3cqw rgba(0, 0, 0, 0.3));
+  animation: apontar 0.9s ease-in-out infinite;
+}
+
+@keyframes apontar {
+  50% {
+    transform: translateY(-1.2cqw);
+  }
+}
+
+/* ---------- Jogar ---------- */
+
+.jogar {
+  position: absolute;
+  right: 1.2cqw;
+  top: 21cqw;
+  width: 7.5cqw;
+  min-width: 48px;
+  aspect-ratio: 1;
+  padding: 0 0 0 0.6cqw; /* o ▶ parece mais centrado assim */
+  display: grid;
+  place-items: center;
+  font-size: max(1.4rem, 4cqw);
+  line-height: 1;
+  color: white;
+  cursor: pointer;
+  border-radius: 50%;
+  background: linear-gradient(to bottom, #7ed957, #3fa34d);
+  border: max(3px, 0.4cqw) solid white;
+  box-shadow:
+    0 0.6cqw 0 #2f7d32,
+    0 1cqw 1.6cqw rgba(0, 0, 0, 0.3);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ---------- Projeto acabado em grande ---------- */
+
+.verAcabado {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  border-radius: inherit;
+  background: rgba(30, 20, 5, 0.5);
+}
+
+.grande {
+  font-size: max(8rem, 34cqw);
+  line-height: 1;
+  filter: drop-shadow(0 1cqw 1.4cqw rgba(0, 0, 0, 0.4));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lugaresApontados .vazio,
+  .alvo::after,
+  .mao {
+    animation: none;
+  }
+}
+
+/* Os ícones dos jogos (imagens) no balão e nos botões das torres */
+.balaoIcone {
+  width: 5cqw;
+  min-width: 28px;
+  aspect-ratio: 1;
+  object-fit: contain;
+}
+
+.jogoIcone {
+  width: 82%;
+  aspect-ratio: 1;
+  object-fit: contain;
+  text-align: center;
+}

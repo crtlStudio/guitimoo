@@ -4,6 +4,7 @@ import Home from './pages/home/Home'
 import Niveis from './pages/niveis/Niveis'
 import Mascotes from './pages/mascotes/Mascotes'
 import Jogos from './pages/jogos/Jogos'
+import Construcao from './pages/construcao/Construcao'
 import Matematica from './pages/matematica/Matematica'
 import Portugues from './pages/portugues/Portugues'
 import Memoria from './pages/memoria/Memoria'
@@ -24,6 +25,7 @@ function App() {
       </Route>
       <Route element={<Guarda nivel mascote />}>
         <Route path="/jogos" element={<Jogos />} />
+        <Route path="/construcao" element={<Construcao />} />
         <Route path="/matematica" element={<Matematica />} />
         <Route path="/portugues" element={<Portugues />} />
         <Route path="/memoria" element={<Memoria />} />

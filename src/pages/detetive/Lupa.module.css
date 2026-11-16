@@ -1,0 +1,55 @@
+/*
+ * A lupa: o tamanho vem da largura (--tam), o resto é proporcional.
+ * Por omissão 20cqw; muda-se com className (ex.: --tam: 10cqw).
+ */
+.lupa {
+  --tam: 20cqw;
+  position: relative;
+  width: var(--tam);
+  aspect-ratio: 1;
+  transform-origin: 40% 40%;
+}
+
+/* O vidro: círculo claro com aro dourado grosso */
+.vidro {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: calc(var(--tam) * 0.5);
+  line-height: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #ffffff, #e6f6ff 60%, #c9e8f7);
+  border: calc(var(--tam) * 0.07) solid #c9912f;
+  box-shadow:
+    inset 0 0 0 calc(var(--tam) * 0.015) #f5c96a,
+    0 calc(var(--tam) * 0.03) calc(var(--tam) * 0.06) rgba(0, 0, 0, 0.3);
+}
+
+/* O brilho do vidro, em cima à esquerda */
+.vidro::after {
+  content: '';
+  position: absolute;
+  left: 18%;
+  top: 14%;
+  width: 22%;
+  height: 12%;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.8);
+  transform: rotate(-35deg);
+  pointer-events: none;
+}
+
+/* O cabo, para baixo e para a direita */
+.cabo {
+  position: absolute;
+  left: 80%;
+  top: 80%;
+  width: calc(var(--tam) * 0.16);
+  height: calc(var(--tam) * 0.42);
+  border-radius: calc(var(--tam) * 0.05);
+  background: linear-gradient(to right, #7a4a1c, #a8692a 50%, #5a3912);
+  transform: rotate(-45deg);
+  transform-origin: top center;
+  box-shadow: 0 calc(var(--tam) * 0.02) calc(var(--tam) * 0.04) rgba(0, 0, 0, 0.3);
+}

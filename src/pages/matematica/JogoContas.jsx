@@ -38,7 +38,7 @@ const TEXTOS = {
 /**
  * Jogo dos 5–6 e dos 7–8 anos: a conta aparece num cartão.
  *   1. a criança mostra a conta com cubinhos no prato esquerdo
- *   2. carrega em «Já está!» (1.ª validação: o prato tem o número certo?)
+ *   2. carrega no ✓ (1.ª validação: o prato tem o número certo?)
  *   3. escolhe o número (2.ª validação). Na soma e na subtração, o número
  *      escolhido vai para o prato direito: com o certo, a balança fica direita!
  *      No "número que falta", o prato direito já tem o total desde o início.
@@ -166,7 +166,7 @@ function JogoContas({ escalao, aoAcertar, aoErrar }) {
         }}
       />
 
-      {/* Em cima à esquerda, numa linha: o cartão da conta e, a seguir, o «Já está!»
+      {/* Em cima à esquerda, numa linha: o cartão da conta e, a seguir, o ✓
           (assim o botão não fica por cima dos cubinhos do chão) */}
       <div className={styles.linhaDaConta}>
         {/* O cartão com a conta: cada número com a sua cor (o "?" passa a resposta no fim) */}
@@ -196,11 +196,12 @@ function JogoContas({ escalao, aoAcertar, aoErrar }) {
             type="button"
             className={styles.jaEsta}
             onClick={jaEsta}
+            aria-label="Já está!"
             initial={{ opacity: 0, scale: 0.7 }}
             animate={{ opacity: 1, scale: 1 }}
             whileTap={{ scale: 0.92 }}
           >
-            Já está!
+            <span aria-hidden="true">✓</span>
           </motion.button>
         )}
       </div>

@@ -1,0 +1,17 @@
+/*
+ * Nível fácil do Detetive: a lupa ao centro, em cima (abaixo do contador
+ * de estrelas). As pessoas estão no EscolherPessoa.module.css.
+ */
+
+.sitioDaLupa {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin-inline: auto; /* centrada na horizontal */
+  width: fit-content;
+  top: 13%;
+}
+
+.lupa {
+  --tam: 17cqw;
+}

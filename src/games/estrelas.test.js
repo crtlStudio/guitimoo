@@ -12,6 +12,7 @@ vi.mock('@capacitor/preferences', () => ({
 }))
 
 const {
+  apagarTotal,
   ESTRELAS_POR_CERTA,
   ESTRELAS_POR_JOGO,
   inscrever,
@@ -120,8 +121,38 @@ describe('total guardado no telemóvel', () => {
     expect(totalAtual()).toBe(105)
   })
 
+  it('vários pedidos ao mesmo tempo só somam o guardado uma vez', async () => {
+    gaveta.set('estrelas:total', '350')
+    inscrever(() => {})
+    inscrever(() => {})
+    const [a, b] = await Promise.all([lerTotal(), lerTotal()])
+    expect(a).toBe(350)
+    expect(b).toBe(350)
+    expect(totalAtual()).toBe(350)
+  })
+
   it('ignora valores estragados', async () => {
     gaveta.set('estrelas:total', 'abc')
+    expect(await lerTotal()).toBe(0)
+  })
+
+  it('apagarTotal põe o total a 0, guarda e avisa', async () => {
+    gaveta.set('estrelas:total', '120')
+    await lerTotal()
+    const avisos = vi.fn()
+    inscrever(avisos)
+    apagarTotal()
+    expect(totalAtual()).toBe(0)
+    expect(avisos).toHaveBeenCalledTimes(1)
+    await Promise.resolve()
+    expect(gaveta.get('estrelas:total')).toBe('0')
+    somarEstrelas(5)
+    expect(totalAtual()).toBe(5)
+  })
+
+  it('apagarTotal antes de ler: o que estava guardado não volta', async () => {
+    gaveta.set('estrelas:total', '120')
+    apagarTotal()
     expect(await lerTotal()).toBe(0)
   })
 

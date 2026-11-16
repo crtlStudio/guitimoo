@@ -117,3 +117,14 @@
   box-shadow: 0 0.18em 0 #2e7d32;
   -webkit-tap-highlight-color: transparent;
 }
+
+/* O botão da construção, mais pequeno dentro do cartão */
+.construcao > button {
+  width: 6.5cqw;
+  min-width: 44px;
+  padding: 0.5cqw;
+}
+
+.construcao > button > span:first-child {
+  font-size: max(1.1rem, 3.2cqw);
+}

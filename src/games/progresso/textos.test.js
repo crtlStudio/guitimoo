@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { JOGOS, MASCOTES } from './config'
-import { comMaiuscula, doDa, estasPecas, nomeDaCor, nomeDasPecas, oProximo, pecasDaCor, todasAsPecas } from './textos'
+import { comMaiuscula, doDa, estasPecas, nomeDaCor, nomeDasPecas, oProximo, pecasDaCor, porExtenso, todasAsPecas } from './textos'
 
 const mascote = (id) => MASCOTES.find((m) => m.id === id)
 const jogo = (id) => JOGOS.find((j) => j.id === id)
@@ -48,5 +48,19 @@ describe('textos das peças', () => {
     expect(doDa('Ana')).toBe('de Ana')
     expect(comMaiuscula('o Panda')).toBe('O Panda')
     expect(comMaiuscula('')).toBe('')
+  })
+})
+
+describe('porExtenso', () => {
+  it('escreve os números de 20 a 99', () => {
+    expect(porExtenso(20)).toBe('vinte')
+    expect(porExtenso(21)).toBe('vinte e um')
+    expect(porExtenso(73)).toBe('setenta e três')
+    expect(porExtenso(56)).toBe('cinquenta e seis')
+    expect(porExtenso(99)).toBe('noventa e nove')
+  })
+
+  it('recusa números fora do intervalo', () => {
+    for (const n of [19, 100, 2.5, '50']) expect(() => porExtenso(n)).toThrow(RangeError)
   })
 })

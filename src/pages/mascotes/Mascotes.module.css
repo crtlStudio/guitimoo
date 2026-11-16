@@ -1,7 +1,8 @@
 .botao {
-  /* Por baixo de cada mascote, em % da imagem (cqw = 1% da largura da imagem) */
+  /* Por cima da cabeça de cada mascote, no céu, em % da imagem
+     (cqw = 1% da largura da imagem) */
   position: absolute;
-  top: 83%;
+  bottom: 55%;
   transform: translateX(-50%);
   width: 19cqw;
   box-sizing: border-box;
@@ -54,10 +55,10 @@
 }
 
 /* Centro de cada mascote na imagem */
-.sapo { left: 15%; }
+.sapo { left: 16%; }
 .panda { left: 38.5%; }
-.coruja { left: 61%; }
-.tartaruga { left: 84.5%; }
+.coruja { left: 61.5%; }
+.tartaruga { left: 82.5%; }
 
 .linha {
   white-space: nowrap;

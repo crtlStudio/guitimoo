@@ -2,6 +2,7 @@ import { motion } from 'motion/react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ESTRELAS_POR_CERTA, ESTRELAS_POR_JOGO } from '../games/estrelas'
+import BotaoConstrucao from './BotaoConstrucao'
 import Festa from './Festa'
 import PremioPecas from './PremioPecas'
 import ProjetoAcabado from './ProjetoAcabado'
@@ -17,7 +18,8 @@ import styles from './FimDeJogo.module.css'
  * - placar: o placar do jogo que acabou (de useJogo)
  * - premio: o que o jogo deu à mascote (de useJogo): peças e projetos acabados
  * - aoJogarOutraVez: função do botão "Jogar outra vez"
- * O botão "Outro jogo" volta à escolha dos jogos.
+ * O botão "Outro jogo" volta à escolha dos jogos, e o 🏠 leva à construção
+ * da mascote (com uma seta a apontar, se este jogo deu peças novas).
  */
 function FimDeJogo({ placar, premio, aoJogarOutraVez }) {
   const navegar = useNavigate()
@@ -92,6 +94,9 @@ function FimDeJogo({ placar, premio, aoJogarOutraVez }) {
         {premio && <PremioPecas premio={premio} jogoId={premio.jogoId} />}
 
         <div className={styles.botoes}>
+          {/* Ver as peças novas a entrar na construção */}
+          <BotaoConstrucao className={styles.construcao} seta="esquerda" />
+
           {/* Volta à escolha dos jogos */}
           <motion.button
             type="button"

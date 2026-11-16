@@ -12,7 +12,7 @@ const JOGOS = {
   },
   '5-6': {
     titulo: 'Acerta o relógio!',
-    frase: 'Roda o ponteiro pequeno até à hora certa e carrega em «Já está!».',
+    frase: 'Roda o ponteiro pequeno até à hora certa e carrega no ✓.',
   },
   '7-8': {
     titulo: 'Acerta o relógio!',

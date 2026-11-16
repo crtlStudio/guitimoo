@@ -16,7 +16,7 @@
 // ============================================================
 
 /** Quantas estrelas de um jogo valem 1 peça da cor desse jogo. */
-export const ESTRELAS_POR_PECA = 10
+export const ESTRELAS_POR_PECA = 75
 
 /** Quantas peças de cada cor são precisas para acabar um projeto. */
 export const PECAS_POR_COR = 5
@@ -29,7 +29,7 @@ export const JOGOS = [
   { id: 'portugues', nome: 'Português', cor: 'azul', hex: '#2f80d8', icone: '🔤', ativo: true },
   { id: 'memoria', nome: 'Memória', cor: 'verde', hex: '#3fa34d', icone: '🧠', ativo: true },
   { id: 'horas', nome: 'Horas e Rotinas', cor: 'amarelo', hex: '#f2b705', icone: '⏰', ativo: true },
-  { id: 'detetive', nome: 'Detetive das Profissões', cor: 'laranja', hex: '#f07c1b', icone: '🔍', ativo: false },
+  { id: 'detetive', nome: 'Detetive das Profissões', cor: 'laranja', hex: '#f07c1b', icone: '🔍', ativo: true },
 ]
 
 export const MASCOTES = [
