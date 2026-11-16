@@ -1,10 +1,20 @@
 import { AnimatePresence, motion } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
 import BalaoMascote from '../../components/BalaoMascote'
+import DedoFantasma from '../../components/DedoFantasma'
 import Festa from '../../components/Festa'
-import { opcoesDeResposta, partesDaConta, pratoCerto, regrasDoNivel, respostaCerta } from '../../games/matematica/contas'
+import { DESCIDA_POR_CUBINHO } from '../../games/matematica/balanca'
+import { coresTrocadas, opcoesDeResposta, partesDaConta, pratoCerto, regrasDoNivel, respostaCerta } from '../../games/matematica/contas'
 import { lerProgresso, proximaConta, registarConta } from '../../games/matematica/memoria'
 import Mesa from './Mesa'
+import {
+  botaoJaEsta,
+  chao,
+  parteDaConta,
+  pratoEsquerdo,
+  umCubinhoNoChao,
+  umCubinhoNoPrato,
+} from './ajuda'
 import styles from './Jogo.module.css'
 
 /** Tempo a festejar antes da conta seguinte (milissegundos). */
@@ -29,6 +39,7 @@ function cubinhosDaConta(conta) {
 /** Textos da mascote (o tipo da mensagem decide a reação: erro, boa, fim). */
 const TEXTOS = {
   montarErrado: 'Quase! Conta outra vez os cubinhos',
+  coresErradas: 'Quase! Usa as cores dos números',
   balancaTorta: 'Quase! A balança ainda está torta',
   contaOsNovos: 'Quase! Conta os cubinhos que juntaste',
   escolhe: 'Boa! Agora escolhe o número',
@@ -37,21 +48,24 @@ const TEXTOS = {
 
 /**
  * Jogo dos 5–6 e dos 7–8 anos: a conta aparece num cartão.
- *   1. a criança mostra a conta com cubinhos no prato esquerdo
+ *   1. a criança mostra a conta com cubinhos no prato esquerdo (na soma,
+ *      cada número com a sua cor: 2 + 3 = 2 azuis e 3 verdes)
  *   2. carrega no ✓ (1.ª validação: o prato tem o número certo?)
  *   3. escolhe o número (2.ª validação). Na soma e na subtração, o número
  *      escolhido vai para o prato direito: com o certo, a balança fica direita!
  *      No "número que falta", o prato direito já tem o total desde o início.
  * Sem castigo: se errar, a mascote anima e tenta-se outra vez.
  *
- * Props: escalao ('5-6' ou '7-8'), aoAcertar() e aoErrar() — avisam a página.
+ * Props: escalao ('5-6' ou '7-8'), aoAcertar() e aoErrar() — avisam a página;
+ * aoProxima() — depois de acertar, a página passa à pergunta seguinte.
  */
-function JogoContas({ escalao, aoAcertar, aoErrar }) {
+function JogoContas({ escalao, aoAcertar, aoErrar, aoProxima }) {
   // A ronda atual: { numero, conta, opcoes } — null enquanto carrega
   const [ronda, setRonda] = useState(null)
   // 'montar' (pôr cubinhos), 'escolher' (escolher o número) ou 'certo' (festa)
   const [fase, setFase] = useState('montar')
   const [naEsquerda, setNaEsquerda] = useState(0) // cubinhos no prato esquerdo
+  const [porCor, setPorCor] = useState({}) // quantos de cada cor no prato esquerdo
   const [numeroDireita, setNumeroDireita] = useState(null) // o número no prato direito
   const [erradas, setErradas] = useState([]) // números já escolhidos e errados
   const [aEspera, setAEspera] = useState(false) // um número errado está no prato
@@ -80,6 +94,7 @@ function JogoContas({ escalao, aoAcertar, aoErrar }) {
     errou.current = false
     setFase('montar')
     setNaEsquerda(conta.esquerdaInicial)
+    setPorCor(conta.esquerdaInicial > 0 ? { azul: conta.esquerdaInicial } : {})
     setNumeroDireita(conta.numeroDireita)
     setErradas([])
     setAEspera(false)
@@ -109,13 +124,14 @@ function JogoContas({ escalao, aoAcertar, aoErrar }) {
 
   /** 1.ª validação: o prato esquerdo tem os cubinhos certos? */
   function jaEsta() {
-    if (pratoCerto(conta, naEsquerda)) {
+    if (pratoCerto(conta, naEsquerda, porCor)) {
       setFase('escolher')
       falar('boa', TEXTOS.escolhe)
     } else {
       errou.current = true
       aoErrar?.()
-      falar('erro', conta.tipo === 'falta' ? TEXTOS.balancaTorta : TEXTOS.montarErrado)
+      if (coresTrocadas(conta, naEsquerda, porCor)) falar('erro', TEXTOS.coresErradas)
+      else falar('erro', conta.tipo === 'falta' ? TEXTOS.balancaTorta : TEXTOS.montarErrado)
     }
   }
 
@@ -130,7 +146,8 @@ function JogoContas({ escalao, aoAcertar, aoErrar }) {
       falar('fim', TEXTOS.certo)
       progresso.current = registarConta(escalao, progresso.current, !errou.current)
       const acabou = aoAcertar?.() // true = era a última: vem aí o ecrã de fim
-      if (!acabou) depois(ESPERA_DEPOIS_DE_ACERTAR, novaRonda)
+      // A seguir: a página escolhe o próximo jogo (aoProxima); sem ela, outra conta aqui
+      if (!acabou) depois(ESPERA_DEPOIS_DE_ACERTAR, aoProxima ?? novaRonda)
       return
     }
 
@@ -150,8 +167,48 @@ function JogoContas({ escalao, aoAcertar, aoErrar }) {
 
   const { cores, inicial } = cubinhosDaConta(conta)
 
+  // A ajuda (ao fim de 3 s parada) mostra COMO se faz, nunca a resposta:
+  // - ainda não mexeu: o gesto da conta (pôr um cubinho no prato; na
+  //   subtração, tirar um)
+  // - já mexeu: carregar no ✓
+  // - a escolher o número: o dedo passa pela fila (sem apontar nenhum)
+  const mexeu = naEsquerda !== conta.esquerdaInicial
+  // Na soma, a ajuda das cores continua até o prato ter cubinhos das duas cores
+  const temAsDuasCores = (porCor.azul ?? 0) > 0 && (porCor.verde ?? 0) > 0
+  let gesto = null
+  if (fase === 'montar' && conta.tipo === 'soma' && !temAsDuasCores) {
+    // Toca 2 vezes no 1.º número (azul) e leva um cubinho azul para o prato;
+    // depois o mesmo com o 2.º número (verde). Não diz quantos: mostra as cores.
+    gesto = {
+      chave: `cores-${ronda.numero}`,
+      passos: [
+        { tipo: 'tocar', em: () => parteDaConta('azul'), vezes: 2 },
+        { tipo: 'arrastar', de: () => umCubinhoNoChao('azul'), para: pratoEsquerdo },
+        { tipo: 'tocar', em: () => parteDaConta('verde'), vezes: 2 },
+        { tipo: 'arrastar', de: () => umCubinhoNoChao('verde'), para: pratoEsquerdo },
+      ],
+    }
+  } else if (fase === 'montar' && mexeu) {
+    gesto = { chave: `ja-esta-${ronda.numero}`, tipo: 'tocar', em: botaoJaEsta }
+  } else if (fase === 'montar' && conta.tipo === 'subtracao') {
+    gesto = { chave: `tirar-${ronda.numero}`, tipo: 'arrastar', de: umCubinhoNoPrato, para: chao }
+  } else if (fase === 'montar') {
+    gesto = { chave: `por-${ronda.numero}`, tipo: 'arrastar', de: umCubinhoNoChao, para: pratoEsquerdo }
+  } else if (fase === 'escolher') {
+    // Toca 2 vezes num número: "carrega num destes". O número tocado é
+    // sempre um ERRADO: mostra como se faz, não a resposta.
+    const exemplo = ronda.opcoes.find((n) => !respostaCerta(conta, n) && !erradas.includes(n))
+    gesto = {
+      chave: `escolher-${ronda.numero}`,
+      tipo: 'tocar',
+      vezes: 2,
+      em: () => document.querySelector(`[aria-label="Número ${exemplo}"]`),
+    }
+  }
+
   return (
     <>
+      <DedoFantasma gesto={gesto} />
       {/* O key muda a cada ronda: os cubinhos voltam todos ao chão, noutros lugares */}
       <Mesa
         key={ronda.numero}
@@ -160,8 +217,10 @@ function JogoContas({ escalao, aoAcertar, aoErrar }) {
         numeroDireita={numeroDireita}
         bloqueada={fase !== 'montar'}
         festejar={fase === 'certo'}
-        aoMudar={(quantos) => {
+        porCubinho={DESCIDA_POR_CUBINHO[escalao]}
+        aoMudar={(quantos, cores) => {
           setNaEsquerda(quantos)
+          setPorCor(cores)
           setMensagem(null) // mexeu nos cubinhos: a mascote cala-se
         }}
       />
@@ -182,6 +241,7 @@ function JogoContas({ escalao, aoAcertar, aoErrar }) {
             <motion.span
               key={`${i}-${parte.texto}`}
               className={parte.cor ? styles[parte.cor] : styles.sinal}
+              data-parte={parte.cor ?? undefined}
               initial={parte.cor === 'resposta' && fase === 'certo' ? { scale: 0.3 } : false}
               animate={{ scale: 1 }}
             >
@@ -217,6 +277,7 @@ function JogoContas({ escalao, aoAcertar, aoErrar }) {
         {fase !== 'montar' && (
           <motion.div
             className={styles.opcoes}
+            data-opcoes
             role="group"
             aria-label="Escolhe o número"
             initial={{ opacity: 0, y: '4cqw' }}

@@ -11,11 +11,11 @@ const JOGOS = {
   },
   '5-6': {
     titulo: 'Contas na balança!',
-    frase: 'Põe os cubinhos da conta no prato do braço esquerdo, carrega no ✓ e escolhe o número certo.',
+    frase: 'Põe no prato do braço esquerdo os cubinhos de cada número, com a cor dele. Carrega no ✓ e escolhe o número certo.',
   },
   '7-8': {
     titulo: 'Contas na balança!',
-    frase: 'Mostra a conta com cubinhos no prato do braço esquerdo, carrega no ✓ e escolhe o número certo. Às vezes vais tirar cubinhos ou descobrir o número que falta.',
+    frase: 'Mostra a conta com cubinhos no prato do braço esquerdo, cada número com a sua cor. Carrega no ✓ e escolhe o número certo. Às vezes vais tirar cubinhos ou descobrir o número que falta.',
   },
 }
 

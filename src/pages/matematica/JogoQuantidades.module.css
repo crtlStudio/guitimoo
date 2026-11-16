@@ -1,0 +1,258 @@
+/*
+ * Jogo das Quantidades. Medidas em cqw (1% da largura da imagem; a altura é 56.25cqw).
+ *
+ *   ┌──────────── quadro ────────────┐
+ *   │ 🟦🟦🟦🟦🟦   ➜   [ ? ]       │   [5] [4] [6]   ← cartões
+ *   │     3        ➜   [ caixa ]     │   🟩  ✓         ← monte e ✓
+ *   └────────────────────────────────┘
+ */
+
+/* ---------- O quadro ---------- */
+.quadro {
+  --cubo: 3.1cqw; /* tamanho de cada cubinho desenhado (muda com a idade) */
+  --filas: 4; /* quantas filas de 5 cubinhos cabem numa caixa: 7–8 contam até 20 */
+  position: absolute;
+  left: 4cqw;
+  top: 10.5cqw;
+  width: 62cqw;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 1.4cqw;
+  padding: 1.6cqw 2cqw;
+  background: rgba(255, 253, 246, 0.94);
+  /* a moldura de madeira do quadro */
+  border: max(4px, 0.9cqw) solid #a8692a;
+  border-radius: 2cqw;
+  box-shadow: 0 1.2cqw 2.4cqw rgba(0, 0, 0, 0.28);
+}
+
+/* Cubinhos maiores quando são poucos (3–4 até 5: 1 fila; 5–6 até 10: 2 filas) */
+.tam34 {
+  --cubo: 4.4cqw;
+  --filas: 1;
+}
+
+.tam56 {
+  --cubo: 3.8cqw;
+  --filas: 2;
+}
+
+.linha {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 1.6cqw;
+  transition: opacity 0.4s;
+}
+
+/* A linha de baixo, antes de acabar a de cima: à espera */
+.linha + .linha {
+  padding-top: 1.4cqw;
+  border-top: max(2px, 0.3cqw) dashed rgba(168, 105, 42, 0.5);
+}
+
+.aEspera {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.caixaQuadro {
+  /* altura para as filas de cubinhos da idade, e nunca menos do que o número grande */
+  min-height: max(11cqw, calc(var(--cubo) * var(--filas) + (var(--filas) - 1) * 0.4cqw + 2.4cqw));
+  box-sizing: border-box;
+  display: grid;
+  place-items: center;
+  padding: 0.8cqw;
+  border-radius: 1.6cqw;
+}
+
+/* O lugar vazio, à espera do número / dos cubinhos */
+.vazio {
+  border: max(3px, 0.45cqw) dashed #f07c1b;
+  background: rgba(240, 124, 27, 0.08);
+}
+
+.certa {
+  border-style: solid;
+  border-color: #3fa34d;
+  background: #d9f7c9;
+}
+
+.seta {
+  font-size: max(1.4rem, 4cqw);
+  line-height: 1;
+  color: #a8692a;
+}
+
+.interrogacao {
+  font-family: 'Fredoka', system-ui, sans-serif;
+  font-weight: 600;
+  font-size: max(1.8rem, 6cqw);
+  line-height: 1;
+  color: #f07c1b;
+}
+
+.numeroGrande {
+  font-family: 'Fredoka', system-ui, sans-serif;
+  font-weight: 600;
+  font-size: max(2.2rem, 9cqw);
+  line-height: 1;
+  color: #5a3912;
+}
+
+/* As cores dos números (iguais às dos cubinhos) */
+.vermelho {
+  color: #e5483f;
+}
+
+.azul {
+  color: #2f80d8;
+}
+
+.verde {
+  color: #3fa34d;
+}
+
+/* ---------- Os cubinhos desenhados (em filas de 5) ---------- */
+.cubos {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4cqw;
+}
+
+.filaDeCubos {
+  display: flex;
+  gap: 0.4cqw;
+}
+
+.cubo {
+  display: block;
+  width: var(--cubo);
+  height: auto;
+  pointer-events: none;
+  filter: drop-shadow(0 0.25cqw 0.25cqw rgba(0, 0, 0, 0.22));
+}
+
+.cuboBotao {
+  padding: 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ---------- Os cartões dos números (ao lado da 1.ª linha) ---------- */
+.cartoes {
+  position: absolute;
+  left: 70cqw;
+  top: 13cqw;
+  width: 26cqw;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.6cqw;
+}
+
+.cartao {
+  width: 10cqw;
+  min-width: 48px;
+  aspect-ratio: 1;
+  padding: 0;
+  cursor: grab;
+  touch-action: none; /* o dedo arrasta o cartão, não a página */
+  font-family: 'Fredoka', system-ui, sans-serif;
+  font-weight: 600;
+  font-size: max(1.6rem, 6cqw);
+  line-height: 1;
+  color: #5a3912;
+  background: #fffdf6;
+  border: max(3px, 0.4cqw) solid #f5c96a;
+  border-radius: 2cqw;
+  box-shadow:
+    0 0.5cqw 0 #c9912f,
+    0 1cqw 1.6cqw rgba(0, 0, 0, 0.22);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.cartaoErrado {
+  cursor: default;
+  opacity: 0.4;
+}
+
+/* ---------- O monte de cubinhos e o ✓ (ao lado da 2.ª linha) ---------- */
+.material {
+  position: absolute;
+  left: 70cqw;
+  top: 33cqw;
+  width: 26cqw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3cqw;
+}
+
+/* Um monte: um cubinho atrás (desenho) e o da frente (que se arrasta) */
+.monte {
+  position: relative;
+  width: 11cqw;
+  aspect-ratio: 1;
+}
+
+.cuboAtras {
+  position: absolute;
+  left: 18%;
+  top: -8%;
+  width: 82%;
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+.cuboDoMonte {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 85%;
+  padding: 0;
+  cursor: grab;
+  touch-action: none;
+  background: none;
+  border: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.cuboDoMonte .cubo {
+  width: 100%;
+}
+
+/* O ✓ (igual ao da balança) */
+.jaEsta {
+  width: 7cqw;
+  min-width: 48px;
+  aspect-ratio: 1;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  font-family: 'Fredoka', system-ui, sans-serif;
+  font-weight: 600;
+  font-size: max(1.5rem, 4cqw);
+  line-height: 1;
+  color: #fff;
+  background: linear-gradient(to bottom, #7ed957, #4caf50);
+  border: max(3px, 0.35cqw) solid #fff;
+  border-radius: 50%;
+  box-shadow:
+    0 0.45cqw 0 #2e7d32,
+    0 0.8cqw 1.4cqw rgba(0, 0, 0, 0.25);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ---------- Balão da mascote (o aspeto está no BalaoMascote) ---------- */
+.mensagem {
+  position: absolute;
+  right: 3%;
+  bottom: 4%;
+  max-width: 28cqw;
+  white-space: normal;
+}

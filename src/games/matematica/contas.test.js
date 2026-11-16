@@ -6,6 +6,7 @@ import {
   NIVEIS,
   opcoesDeResposta,
   partesDaConta,
+  coresTrocadas,
   pratoCerto,
   respostaCerta,
   sortearConta,
@@ -170,9 +171,26 @@ describe('opcoesDeResposta', () => {
 describe('as duas validações', () => {
   const conta = criarConta('soma', 5, 2)
 
-  it('"Já está!": o prato esquerdo tem de ter 7 cubinhos (de qualquer cor)', () => {
+  it('"Já está!": o prato esquerdo tem de ter 7 cubinhos', () => {
     expect(pratoCerto(conta, 7)).toBe(true)
     expect(pratoCerto(conta, 6)).toBe(false)
+  })
+
+  it('na soma (5 + 2), cada número com a sua cor: 5 azuis e 2 verdes', () => {
+    expect(pratoCerto(conta, 7, { azul: 5, verde: 2 })).toBe(true)
+    expect(pratoCerto(conta, 7, { azul: 4, verde: 3 })).toBe(false) // cores trocadas
+    expect(pratoCerto(conta, 7, { azul: 5, laranja: 2 })).toBe(false) // outra cor
+    expect(coresTrocadas(conta, 7, { azul: 4, verde: 3 })).toBe(true)
+    expect(coresTrocadas(conta, 7, { azul: 5, verde: 2 })).toBe(false)
+    expect(coresTrocadas(conta, 6, { azul: 4, verde: 2 })).toBe(false) // aqui o que falha é a quantidade
+  })
+
+  it('na subtração e no "número que falta", a cor não conta', () => {
+    const tirar = criarConta('subtracao', 9, 4)
+    expect(pratoCerto(tirar, tirar.alvoEsquerda, { azul: tirar.alvoEsquerda })).toBe(true)
+    const falta = criarConta('falta', 4, 9)
+    expect(pratoCerto(falta, falta.alvoEsquerda, { azul: 4, laranja: 5 })).toBe(true)
+    expect(coresTrocadas(falta, falta.alvoEsquerda, { verde: 9 })).toBe(false)
   })
 
   it('escolher o número: só o 7 está certo', () => {

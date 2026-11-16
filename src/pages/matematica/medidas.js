@@ -12,7 +12,7 @@ export const ALTURA_DO_FUNDO = 56.25
 
 /** O corpo da balança (balanca.webp, quadrada; medidas em % da imagem, medidas no ficheiro). */
 export const SUPORTE = {
-  largura: 32, // largura da imagem no ecrã (cqw); a imagem é quadrada
+  largura: 27, // largura da imagem no ecrã (cqw); a imagem é quadrada (os braços não mudam com isto)
   centroX: 50, // onde fica o centro do suporte no ecrã (% da largura do fundo)
   chao: 82, // onde fica a base do suporte no ecrã (% da altura do fundo)
   baseNaImagem: 93.8, // onde acaba a base azul dentro da imagem (% da altura)

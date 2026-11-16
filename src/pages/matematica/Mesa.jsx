@@ -65,12 +65,14 @@ function ondeLargou(argumentos) {
  * - pintas: mostrar pintas por baixo do número (3–4 anos)
  * - bloqueada: true = já não se pode arrastar (ex.: depois de acertar)
  * - festejar: true = a balança salta de alegria
- * - aoMudar(quantos): avisa quantos cubinhos ficaram no prato esquerdo,
+ * - porCubinho: quanto mexe um braço por cada cubinho (DESCIDA_POR_CUBINHO da idade)
+ * - aoMudar(quantos, porCor): avisa quantos cubinhos ficaram no prato esquerdo
+ *   (e quantos de cada cor, ex.: { azul: 2, verde: 3 }),
  *   sempre que esse número muda
  *
  * Para começar uma ronda nova, a página muda o `key` da Mesa: tudo recomeça.
  */
-function Mesa({ cores, inicial = null, numeroDireita = null, pintas = false, bloqueada = false, festejar = false, aoMudar }) {
+function Mesa({ cores, inicial = null, numeroDireita = null, pintas = false, bloqueada = false, festejar = false, porCubinho, aoMudar }) {
   const [cubinhos, setCubinhos] = useState(() => cubinhosIniciais(cores, inicial))
   const [aArrastar, setAArrastar] = useState(null) // o cubinho que está no dedo
   const chegadas = useRef(0) // conta as chegadas ao prato
@@ -112,10 +114,13 @@ function Mesa({ cores, inicial = null, numeroDireita = null, pintas = false, blo
     setCubinhos((todos) => todos.map((s) => (s.id === active.id ? { ...s, lugar: destino, chegada } : s)))
 
     // Se o prato mudou: mostra a contagem nova e avisa a página de quantos ficaram lá
+    // (e de quantos há de cada cor: na soma, cada número tem a sua cor)
     if (destino !== cubinho.lugar) {
-      const quantos = noPrato.length + (destino === 'esquerda' ? 1 : -1)
-      setContagem((c) => ({ numero: quantos, vez: (c?.vez ?? 0) + 1, duracao: DURACAO_CONTAGEM }))
-      aoMudar?.(quantos)
+      const depois = cubinhos.map((s) => (s.id === active.id ? { ...s, lugar: destino } : s)).filter((s) => s.lugar === 'esquerda')
+      const porCor = {}
+      for (const s of depois) porCor[s.cor] = (porCor[s.cor] ?? 0) + 1
+      setContagem((c) => ({ numero: depois.length, vez: (c?.vez ?? 0) + 1, duracao: DURACAO_CONTAGEM }))
+      aoMudar?.(depois.length, porCor)
     }
   }
 
@@ -137,6 +142,7 @@ function Mesa({ cores, inicial = null, numeroDireita = null, pintas = false, blo
         bloqueada={bloqueada}
         festejar={festejar}
         contagem={contagem}
+        porCubinho={porCubinho}
       />
 
       {/* O chão: cada cubinho no seu lugar da relva */}
@@ -149,6 +155,7 @@ function Mesa({ cores, inicial = null, numeroDireita = null, pintas = false, blo
           x={s.noMonte.x}
           y={s.noMonte.y}
           bloqueado={bloqueada}
+          lugar="chao"
         />
       ))}
 

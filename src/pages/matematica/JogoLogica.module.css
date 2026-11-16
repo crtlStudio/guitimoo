@@ -1,0 +1,125 @@
+/*
+ * Jogo da Lógica. Medidas em cqw (1% da largura da imagem; a altura é 56.25cqw).
+ * A fila com o padrão em cima (numa prateleira de madeira) e os cubinhos
+ * para escolher em baixo, na relva.
+ */
+
+/* ---------- A fila com o padrão ---------- */
+.fila {
+  --tam: 8.5cqw;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 22%;
+  width: fit-content;
+  margin-inline: auto;
+  display: flex;
+  align-items: flex-end;
+  gap: 1.4cqw;
+  padding: 1.4cqw 2cqw 1.2cqw;
+  background: rgba(255, 253, 246, 0.9);
+  border: max(2px, 0.4cqw) solid #f5c96a;
+  border-radius: 2.4cqw;
+  /* a tábua de madeira por baixo */
+  box-shadow:
+    0 max(5px, 1cqw) 0 #a8692a,
+    0 1.6cqw 2cqw rgba(0, 0, 0, 0.25);
+}
+
+/* Com menos cubinhos (3–4), ficam maiores */
+.grandes {
+  --tam: 10.5cqw;
+}
+
+.lugar {
+  width: var(--tam);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+}
+
+.cubo {
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+  filter: drop-shadow(0 0.4cqw 0.4cqw rgba(0, 0, 0, 0.25));
+}
+
+/* O "?": um lugar tracejado à espera do cubinho */
+.buraco {
+  box-sizing: border-box;
+  border: max(3px, 0.45cqw) dashed #f07c1b;
+  border-radius: 1.6cqw;
+  background: rgba(240, 124, 27, 0.12);
+}
+
+.buracoCheio {
+  border-style: solid;
+  border-color: #3fa34d;
+  background: #d9f7c9;
+}
+
+.interrogacao {
+  font-family: 'Fredoka', system-ui, sans-serif;
+  font-weight: 600;
+  font-size: calc(var(--tam) * 0.65);
+  line-height: 1;
+  color: #f07c1b;
+}
+
+/* ---------- Balão da mascote (o aspeto está no BalaoMascote) ---------- */
+.mensagem {
+  position: absolute;
+  right: 3%;
+  top: 50%; /* à direita, entre a fila e os cubinhos (em cima estão o contador e o som) */
+}
+
+/* ---------- Os cubinhos para escolher ---------- */
+.opcoes {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 9%;
+  width: fit-content;
+  margin-inline: auto;
+  display: flex;
+  gap: 4cqw;
+}
+
+.opcao,
+.opcaoVazia {
+  width: 12cqw;
+  min-width: 56px;
+  aspect-ratio: 1;
+}
+
+.opcao {
+  padding: 1.4cqw;
+  cursor: grab;
+  touch-action: none; /* o dedo arrasta o cubinho, não a página */
+  background: rgba(255, 253, 246, 0.92);
+  border: max(3px, 0.4cqw) solid #f5c96a;
+  border-radius: 2.4cqw;
+  box-shadow:
+    0 0.5cqw 0 #c9912f,
+    0 1cqw 1.6cqw rgba(0, 0, 0, 0.22);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.opcao:active {
+  cursor: grabbing;
+}
+
+/* Já tentada e errada: fica apagada (sem castigo, só para não voltar a escolher) */
+.opcaoErrada {
+  cursor: default;
+  opacity: 0.4;
+  filter: grayscale(0.7);
+}
+
+/* O lugar de onde saiu o cubinho certo (para os outros não mudarem de sítio) */
+.opcaoVazia {
+  border: max(2px, 0.3cqw) dashed rgba(255, 255, 255, 0.7);
+  border-radius: 2.4cqw;
+}

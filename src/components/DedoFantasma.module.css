@@ -1,0 +1,34 @@
+/* Por cima do jogo, sem apanhar toques (o dedo não atrapalha) */
+.caixa {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  pointer-events: none;
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+/*
+ * O dedo: o motion move-o (x, y) a partir do canto de cima à esquerda.
+ * As margens põem a PONTA do dedo no ponto indicado (o 👆 aponta para cima).
+ */
+.dedo {
+  position: absolute;
+  left: 0;
+  top: 0;
+  margin: -0.4cqw 0 0 -2.6cqw;
+  font-size: max(2rem, 6cqw);
+  line-height: 1;
+  /* "fantasma": um brilho branco à volta, para se ver em qualquer fundo */
+  filter: drop-shadow(0 0 0.5cqw rgba(255, 255, 255, 0.95)) drop-shadow(0 0.3cqw 0.5cqw rgba(0, 0, 0, 0.3));
+}
+
+/* O que o dedo leva: centrado na ponta do dedo, um pouco acima */
+.objeto {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 5cqw;
+  margin: -4cqw 0 0 -2.5cqw;
+}
+

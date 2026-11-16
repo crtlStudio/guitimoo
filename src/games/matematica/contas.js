@@ -150,9 +150,22 @@ export function partesDaConta(conta, mostrarResposta = false) {
   return [n(conta.a, 'azul'), sinal(operacao), n(conta.b, 'verde'), sinal('='), resposta]
 }
 
-/** 1.ª validação (o botão ✓, "já está!"): o prato esquerdo tem o número certo de cubinhos? */
-export function pratoCerto(conta, naEsquerda) {
-  return naEsquerda === conta.alvoEsquerda
+/**
+ * 1.ª validação (o botão ✓, "já está!"): o prato esquerdo está certo?
+ * - na soma (2 + 3): tantos cubinhos de cada cor como os números do cartão,
+ *   cada número com a sua cor: 2 azuis (o 1.º número) e 3 verdes (o 2.º)
+ * - nas outras: o número certo de cubinhos (de qualquer cor)
+ * `porCor` = quantos há de cada cor no prato, ex.: { azul: 2, verde: 3 }.
+ */
+export function pratoCerto(conta, naEsquerda, porCor = null) {
+  if (naEsquerda !== conta.alvoEsquerda) return false
+  if (conta.tipo !== 'soma' || !porCor) return true
+  return (porCor.azul ?? 0) === conta.a && (porCor.verde ?? 0) === conta.b
+}
+
+/** Na soma: o prato tem o número certo de cubinhos, mas com as cores trocadas? */
+export function coresTrocadas(conta, naEsquerda, porCor) {
+  return conta.tipo === 'soma' && naEsquerda === conta.alvoEsquerda && !pratoCerto(conta, naEsquerda, porCor)
 }
 
 /** 2.ª validação: o número escolhido é o resultado da conta? */

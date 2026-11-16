@@ -30,11 +30,12 @@ export function DesenhoCubinho({ cor = 'verde', className }) {
  * - tamanho: largura em cqw
  * - x, y: onde fica o CENTRO da base (em cqw, relativo ao "pai")
  * - bloqueado: true = já não se pode arrastar
+ * - lugar: 'chao' ou 'prato' (fica em data-lugar, para o dedo fantasma o encontrar)
  *
  * Enquanto é arrastado, este fica invisível: quem segue o dedo é a cópia
  * do <DragOverlay> (ver Mesa.jsx), que fica por cima de tudo.
  */
-function Cubinho({ id, cor = 'verde', tamanho, x, y, bloqueado = false }) {
+function Cubinho({ id, cor = 'verde', tamanho, x, y, bloqueado = false, lugar }) {
   const { setNodeRef, listeners, attributes, isDragging } = useDraggable({ id, disabled: bloqueado })
 
   return (
@@ -44,6 +45,7 @@ function Cubinho({ id, cor = 'verde', tamanho, x, y, bloqueado = false }) {
       {...attributes}
       // Sem o som de "toque" ao agarrar: o cubinho tem os seus sons (ver Mesa.jsx)
       data-sem-toque
+      data-lugar={lugar}
       aria-label={`Cubinho ${cor}`}
       className={styles.cubinho}
       src={IMAGENS[cor] ?? cuboVerde}

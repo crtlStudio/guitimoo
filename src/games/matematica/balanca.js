@@ -27,24 +27,33 @@ export function calcularAngulo(esquerda, direita) {
   return limitado === 0 ? 0 : limitado // evita "-0"
 }
 
-/** Quanto desce o braço mais pesado por cada cubinho de diferença (cqw). */
-export const DESCIDA_POR_CUBINHO = 0.3
+/**
+ * Quanto desce o braço mais pesado por cada cubinho de diferença (cqw),
+ * em cada faixa etária. Com menos cubinhos (3–4 contam até 5), cada um
+ * mexe mais o braço, para se ver bem que a balança se mexe mesmo.
+ */
+export const DESCIDA_POR_CUBINHO = { '3-4': 1.2, '5-6': 0.6, '7-8': 0.3 }
 
-/** Quanto pode descer um braço, no máximo (cqw): chega lá com 20 cubinhos de diferença. */
+/** Quanto pode descer um braço, no máximo (cqw). */
 export const DESCIDA_MAXIMA = 6
+
+/** O braço mais leve sobe só esta parte da descida (para o tubo não aparecer por cima da balança). */
+export const PARTE_QUE_SOBE = 0.5
 
 /**
  * Quanto desce cada braço (os braços NÃO inclinam: ficam sempre na
- * horizontal e mexem-se só na vertical).
- * Só desce o braço mais pesado, um bocadinho por cada cubinho de diferença;
- * o mais leve fica na posição de partida (0). Equilibrada: os dois em 0.
+ * horizontal e mexem-se só na vertical), como numa balança a sério:
+ * o mais pesado DESCE e o mais leve SOBE (metade). Equilibrada: os dois em 0.
  *
- * Exemplo: 6 à esquerda e 2 à direita → esquerdo desce 4 × 0.3 = 1.2; direito 0.
- * Devolve { esquerda, direita } em cqw (nunca negativos).
+ * Exemplo (5–6, 0.6 por cubinho): 6 à esquerda e 2 à direita →
+ *   esquerdo desce 4 × 0.6 = 2.4; direito sobe 1.2 (fica −1.2).
+ * Devolve { esquerda, direita } em cqw: positivo = desce, negativo = sobe.
  */
-export function calcularDescidas(esquerda, direita) {
-  const descida = (diferenca) => Math.min(DESCIDA_MAXIMA, Math.max(0, diferenca) * DESCIDA_POR_CUBINHO)
-  return { esquerda: descida(esquerda - direita), direita: descida(direita - esquerda) }
+export function calcularDescidas(esquerda, direita, porCubinho = DESCIDA_POR_CUBINHO['7-8']) {
+  const descida = Math.min(DESCIDA_MAXIMA, Math.abs(esquerda - direita) * porCubinho)
+  const subida = -descida * PARTE_QUE_SOBE
+  if (esquerda === direita) return { esquerda: 0, direita: 0 }
+  return esquerda > direita ? { esquerda: descida, direita: subida } : { esquerda: subida, direita: descida }
 }
 
 /** A balança está equilibrada quando os dois pratos têm o mesmo número de cubinhos. */

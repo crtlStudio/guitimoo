@@ -5,6 +5,7 @@ import {
   calcularDescidas,
   DESCIDA_MAXIMA,
   DESCIDA_POR_CUBINHO,
+  PARTE_QUE_SOBE,
   estaEquilibrada,
   GRAUS_POR_CUBINHO,
 } from './balanca'
@@ -41,17 +42,30 @@ describe('calcularDescidas', () => {
     expect(calcularDescidas(4, 4)).toEqual({ esquerda: 0, direita: 0 })
   })
 
-  it('só desce o mais pesado; o mais leve fica na posição de partida (0)', () => {
-    expect(calcularDescidas(6, 0)).toEqual({ esquerda: 6 * DESCIDA_POR_CUBINHO, direita: 0 })
-    expect(calcularDescidas(1, 3)).toEqual({ esquerda: 0, direita: 2 * DESCIDA_POR_CUBINHO })
+  it('o mais pesado desce e o mais leve sobe (metade)', () => {
+    const por = DESCIDA_POR_CUBINHO['7-8']
+    expect(calcularDescidas(6, 0)).toEqual({ esquerda: 6 * por, direita: -6 * por * PARTE_QUE_SOBE })
+    expect(calcularDescidas(1, 3)).toEqual({ esquerda: -2 * por * PARTE_QUE_SOBE, direita: 2 * por })
   })
 
   it('desce um bocadinho mais por cada cubinho de diferença', () => {
     expect(calcularDescidas(3, 0).esquerda).toBeGreaterThan(calcularDescidas(2, 0).esquerda)
   })
 
-  it('nunca desce mais do que o máximo (não chega ao chão, mesmo com 20)', () => {
-    expect(calcularDescidas(20, 0).esquerda).toBe(DESCIDA_MAXIMA)
+  it('nos mais pequenos (menos cubinhos) cada cubinho mexe mais o braço', () => {
+    const facil = calcularDescidas(2, 0, DESCIDA_POR_CUBINHO['3-4']).esquerda
+    const medio = calcularDescidas(2, 0, DESCIDA_POR_CUBINHO['5-6']).esquerda
+    const dificil = calcularDescidas(2, 0, DESCIDA_POR_CUBINHO['7-8']).esquerda
+    expect(facil).toBeGreaterThan(medio)
+    expect(medio).toBeGreaterThan(dificil)
+  })
+
+  it('o máximo de cada idade chega ao fim do curso sem passar dele', () => {
+    // 3–4 contam até 5, 5–6 até 10, 7–8 até 20
+    for (const [escalao, maximo] of [['3-4', 5], ['5-6', 10], ['7-8', 20]]) {
+      expect(calcularDescidas(maximo, 0, DESCIDA_POR_CUBINHO[escalao]).esquerda).toBeLessThanOrEqual(DESCIDA_MAXIMA)
+    }
+    expect(calcularDescidas(50, 0).esquerda).toBe(DESCIDA_MAXIMA)
   })
 })
 

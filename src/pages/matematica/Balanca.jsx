@@ -12,7 +12,7 @@ import styles from './Balanca.module.css'
 
 /**
  * A balança: o suporte e os dois braços. O braço com mais peso desce a
- * direito (sem inclinar) e o outro fica onde está; o ponteiro do botão azul aponta
+ * direito (sem inclinar) e o mais leve sobe um pouco; o ponteiro do botão azul aponta
  * para o lado mais pesado.
  *
  * Props:
@@ -23,6 +23,7 @@ import styles from './Balanca.module.css'
  * - pintas: mostrar pintas por baixo do número (para os 3–4 contarem)
  * - bloqueada: true = os cubinhos do prato já não se podem tirar
  * - festejar: true = a balança dá uns saltos de alegria
+ * - porCubinho: quanto mexe um braço por cada cubinho de diferença (DESCIDA_POR_CUBINHO da idade)
  * - contagem: { numero, vez, duracao } — mostra um balãozinho com quantos
  *   cubinhos há no prato esquerdo (muda `vez` para o mostrar outra vez)
  *
@@ -31,14 +32,14 @@ import styles from './Balanca.module.css'
  *   2. o suporte
  *   3. o ponteiro no botão azul, que mostra para que lado a balança pesa
  */
-function Balanca({ pratos, numeroDireita = null, pintas = false, bloqueada = false, festejar = false, contagem = null }) {
+function Balanca({ pratos, numeroDireita = null, pintas = false, bloqueada = false, festejar = false, contagem = null, porCubinho }) {
   const { esquerda: x, topo: y, eixo, bracos: origem } = posicaoDoSuporte()
   const bracos = medidasDosBracos()
   const pesoEsquerda = pratos.esquerda.length
   const pesoDireita = numeroDireita ?? 0
   const angulo = calcularAngulo(pesoEsquerda, pesoDireita) // para o ponteiro
-  // Quanto desce cada braço (cqw): só o mais pesado desce, a direito; o outro fica onde está
-  const desce = calcularDescidas(pesoEsquerda, pesoDireita)
+  // Quanto desce cada braço (cqw): o mais pesado desce, o mais leve sobe (a direito, sem inclinar)
+  const desce = calcularDescidas(pesoEsquerda, pesoDireita, porCubinho)
 
   // Festa: a balança toda (suporte, braços e cubinhos) dá dois saltos
   const [balanca, animar] = useAnimate()
@@ -63,7 +64,7 @@ function Balanca({ pratos, numeroDireita = null, pintas = false, bloqueada = fal
   return (
     <div ref={balanca} className={styles.balanca}>
       {/* Os dois braços, cada um num "ponto" atrás do suporte (à altura dos ombros). Não inclinam: ficam
-          sempre na horizontal e o mais pesado desce a direito (por trás do suporte,
+          sempre na horizontal; o mais pesado desce e o mais leve sobe (por trás do suporte,
           a ponta do tubo fica escondida na barriga). Cada braço leva o seu prato e cubinhos. */}
       <motion.div
         className={styles.barra}
@@ -152,6 +153,7 @@ function Prato({ id, centro, cubinhos, bloqueada, contagem }) {
           x={centro.x + posicoes[i].x * tamanho}
           y={centro.y + posicoes[i].y * tamanho + tamanho * 0.12}
           bloqueado={bloqueada}
+          lugar="prato"
         />
       ))}
 
