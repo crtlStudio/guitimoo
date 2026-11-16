@@ -2,10 +2,10 @@
 // Volumes da app (Definições). Há dois, cada um com o seu seletor:
 //   musica  → a música de fundo e a música de cada página
 //   efeitos → os sons dos jogos: certo, erro, estrela, festa, toque,
-//             tic-tac e os sons da Coruja
+//             tic-tac e os sons do jogo de Memória
 //
 // Cada valor vai de 0.1 (10%) a 1 (100% = volume normal). O mínimo é 10%
-// para nunca ficar sem som por engano (o jogo da Coruja precisa de som;
+// para nunca ficar sem som por engano (o jogo de Memória precisa de som;
 // para calar a música já existe o botão de som).
 // Os valores ficam guardados no telemóvel (Preferences). musica.js e
 // efeitos.js multiplicam o volume de cada som por estes valores.

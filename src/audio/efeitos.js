@@ -5,9 +5,9 @@
 //   estrela → cada vez que se ganham estrelas
 //   festa   → quando se acaba um jogo (jogo ganho)
 //   toque   → cada toque num botão (automático, ver ativarSomDeToque)
-//   tictac  → o ponteiro do relógio da Tartaruga a avançar
-//   sapinho → (Sapo) um sapinho posto num prato
-//   cair    → (Sapo) um sapinho largado fora dos pratos
+//   tictac  → o ponteiro do relógio (jogo das Horas) a avançar
+//   cubinho → (Matemática) um cubinho posto num prato
+//   cair    → (Matemática) um cubinho largado fora dos pratos
 //
 // Os ficheiros estão em src/assets/sons/. Para trocar um som, basta
 // substituir o ficheiro mantendo o nome.
@@ -21,7 +21,7 @@ import somEstrela from '../assets/sons/estrela.mp3'
 import somFesta from '../assets/sons/festa.mp3'
 import somToque from '../assets/sons/toque.mp3'
 import somTicTac from '../assets/sons/tictac.mp3'
-import somSapinho from '../assets/sons/sapinho.mp3'
+import somCubinho from '../assets/sons/cubinho.mp3'
 import somCair from '../assets/sons/cair.mp3'
 import { volumeDe } from './volume'
 
@@ -34,13 +34,13 @@ const EFEITOS = {
   festa: { src: somFesta, volume: 0.9 },
   toque: { src: somToque, volume: 0.4 },
   tictac: { src: somTicTac, volume: 0.35 },
-  sapinho: { src: somSapinho, volume: 0.8 }, // Sapo: um sapinho posto num prato
-  cair: { src: somCair, volume: 0.7 }, // Sapo: um sapinho largado fora dos pratos
+  cubinho: { src: somCubinho, volume: 0.8 }, // Matemática: um cubinho posto num prato
+  cair: { src: somCair, volume: 0.7 }, // Matemática: um cubinho largado fora dos pratos
 }
 
 /**
  * Volume real de um som de jogo: o seu volume normal × o volume dos efeitos
- * das Definições. Também usado pelos sons da Coruja (games/coruja/tocador.js).
+ * das Definições. Também usado pelos sons do jogo de Memória (games/memoria/tocador.js).
  */
 export function volumeComDefinicoes(volume) {
   return volume * volumeDe('efeitos')
@@ -73,7 +73,7 @@ export function tocarEfeito(nome) {
 
 /**
  * Cala depressa (com um fade curto) os efeitos que estejam a tocar.
- * A Coruja usa-o antes de cada som do jogo: a criança tem de o ouvir bem,
+ * O jogo de Memória usa-o antes de cada som do jogo: a criança tem de o ouvir bem,
  * sem a "estrela" ou a "festa" por cima.
  */
 export function calarEfeitos(fade = 200) {
@@ -93,7 +93,7 @@ let somDeToqueAtivo = false
  * Liga o som de "toque" em todos os botões da app (chamar uma vez, no início).
  * Escuta os toques no documento inteiro: quando o dedo toca num botão ou
  * link, ouve-se o "toque". Um elemento com o atributo `data-sem-toque`
- * (ex.: os cartões da Coruja, que já tocam o seu próprio som) fica de fora;
+ * (ex.: os cartões do jogo de Memória, que já tocam o seu próprio som) fica de fora;
  * `data-toque` acrescenta o som a elementos que não são botões (ex.: a grelha).
  */
 export function ativarSomDeToque() {

@@ -11,7 +11,7 @@ import styles from './ContadorEstrelas.module.css'
  * - placar: o placar do jogo atual (de useJogo), para as bolinhas
  * - ganho: { quantas, vez } — quando muda, aparece um "+5" a subir
  * - naColuna: true = em vez de ficar em cima ao centro, ocupa a largura do
- *   sítio onde está (ex.: por baixo das palavras do Panda, para não tapar a grelha)
+ *   sítio onde está (ex.: por baixo das palavras do Português, para não tapar a grelha)
  */
 function ContadorEstrelas({ placar, ganho, naColuna = false }) {
   // useSyncExternalStore: o componente "inscreve-se" no total de estrelas

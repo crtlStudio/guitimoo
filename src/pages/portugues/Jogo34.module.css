@@ -1,0 +1,88 @@
+/*
+ * Medidas em % e cqw da imagem (1cqw = 1% da largura da imagem).
+ * O balão com a letra fica ao centro, em cima; as letras para tocar, em baixo.
+ */
+
+/* ---------- Balão com a letra, ao centro ---------- */
+.balao {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin-inline: auto; /* centrado na horizontal */
+  width: fit-content;
+  top: 18%; /* abaixo do contador de estrelas */
+  min-width: 15cqw;
+  padding: 1.2cqw 2.4cqw 1.6cqw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: 'Fredoka', system-ui, sans-serif;
+  font-weight: 600;
+  background: #fffdf6;
+  border: max(2px, 0.4cqw) solid #f5c96a;
+  border-radius: 3cqw;
+  box-shadow: 0 0.6cqw 1.6cqw rgba(0, 0, 0, 0.2);
+  transform-origin: center;
+}
+
+.letraGrande {
+  font-size: max(3rem, 11cqw);
+  line-height: 1;
+  color: #2f7d32;
+}
+
+.exemplo {
+  font-size: max(0.9rem, 2.2cqw);
+  color: #5a3912;
+  white-space: nowrap;
+}
+
+.destaque {
+  color: #2f7d32;
+  font-size: 1.25em;
+}
+
+/* ---------- Posição do balão da mascote (o aspeto está no BalaoMascote) ---------- */
+.mensagem {
+  position: absolute;
+  right: 4%;
+  top: 22%;
+}
+
+/* ---------- Fila de letras, na relva ---------- */
+.fila {
+  position: absolute;
+  left: 3%;
+  width: 62%;
+  bottom: 9%;
+  display: flex;
+  justify-content: center;
+  gap: 1.4cqw;
+}
+
+/* Cada letra é um botão grande, para dedos pequenos */
+.letra {
+  width: 9cqw;
+  min-width: 48px;
+  aspect-ratio: 1;
+  padding: 0;
+  cursor: pointer;
+  font-family: 'Fredoka', system-ui, sans-serif;
+  font-weight: 600;
+  font-size: max(1.6rem, 6cqw);
+  line-height: 1;
+  color: #5a3912;
+  background: #fffdf6;
+  border: max(2px, 0.35cqw) solid #f5c96a;
+  border-radius: 2cqw;
+  box-shadow: 0 0.5cqw 0 #c9912f;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* A letra certa fica verde */
+.certa {
+  color: #fff;
+  background: #4caf50;
+  border-color: #2e7d32;
+  box-shadow: 0 0.5cqw 0 #2e7d32;
+}

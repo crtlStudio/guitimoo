@@ -16,6 +16,7 @@
   flex-direction: column;
   align-items: center;
   text-decoration: none;
+  cursor: pointer;
 
   /* Efeito vidro */
   background: linear-gradient(
@@ -62,33 +63,15 @@
   white-space: nowrap;
 }
 
-/* Título na faixa de cima da moldura, com o estilo do texto dos botões */
-.titulo {
+/* A mascote escolhida: contorno dourado e uma estrela */
+.ativa {
+  border: max(2px, 0.35cqw) solid #f5c96a;
+}
+
+.estrela {
   position: absolute;
-  z-index: 1;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  height: var(--topo);
-  display: flex;
-  align-items: center;
-  margin: 0;
-  white-space: nowrap;
-  font-family: 'Fredoka', system-ui, sans-serif;
-  font-size: min(calc(var(--topo) * 0.5), 6.5vw);
-  font-weight: 600;
-  line-height: 1.1;
-  color: #f5c96a;
-  --contorno: #5a3912;
-  text-shadow:
-    -0.05em -0.05em 0 var(--contorno),
-    0.05em -0.05em 0 var(--contorno),
-    -0.05em 0.05em 0 var(--contorno),
-    0.05em 0.05em 0 var(--contorno),
-    0 -0.05em 0 var(--contorno),
-    0 0.05em 0 var(--contorno),
-    -0.05em 0 0 var(--contorno),
-    0.05em 0 0 var(--contorno),
-    0 0.12em 0.1em rgba(0, 0, 0, 0.3);
-  pointer-events: none;
+  top: -1.6cqw;
+  right: -1.2cqw;
+  font-size: max(1rem, 2.8cqw);
+  filter: drop-shadow(0 0.2cqw 0.3cqw rgba(0, 0, 0, 0.3));
 }

@@ -1,0 +1,73 @@
+/* Por cima de tudo (também do cartão de fim de jogo) */
+.fundo {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: grid;
+  place-items: center;
+  border-radius: inherit;
+  background: rgba(30, 20, 5, 0.45);
+}
+
+.cartao {
+  position: relative;
+  z-index: 11;
+  width: min(60cqw, 100% - 32px);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2cqw;
+  padding: 2cqw 3cqw 2.4cqw;
+  font-family: 'Fredoka', system-ui, sans-serif;
+  font-weight: 600;
+  text-align: center;
+  color: #5a3912;
+  background: #fffdf6;
+  border: max(3px, 0.5cqw) solid #f5c96a;
+  border-radius: 3.4cqw;
+  box-shadow: 0 1cqw 3cqw rgba(0, 0, 0, 0.35);
+}
+
+.imagens {
+  display: flex;
+  align-items: flex-end;
+  gap: 2cqw;
+  line-height: 1;
+}
+
+.mascote {
+  display: inline-block;
+  font-size: max(2.6rem, 9cqw);
+}
+
+.projeto {
+  display: inline-block;
+  font-size: max(3rem, 11cqw);
+}
+
+.titulo {
+  margin: 0;
+  font-size: max(1.3rem, 3.8cqw);
+  line-height: 1.1;
+  color: #2f7d32;
+}
+
+.frase {
+  margin: 0;
+  font-size: max(0.95rem, 2.3cqw);
+}
+
+.boa {
+  min-height: 44px;
+  padding: 0.35em 1.6em;
+  cursor: pointer;
+  font: inherit;
+  font-size: max(1.1rem, 3cqw);
+  color: #fff;
+  background: #4caf50;
+  border: 0;
+  border-radius: 999px;
+  box-shadow: 0 0.18em 0 #2e7d32;
+  -webkit-tap-highlight-color: transparent;
+}

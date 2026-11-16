@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { tocarEfeito } from '../audio/efeitos'
 import { novoPlacar, registarCerta, registarErro, somarEstrelas } from '../games/estrelas'
+import { ganharEstrelas } from '../games/progresso/estado'
+import { somarPremios } from '../games/progresso/progresso'
 
 /**
  * A estrela (som + "+5" + total a subir) chega este tempo depois do "certo".
@@ -12,27 +14,42 @@ const ATRASO_DO_FIM = ATRASO_DA_ESTRELA + 1000
 /** No fim do jogo, a estrela dos +15 soa este tempo depois da "festa". */
 const ATRASO_DA_ESTRELA_DA_FESTA = 1200
 
+/** Soma as estrelas ao total e às peças da mascote; devolve o que deram. */
+function contarEstrelas(jogoId, quantas) {
+  somarEstrelas(quantas)
+  return ganharEstrelas(jogoId, quantas)
+}
+
 /**
- * "Motor" de um jogo com `perguntas` perguntas, igual em todas as mascotes.
- * O jogo (Panda, Tartaruga, Coruja...) só tem de avisar:
+ * "Motor" de um jogo com `perguntas` perguntas, igual em todos os jogos.
+ * `jogoId` é o id do jogo em config.js ('matematica', 'portugues', ...): as
+ * estrelas contam para as peças da cor desse jogo.
+ * O jogo (Português, Horas, Memória...) só tem de avisar:
  *   aoAcertar() → a criança respondeu bem a uma pergunta
  *                 (devolve true se era a última: o jogo acabou, não há ronda seguinte)
  *   aoErrar()   → a criança errou (pode tentar outra vez)
  * E o motor trata do resto: sons (certo, erro, estrela, festa), estrelas
- * (5 por certa à primeira, 15 no fim) e o fim do jogo.
+ * (5 por certa à primeira, 15 no fim), peças para a mascote e o fim do jogo.
+ * As estrelas contam para as peças logo que aparecem (se a criança sair a
+ * meio, não se perdem); a festa das peças é no ecrã de fim.
  *
  * Devolve:
  * - placar: { perguntas, feitas, certas, errouNesta, estrelas }
  * - ganho: a última vez que ganhou estrelas { quantas, vez } (para o "+5")
  * - fim: true quando o jogo acabou (a página mostra o ecrã de fim)
  * - numero: conta os jogos (muda ao recomeçar; serve de `key` ao jogo)
+ * - premio: o que este jogo deu à mascote, ou null
+ *   { jogoId, pecasGanhas, pecasExtra, projetosAcabados } (para o ecrã de fim)
  * - aoAcertar(), aoErrar(), recomecar(novasPerguntas?)
  */
-export function useJogo(perguntas) {
+export function useJogo(perguntas, jogoId) {
   const [placar, setPlacar] = useState(() => novoPlacar(perguntas))
   const [ganho, setGanho] = useState(null)
   const [fim, setFim] = useState(false)
   const [numero, setNumero] = useState(0)
+  const [premio, setPremio] = useState(null)
+  // O id do jogo numa "caixa" (ref): a limpeza ao sair da página usa-o
+  const idDoJogo = useRef(jogoId)
 
   // Cópia do placar sempre atualizada: os jogos chamam aoAcertar/aoErrar
   // de dentro de temporizadores, onde o `placar` do estado pode estar velho.
@@ -57,7 +74,8 @@ export function useJogo(perguntas) {
     porEntregar.current.push(entrega)
     depois(ms, () => {
       porEntregar.current = porEntregar.current.filter((e) => e !== entrega)
-      somarEstrelas(quantas)
+      const resultado = contarEstrelas(idDoJogo.current, quantas)
+      if (resultado) setPremio((antes) => somarPremios(antes, idDoJogo.current, resultado))
       tocarEfeito('estrela')
       setGanho((g) => ({ quantas, vez: (g?.vez ?? 0) + 1 }))
     })
@@ -67,7 +85,7 @@ export function useJogo(perguntas) {
   function cancelarTudo() {
     temporizadores.current.forEach(clearTimeout)
     temporizadores.current = []
-    porEntregar.current.forEach((e) => somarEstrelas(e.quantas))
+    porEntregar.current.forEach((e) => contarEstrelas(idDoJogo.current, e.quantas))
     porEntregar.current = []
   }
 
@@ -105,9 +123,10 @@ export function useJogo(perguntas) {
     cancelarTudo()
     mudarPlacar(novoPlacar(novasPerguntas))
     setGanho(null)
+    setPremio(null)
     setFim(false)
     setNumero((n) => n + 1)
   }
 
-  return { placar, ganho, fim, numero, aoAcertar, aoErrar, recomecar }
+  return { placar, ganho, fim, numero, premio, aoAcertar, aoErrar, recomecar }
 }

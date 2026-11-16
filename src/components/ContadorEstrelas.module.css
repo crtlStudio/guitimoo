@@ -96,7 +96,7 @@
     0 0.15em 0.4em rgba(0, 0, 0, 0.25);
 }
 
-/* ---------- Na coluna de um jogo (ex.: por baixo das palavras do Panda) ---------- */
+/* ---------- Na coluna de um jogo (ex.: por baixo das palavras do Português) ---------- */
 /* Fica no seu lugar, com a largura da coluna e a altura das palavras da lista */
 .naColuna {
   position: relative;

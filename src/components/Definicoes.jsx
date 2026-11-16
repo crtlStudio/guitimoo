@@ -58,7 +58,7 @@ function SeletorVolume({ tipo, nome, icone }) {
  * que abre, com dois volumes, cada um num seletor da girafa 🦒 (baixinho)
  * ao leão 🦁 (alto):
  *   Música  → a música de fundo e a de cada página
- *   Efeitos → os sons dos jogos (certo, erro, estrela, festa, toque, Coruja...)
+ *   Efeitos → os sons dos jogos (certo, erro, estrela, festa, toque, Memória...)
  */
 function Definicoes() {
   const [aberta, setAberta] = useState(false)

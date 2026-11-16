@@ -1,45 +1,60 @@
-import { Link } from 'react-router-dom'
-import '@fontsource/fredoka/600.css'
-import BotaoSom from '../../components/BotaoSom'
-import BotaoVoltar from '../../components/BotaoVoltar'
-import Definicoes from '../../components/Definicoes'
-import Moldura from '../../components/Moldura'
+import { useNavigate } from 'react-router-dom'
+import EcraEscolha from '../../components/EcraEscolha'
+import { usePerfil } from '../../components/useProgresso'
+import { MASCOTES } from '../../games/progresso/config'
+import { mudarProgresso } from '../../games/progresso/estado'
+import { escolherMascote } from '../../games/progresso/progresso'
 import imagemMascotes from '../../assets/mascotes.webp'
 import styles from './Mascotes.module.css'
 
-// Pela ordem em que aparecem na imagem. Cada nome tem sempre 2 linhas.
-const MASCOTES = [
-  { linhas: ['Contas e', 'Saltos'], rota: '/sapo', classe: styles.sapo },
-  { linhas: ['Letras e', 'Trapalhadas'], rota: '/panda', classe: styles.panda },
-  { linhas: ['Memória', 'e Sons'], rota: '/coruja', classe: styles.coruja },
-  { linhas: ['Pontual', 'sem Stress'], rota: '/tartaruga', classe: styles.tartaruga },
-]
+// Onde fica cada mascote na imagem (da esquerda para a direita)
+const POSICAO = {
+  sapo: styles.sapo,
+  panda: styles.panda,
+  coruja: styles.coruja,
+  tartaruga: styles.tartaruga,
+}
 
+/**
+ * Escolher a mascote: a criança escolhe quem vai ajudar a acabar o projeto.
+ * A mascote que já estava escolhida tem uma estrela. Pode-se trocar sempre:
+ * o progresso de cada mascote fica guardado.
+ */
 function Mascotes() {
-  // Sobre a moldura: voltar, título e som (em cima) e definições (em baixo à direita)
-  const topo = (
-    <>
-      <BotaoVoltar para="/" />
-      <h1 className={styles.titulo}>O que vamos jogar agora?</h1>
-      <BotaoSom />
-      <Definicoes />
-    </>
-  )
+  const navegar = useNavigate()
+  const ativa = usePerfil()?.mascoteAtiva
+
+  function escolher(id) {
+    mudarProgresso((progresso) => escolherMascote(progresso, id))
+    navegar('/jogos')
+  }
 
   return (
-    <Moldura imagem={imagemMascotes} topo={topo}>
-      <nav aria-label="Jogos">
-        {MASCOTES.map(({ linhas, rota, classe }) => (
-          <Link key={rota} to={rota} className={`${styles.botao} ${classe}`}>
-            {linhas.map((linha) => (
-              <span key={linha} className={styles.linha}>
-                {linha}
-              </span>
-            ))}
-          </Link>
-        ))}
+    <EcraEscolha titulo="Quem vais ajudar?" voltar="/nivel" imagem={imagemMascotes}>
+      <nav aria-label="Mascotes">
+        {MASCOTES.map(({ id, nome }) => {
+          // 'Sapo construtor' → 2 linhas: 'Sapo' e 'construtor'
+          const [primeira, ...resto] = nome.split(' ')
+          return (
+            <button
+              key={id}
+              type="button"
+              className={`${styles.botao} ${POSICAO[id]} ${id === ativa ? styles.ativa : ''}`}
+              onClick={() => escolher(id)}
+              aria-pressed={id === ativa}
+            >
+              {id === ativa && (
+                <span className={styles.estrela} aria-hidden="true">
+                  ⭐
+                </span>
+              )}
+              <span className={styles.linha}>{primeira}</span>
+              <span className={styles.linha}>{resto.join(' ')}</span>
+            </button>
+          )
+        })}
       </nav>
-    </Moldura>
+    </EcraEscolha>
   )
 }
 

@@ -1,19 +1,31 @@
 import { motion } from 'motion/react'
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { ESTRELAS_POR_CERTA, ESTRELAS_POR_JOGO } from '../games/estrelas'
 import Festa from './Festa'
+import PremioPecas from './PremioPecas'
+import ProjetoAcabado from './ProjetoAcabado'
+import { useMascoteAtiva } from './useProgresso'
 import styles from './FimDeJogo.module.css'
 
 /**
  * Ecrã de fim de jogo (jogo ganho!), por cima do jogo, com as contas das
- * estrelas e um botão para jogar outra vez. Igual em todas as mascotes.
+ * estrelas e um botão para jogar outra vez. Igual em todos os jogos; quem
+ * festeja é a mascote escolhida pela criança.
  *
  * Props:
  * - placar: o placar do jogo que acabou (de useJogo)
- * - mascote: o emoji da mascote (ex.: '🐼')
+ * - premio: o que o jogo deu à mascote (de useJogo): peças e projetos acabados
  * - aoJogarOutraVez: função do botão "Jogar outra vez"
- * - aoMudarIdade: função do botão "Mudar idade" (volta à escolha das idades)
+ * O botão "Outro jogo" volta à escolha dos jogos.
  */
-function FimDeJogo({ placar, mascote, aoJogarOutraVez, aoMudarIdade }) {
+function FimDeJogo({ placar, premio, aoJogarOutraVez }) {
+  const navegar = useNavigate()
+  const mascote = useMascoteAtiva()?.emoji ?? '⭐'
+  // Quantos projetos acabados já foram festejados (a festa grande aparece uma vez por cada)
+  const [projetosVistos, setProjetosVistos] = useState(0)
+  const projetosAcabados = premio?.projetosAcabados ?? 0
+  const temPergunta = (premio?.pecasExtra ?? 0) > 0
   const deCertas = placar.certas * ESTRELAS_POR_CERTA
   const perfeito = placar.certas === placar.perguntas
 
@@ -49,16 +61,21 @@ function FimDeJogo({ placar, mascote, aoJogarOutraVez, aoMudarIdade }) {
         </h2>
 
         <ul className={styles.contas}>
-          <motion.li {...linha(0)}>
-            <span>
-              ✅ {placar.certas} {placar.certas === 1 ? 'certa' : 'certas'} à primeira × {ESTRELAS_POR_CERTA}
-            </span>
-            <strong>{deCertas} ⭐</strong>
-          </motion.li>
-          <motion.li {...linha(1)}>
-            <span>🏆 Jogo ganho</span>
-            <strong>+{ESTRELAS_POR_JOGO} ⭐</strong>
-          </motion.li>
+          {/* Com a pergunta da reserva no cartão, só fica a soma (para tudo caber no ecrã) */}
+          {!temPergunta && (
+            <>
+              <motion.li {...linha(0)}>
+                <span>
+                  ✅ {placar.certas} {placar.certas === 1 ? 'certa' : 'certas'} à primeira × {ESTRELAS_POR_CERTA}
+                </span>
+                <strong>{deCertas} ⭐</strong>
+              </motion.li>
+              <motion.li {...linha(1)}>
+                <span>🏆 Jogo ganho</span>
+                <strong>+{ESTRELAS_POR_JOGO} ⭐</strong>
+              </motion.li>
+            </>
+          )}
           <motion.li className={styles.soma} {...linha(2)}>
             <span>Neste jogo</span>
             <motion.strong
@@ -71,18 +88,21 @@ function FimDeJogo({ placar, mascote, aoJogarOutraVez, aoMudarIdade }) {
           </motion.li>
         </ul>
 
+        {/* As peças que este jogo deu à mascote */}
+        {premio && <PremioPecas premio={premio} jogoId={premio.jogoId} />}
+
         <div className={styles.botoes}>
-          {/* Volta à escolha das idades */}
+          {/* Volta à escolha dos jogos */}
           <motion.button
             type="button"
-            className={styles.mudarIdade}
-            onClick={aoMudarIdade}
+            className={styles.outroJogo}
+            onClick={() => navegar('/jogos')}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.3 }}
             whileTap={{ scale: 0.93 }}
           >
-            Mudar idade
+            Outro jogo
           </motion.button>
 
           <motion.button
@@ -101,6 +121,11 @@ function FimDeJogo({ placar, mascote, aoJogarOutraVez, aoMudarIdade }) {
           </motion.button>
         </div>
       </motion.div>
+
+      {/* Projeto completo: a festa grande, por cima de tudo */}
+      {projetosAcabados > projetosVistos && (
+        <ProjetoAcabado vez={projetosAcabados} aoFechar={() => setProjetosVistos(projetosAcabados)} />
+      )}
     </div>
   )
 }

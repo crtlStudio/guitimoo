@@ -1,4 +1,5 @@
 import { AnimatePresence, motion } from 'motion/react'
+import { useMascoteAtiva } from './useProgresso'
 import styles from './BalaoMascote.module.css'
 
 const TEXTOS = {
@@ -7,7 +8,7 @@ const TEXTOS = {
   fim: 'Muito bem!',
 }
 
-// Como a pequena mascote reage a cada tipo de mensagem
+// Como a mascote reage a cada tipo de mensagem
 const REACOES = {
   erro: { rotate: [0, -18, 16, -12, 8, 0] }, // abana a cabeça, com carinho
   boa: { y: [0, -6, 0] }, // um pulinho
@@ -15,16 +16,17 @@ const REACOES = {
 }
 
 /**
- * Balão de fala da mascote (🐼, 🐢, ...), igual em todos os jogos.
+ * Balão de fala da mascote escolhida pela criança (🐸, 🐼, ...), que a
+ * acompanha em todos os jogos.
  *
  * Props:
- * - emoji: a mascote que reage dentro do balão
  * - mensagem: null (nada) ou { tipo: 'erro' | 'boa' | 'fim', vez }
  *   (`vez` muda a cada mensagem, para a animação repetir)
  * - textos: para trocar algum texto (ex.: { fim: 'Boa!' })
  * - className: a posição do balão em cada jogo
  */
-function BalaoMascote({ emoji, mensagem, textos = {}, className = '' }) {
+function BalaoMascote({ mensagem, textos = {}, className = '' }) {
+  const emoji = useMascoteAtiva()?.emoji ?? '⭐'
   return (
     <AnimatePresence>
       {mensagem && (

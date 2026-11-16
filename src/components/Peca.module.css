@@ -1,0 +1,20 @@
+/* Quadrado na cor do jogo (--cor), com o emoji da peça ao centro */
+.peca {
+  display: inline-grid;
+  place-items: center;
+  width: 6cqw;
+  min-width: 36px;
+  aspect-ratio: 1;
+  font-size: max(1.2rem, 3.4cqw);
+  line-height: 1;
+  border-radius: 22%;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--cor), white 25%),
+    var(--cor)
+  );
+  border: max(2px, 0.3cqw) solid #fff;
+  box-shadow:
+    0 0.35cqw 0 color-mix(in srgb, var(--cor), black 30%),
+    0 0.6cqw 1cqw rgba(0, 0, 0, 0.25);
+}

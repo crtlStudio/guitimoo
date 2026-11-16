@@ -1,0 +1,96 @@
+/*
+ * Medidas em cqw (1% da largura da imagem; a altura da imagem é 56.25cqw).
+ * Grelha à esquerda, a seguir ao botão voltar; cartão à direita.
+ */
+
+/* ---------- Grelha ---------- */
+.zonaGrelha {
+  position: absolute;
+  left: 12.5cqw; /* a seguir ao botão voltar, com folga */
+  top: 3cqw;
+  height: 50cqw; /* quase a altura toda da imagem */
+}
+
+/* ---------- Coluna da direita ---------- */
+.lado {
+  position: absolute;
+  left: 64cqw;
+  right: 2cqw;
+  top: 12cqw; /* abaixo do botão do som */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2cqw;
+}
+
+/* Cartão e, por baixo, o contador de estrelas com a mesma largura */
+.cartaoEContador {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 1.2cqw;
+}
+
+.cartao {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6cqw;
+  padding: 1cqw 1.6cqw 1.4cqw;
+  background: #fffdf6;
+  border: max(2px, 0.4cqw) solid #f5c96a;
+  border-radius: 2.4cqw;
+  box-shadow: 0 0.6cqw 1.6cqw rgba(0, 0, 0, 0.2);
+  font-family: 'Fredoka', system-ui, sans-serif;
+  font-weight: 600;
+}
+
+.emoji {
+  font-size: max(2rem, 7cqw);
+  line-height: 1;
+}
+
+.palavra {
+  display: flex;
+  gap: 0.5cqw;
+}
+
+/* Cada letra da palavra numa caixinha, como na grelha */
+.letra {
+  width: 5cqw;
+  min-width: 28px;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  font-size: max(1.1rem, 3.6cqw);
+  line-height: 1;
+  color: #5a3912;
+  background: #fff3cf;
+  border-radius: 0.8cqw;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.letraCerta {
+  color: #fff;
+  background: #7ed957;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+/* ---------- Posição do balão da mascote (o aspeto está no BalaoMascote) ---------- */
+/* Centrado por cima do cartão/lista (sem transform: o motion usa-o na animação) */
+.mensagem {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  right: 0;
+  width: fit-content;
+  margin: 0 auto 1cqw;
+}
+
+/* Se não couber na largura da coluna, o texto do balão passa a 2 linhas */
+.lado .mensagem {
+  max-width: 100%;
+  box-sizing: border-box;
+  white-space: normal;
+  text-align: center;
+}

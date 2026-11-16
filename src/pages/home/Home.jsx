@@ -7,7 +7,7 @@ import styles from './Home.module.css'
 function Home() {
   return (
     <Moldura imagem={imagemInicio}>
-      <Link to="/mascotes" className={styles.botaoJogar} onClick={iniciarMusicaFundo}>
+      <Link to="/nivel" className={styles.botaoJogar} onClick={iniciarMusicaFundo}>
         Jogar
       </Link>
     </Moldura>

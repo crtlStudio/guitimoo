@@ -91,7 +91,7 @@ function pararMusicaFundo() {
 /**
  * Para usar nas páginas com som próprio: pára a música de fundo,
  * toca a música da página em loop e, ao sair, a música de fundo recomeça.
- *   useMusicaPagina(musicaSapo)   -> pára o fundo e toca a música do sapo
+ *   useMusicaPagina(musica)       -> pára o fundo e toca a música do jogo
  *   useMusicaPagina(null)         -> só pára o fundo (página com sons próprios)
  */
 export function useMusicaPagina(src, volume = VOLUME_FUNDO) {
