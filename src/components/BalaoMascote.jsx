@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'motion/react'
-import { useMascoteAtiva } from './useProgresso'
+import CabecaMascote from './CabecaMascote'
 import styles from './BalaoMascote.module.css'
 
 const TEXTOS = {
@@ -26,7 +26,6 @@ const REACOES = {
  * - className: a posição do balão em cada jogo
  */
 function BalaoMascote({ mensagem, textos = {}, className = '' }) {
-  const emoji = useMascoteAtiva()?.emoji ?? '⭐'
   return (
     <AnimatePresence>
       {mensagem && (
@@ -45,7 +44,7 @@ function BalaoMascote({ mensagem, textos = {}, className = '' }) {
             animate={REACOES[mensagem.tipo]}
             transition={{ duration: 0.7, delay: 0.1 }}
           >
-            {emoji}
+            <CabecaMascote />
           </motion.span>
           {textos[mensagem.tipo] ?? TEXTOS[mensagem.tipo]}
         </motion.p>

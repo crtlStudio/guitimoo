@@ -43,24 +43,27 @@ Estou a continuar o GuitimOO (app de jogos educativos para crianças, React + Vi
 - **Ícones/ilustrações das palavras** (`assets/icones_gerais/`, componente `components/ImagemPalavra.jsx`):
   - Carrega sozinho todos os `.png` da pasta. O nome do ficheiro é a palavra sem acentos e em minúsculas (`leao.png`). Imagem nova com o nome certo entra sem mexer no código.
   - Se faltar a imagem, mostra o emoji.
-  - Nomes diferentes da palavra estão em `OUTROS_NOMES`: carrinha → camião, onda → mar, cino → sino, foguetao → foguete, uvas → uva.
-  - Já usado em: Português (todos os jogos e instruções), cartões da Memória dos sons e peças das mascotes (`imagemPeca` no `config.js`).
+  - Ficheiros com nome diferente da palavra estão em `OUTROS_NOMES` (a imagem responde pelos dois nomes): carrinha → camião, galinha → galo (a imagem é um galo), raio → trovão, girasol → girassol, semear → rebento, globo → planeta, trofeu → taça, busola → bússola, semafro → semáforo, etc.
+  - Já usado em: Português (jogos e instruções), Memória dos sons, Horas, pistas do Detetive e peças das mascotes (`imagemPeca` no `config.js`).
   - As imagens devem ser pequenas (~180 px). As grandes reduzem-se e os originais ficam em `assets/icones_gerais_originais/` (não entram na app).
 - Detetive: todas as profissões e locais já têm imagem (`assets/detetive/`, em `.webp` 512×512; os `.png` ao lado são os originais).
 - **Instruções com painéis e dedo** (`components/demonstracao/`): o cartão com os painéis, o dedo, o ✓ e o motor dos passos, partilhados. Usado na Matemática (3 painéis) e no Português (jogo do nível + caixa das palavras); as coreografias estão em `pages/<jogo>/passosDasInstrucoes.js`.
 - **Horas e Detetive com imagens:** cada item das Horas tem `imagem` no JSON (`rotinas.json`, `atividades.json`); as pistas do Detetive têm o nome da imagem em `IMAGEM_DA_PISTA` (`games/detetive/profissoes.js`) e desenham-se com `pages/detetive/Pista.jsx`.
+  - Rotina do pintainho: Ovo → Pintainho → Galo. Pista da cientista: óculos de proteção 🥽 (era a placa de Petri).
+- **Cabeças das mascotes** (`assets/mascotes/cabecas/<id>.png`, componente `components/CabecaMascote.jsx`): aparecem no balão da mascote, no fim do jogo e no caminho das Horas. Sem imagem, mostra o emoji. Originais grandes em `assets/mascotes/cabecas_originais/` (não entram na app).
 
 ## Ícones que faltam (estou a fazê-los)
 
-Põem-se em `src/assets/icones_gerais/` com estes nomes (~180 px). Já estão ligados nos jogos: até haver imagem aparece o emoji, e a imagem entra sozinha.
+Só falta **`oculos_protecao.png`** (pista da cientista), para `src/assets/icones_gerais/` (~180 px). Já está ligado: até haver imagem aparece o emoji 🥽.
 
-- **Detetive (pistas):** oculos_protecao (cientista)
+## Android (atenção)
 
-Nomes de ficheiro diferentes da palavra estão em `OUTROS_NOMES` (`components/ImagemPalavra.jsx`): por exemplo galinha → galo, raio → trovão, girasol → girassol, semear → rebento, globo → planeta, trofeu → taça.
+- O Gradle tem de ficar na **8.14.3** (`android/gradle/wrapper/gradle-wrapper.properties`). O plugin Android é o 8.13.0 e **não funciona com Gradle 9.6 ou mais recente**. Se o Android Studio sugerir atualizar o Gradle ou o plugin, **recusar**.
+- Para levar a app para o Android Studio: `npx vite build`, `npx cap sync android` e `npx cap open android` (ou File → Open → pasta `android`). Para compilar na linha de comandos é preciso `JAVA_HOME` com o Java do Android Studio (`C:\Program Files\Android\Android Studio\jbr`).
 
 ## Próximos passos (a combinar comigo)
 
-1. Fazer os ícones que faltam (lista acima).
+1. O ícone que falta (oculos_protecao).
 2. Levar o conceito dos **vários jogos dentro de cada jogo** e o **dedo fantasma** à Memória, Horas e Detetive. Para cada jogo, primeiro o plano e espero pela confirmação.
 3. Imagens dos projetos das mascotes a crescer (minhas).
 
@@ -76,8 +79,8 @@ Nomes de ficheiro diferentes da palavra estão em `OUTROS_NOMES` (`components/Im
 
 ## Como verificar
 
-- `npm test` (vitest, 334 testes; **não** usar `npx vitest`), `npx eslint src`, `npx vite build`.
-- Para ver a app: `npx vite`. Para testes no browser usei `playwright-core` instalado fora do projeto, com o Chrome do sistema. O progresso pode ser preenchido à mão no `localStorage` (`CapacitorStorage.progresso`) para testar casos.
+- `npm test` (vitest, 350 testes; **não** usar `npx vitest`), `npx eslint src`, `npx vite build`.
+- Para ver a app: `npx vite`. Para testes no browser usei `playwright-core` instalado fora do projeto, com o Chrome do sistema. Clicar no "Vamos jogar!" precisa de `click({ force: true })` (o botão está sempre a pulsar). O progresso pode ser preenchido à mão no `localStorage` (`CapacitorStorage.progresso`) para testar casos.
 
 ## Para começar
 

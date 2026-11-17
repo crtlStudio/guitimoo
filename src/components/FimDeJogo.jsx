@@ -6,7 +6,7 @@ import BotaoConstrucao from './BotaoConstrucao'
 import Festa from './Festa'
 import PremioPecas from './PremioPecas'
 import ProjetoAcabado from './ProjetoAcabado'
-import { useMascoteAtiva } from './useProgresso'
+import CabecaMascote from './CabecaMascote'
 import styles from './FimDeJogo.module.css'
 
 /**
@@ -23,7 +23,6 @@ import styles from './FimDeJogo.module.css'
  */
 function FimDeJogo({ placar, premio, aoJogarOutraVez }) {
   const navegar = useNavigate()
-  const mascote = useMascoteAtiva()?.emoji ?? '⭐'
   // Quantos projetos acabados já foram festejados (a festa grande aparece uma vez por cada)
   const [projetosVistos, setProjetosVistos] = useState(0)
   const projetosAcabados = premio?.projetosAcabados ?? 0
@@ -57,7 +56,7 @@ function FimDeJogo({ placar, premio, aoJogarOutraVez }) {
             animate={{ y: [0, -10, 0, -6, 0], rotate: [0, -10, 10, 0, 0] }}
             transition={{ duration: 1, delay: 0.2 }}
           >
-            {mascote}
+            <CabecaMascote />
           </motion.span>
           {perfeito ? 'Perfeito! Jogo ganho!' : 'Jogo ganho!'}
         </h2>

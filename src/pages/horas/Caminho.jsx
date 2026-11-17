@@ -1,5 +1,5 @@
 import { motion } from 'motion/react'
-import { useMascoteAtiva } from '../../components/useProgresso'
+import CabecaMascote from '../../components/CabecaMascote'
 import styles from './Caminho.module.css'
 
 /**
@@ -11,7 +11,6 @@ import styles from './Caminho.module.css'
  * - total: quantas pedras até à meta
  */
 function Caminho({ passos, total }) {
-  const emoji = useMascoteAtiva()?.emoji ?? '⭐'
   // Posição da mascote, em % do caminho (0% = início, 100% = meta)
   const posicao = (Math.min(passos, total) / total) * 100
 
@@ -46,7 +45,7 @@ function Caminho({ passos, total }) {
             animate={{ y: passos > 0 ? ['0cqw', '-1.6cqw', '0cqw'] : '0cqw' }}
             transition={{ duration: 0.45 }}
           >
-            {emoji}
+            <CabecaMascote />
           </motion.span>
         </motion.span>
       </div>
