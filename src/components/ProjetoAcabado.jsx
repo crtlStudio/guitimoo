@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 import { tocarEfeito } from '../audio/efeitos'
 import { comMaiuscula } from '../games/progresso/textos'
 import Festa from './Festa'
+import ImagemProjeto from './ImagemProjeto'
 import { useMascoteAtiva } from './useProgresso'
 import styles from './ProjetoAcabado.module.css'
 
@@ -52,7 +53,7 @@ function ProjetoAcabado({ vez, aoFechar }) {
             animate={{ scale: [0, 1.3, 1] }}
             transition={{ delay: 0.3, duration: 0.6 }}
           >
-            {mascote.iconeProjeto}
+            <ImagemProjeto mascote={mascote} className={styles.projetoImagem} decorativa />
           </motion.span>
         </div>
 

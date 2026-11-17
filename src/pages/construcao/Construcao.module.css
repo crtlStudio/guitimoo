@@ -42,6 +42,13 @@
   gap: 0.25em;
 }
 
+.tituloProjeto {
+  height: 1.1em;
+  width: auto;
+  font-size: 1em; /* se for emoji */
+  filter: drop-shadow(0 0.05em 0.05em rgba(0, 0, 0, 0.3));
+}
+
 .tituloMascote {
   height: 1.15em;
   width: auto;
@@ -137,12 +144,23 @@
   place-items: center;
 }
 
-/* As duas camadas ficam uma em cima da outra */
+/* As duas camadas ficam uma em cima da outra (e com o tamanho da imagem,
+   para a cor subir desde o fundo do desenho) */
 .fantasma,
 .colorido {
   grid-area: 1 / 1;
-  font-size: max(6rem, 27cqw);
+  display: block;
+  font-size: max(6rem, 27cqw); /* se for emoji */
   line-height: 1;
+}
+
+/* A imagem do projeto: o maior possível dentro do espaço, sem deformar */
+.projetoImagem {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 31cqw;
+  max-height: 38cqw;
 }
 
 /* Sem cor: cinzento clarinho, como um desenho por pintar */
@@ -180,6 +198,14 @@
   border: 0;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
+}
+
+.acabadoImagem {
+  display: block;
+  width: auto;
+  height: max(2rem, 5.4cqw);
+  max-width: 7cqw;
+  object-fit: contain;
 }
 
 /* ---------- Torres ---------- */
@@ -375,6 +401,14 @@
   font-size: max(8rem, 34cqw);
   line-height: 1;
   filter: drop-shadow(0 1cqw 1.4cqw rgba(0, 0, 0, 0.4));
+}
+
+.grandeImagem {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 60cqw;
+  max-height: 44cqw;
 }
 
 @media (prefers-reduced-motion: reduce) {

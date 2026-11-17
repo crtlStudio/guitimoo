@@ -38,6 +38,14 @@
   background: #fffdf6;
 }
 
+/* A imagem do projeto, dentro do miolo redondo */
+.iconeImagem {
+  display: block;
+  width: 70%;
+  height: 70%;
+  object-fit: contain;
+}
+
 /* Bolinha vermelha: há novidades */
 .ponto {
   position: absolute;

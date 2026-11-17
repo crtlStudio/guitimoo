@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { PECAS_POR_COR } from '../games/progresso/config'
 import { pecasEmFalta, pecasNovas } from '../games/progresso/progresso'
 import { useMascoteAtiva, useProgresso } from './useProgresso'
+import ImagemProjeto from './ImagemProjeto'
 import styles from './BotaoConstrucao.module.css'
 
 /**
@@ -46,7 +47,7 @@ function BotaoConstrucao({ className = '', seta = 'esquerda' }) {
         transition={{ duration: 1.1, repeat: Infinity, ease: 'easeInOut' }}
       >
         <span className={styles.icone} aria-hidden="true">
-          {mascote.iconeProjeto}
+          <ImagemProjeto mascote={mascote} className={styles.iconeImagem} decorativa />
         </span>
         {haNovidades && <span className={styles.ponto} aria-hidden="true" />}
       </motion.button>

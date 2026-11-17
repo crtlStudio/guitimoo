@@ -6,6 +6,7 @@ import EcraEscolha from '../../components/EcraEscolha'
 import Festa from '../../components/Festa'
 import IconeJogo from '../../components/IconeJogo'
 import ImagemMascote from '../../components/ImagemMascote'
+import ImagemProjeto from '../../components/ImagemProjeto'
 import Peca from '../../components/Peca'
 import ProjetoAcabado from '../../components/ProjetoAcabado'
 import { useMascoteAtiva, usePerfil } from '../../components/useProgresso'
@@ -103,7 +104,7 @@ function Construcao() {
       titulo={
         <span className={styles.titulo}>
           <ImagemMascote mascote={mascote} className={styles.tituloMascote} />
-          <span aria-label={mascote.projeto}>{mascote.iconeProjeto}</span>
+          <ImagemProjeto mascote={mascote} className={styles.tituloProjeto} />
         </span>
       }
       voltar="/jogos"
@@ -159,7 +160,7 @@ function Construcao() {
       {/* O projeto: fantasma cinzento + a cor a subir de baixo para cima */}
       <div className={styles.projeto} role="img" aria-label={`${mascote.projeto}: ${naObra} peças`}>
         <span className={styles.fantasma} aria-hidden="true">
-          {mascote.iconeProjeto}
+          <ImagemProjeto mascote={mascote} className={styles.projetoImagem} decorativa />
         </span>
         <motion.span
           className={styles.colorido}
@@ -168,7 +169,7 @@ function Construcao() {
           animate={{ clipPath: `inset(${(1 - fracao) * 100}% 0% 0% 0%)` }}
           transition={{ type: 'spring', stiffness: 120, damping: 18 }}
         >
-          {mascote.iconeProjeto}
+          <ImagemProjeto mascote={mascote} className={styles.projetoImagem} decorativa />
         </motion.span>
       </div>
 
@@ -184,7 +185,7 @@ function Construcao() {
               aria-label={`${mascote.projeto} ${i + 1}`}
               whileTap={{ scale: 0.85 }}
             >
-              {mascote.iconeProjeto}
+              <ImagemProjeto mascote={mascote} className={styles.acabadoImagem} decorativa />
             </motion.button>
           ))}
         </div>
@@ -297,7 +298,7 @@ function Construcao() {
               animate={{ scale: 1, rotate: 0 }}
               transition={{ type: 'spring', stiffness: 220, damping: 12 }}
             >
-              {mascote.iconeProjeto}
+              <ImagemProjeto mascote={mascote} className={styles.grandeImagem} decorativa />
             </motion.span>
           </motion.div>
         )}

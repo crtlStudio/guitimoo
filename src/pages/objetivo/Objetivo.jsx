@@ -6,6 +6,7 @@ import EcraEscolha from '../../components/EcraEscolha'
 import Festa from '../../components/Festa'
 import IconeJogo from '../../components/IconeJogo'
 import ImagemMascote from '../../components/ImagemMascote'
+import ImagemProjeto from '../../components/ImagemProjeto'
 import Peca from '../../components/Peca'
 import { useMascoteAtiva } from '../../components/useProgresso'
 import { PECAS_POR_COR } from '../../games/progresso/config'
@@ -105,7 +106,7 @@ function Objetivo() {
       titulo={
         <span className={construcao.titulo}>
           <ImagemMascote mascote={mascote} className={construcao.tituloMascote} />
-          <span aria-label={mascote.projeto}>{mascote.iconeProjeto}</span>
+          <ImagemProjeto mascote={mascote} className={construcao.tituloProjeto} />
         </span>
       }
       voltar="/nivel"
@@ -131,7 +132,7 @@ function Objetivo() {
       {/* O projeto: fantasma cinzento + a cor a subir de baixo para cima */}
       <div className={construcao.projeto} role="img" aria-label={`Enche de cor ${mascote.projeto}`}>
         <span className={construcao.fantasma} aria-hidden="true">
-          {mascote.iconeProjeto}
+          <ImagemProjeto mascote={mascote} className={construcao.projetoImagem} decorativa />
         </span>
         <motion.span
           className={construcao.colorido}
@@ -140,7 +141,7 @@ function Objetivo() {
           animate={{ clipPath: `inset(${(1 - fracao) * 100}% 0% 0% 0%)`, scale: passo.festa ? [1, 1.12, 1] : 1 }}
           transition={{ type: 'spring', stiffness: 120, damping: 18 }}
         >
-          {mascote.iconeProjeto}
+          <ImagemProjeto mascote={mascote} className={construcao.projetoImagem} decorativa />
         </motion.span>
       </div>
 
