@@ -350,10 +350,11 @@
 
 /* ---------- Jogar ---------- */
 
+/* No canto de cima, à direita (dentro da imagem) */
 .jogar {
   position: absolute;
-  right: 1.2cqw;
-  top: 21cqw;
+  right: 1.6cqw;
+  top: 1.6cqw;
   width: 7.5cqw;
   min-width: 48px;
   aspect-ratio: 1;
