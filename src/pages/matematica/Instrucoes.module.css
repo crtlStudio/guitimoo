@@ -1,19 +1,19 @@
-/* Cartão com o objetivo do jogo, ao centro, por cima da balança */
+/* Cartão com os 3 jogos, ao centro, por cima do fundo */
 .cartao {
   position: absolute;
   z-index: 2;
   left: 0;
   right: 0;
-  width: 62cqw;
+  width: 90cqw;
   margin: 0 auto;
   top: 50%;
-  translate: 0 -46%;
+  translate: 0 -44%; /* um pouco abaixo do meio, para não tapar as estrelas */
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.9cqw;
-  padding: 1.4cqw 2.4cqw 1.8cqw;
+  gap: 1.4cqw;
+  padding: 1.2cqw 2cqw 1.8cqw;
   text-align: center;
   font-family: 'Fredoka', system-ui, sans-serif;
   font-weight: 600;
@@ -26,51 +26,246 @@
 
 .titulo {
   margin: 0;
-  font-size: max(1.15rem, 4cqw);
+  font-size: max(1.1rem, 3.4cqw);
   line-height: 1.1;
   color: #2f7d32;
 }
 
-.frase {
-  margin: 0;
-  font-size: max(0.8rem, 2.2cqw);
-  line-height: 1.25;
+/* ---------- Os 3 painéis, lado a lado ---------- */
+.paineis {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.6cqw;
+  width: 100%;
 }
 
-/* ---------- Demonstração ---------- */
-.demo {
-  display: flex;
-  align-items: center;
-  gap: 3cqw;
-  min-height: 9cqw;
+.painel {
+  padding: 0.6cqw;
+  cursor: pointer;
+  background: #fff6dc;
+  border: max(2px, 0.3cqw) solid #f5dd9e;
+  border-radius: 2cqw;
+  -webkit-tap-highlight-color: transparent;
 }
 
-/* Números com o estilo dourado do jogo */
-.conta,
-.numeroDemo {
-  font-size: max(1.4rem, 4.4cqw);
+/* O painel onde o dedo está a mostrar: dourado e a brilhar */
+.painelAtivo {
+  border-color: #f5b82e;
+  box-shadow: 0 0 0 max(2px, 0.4cqw) rgba(245, 184, 46, 0.45), 0 0.6cqw 1.4cqw rgba(0, 0, 0, 0.18);
+}
+
+/* ---------- A cena de cada demonstração ---------- */
+/* Lá dentro, 1cqw = 1% da largura da cena (todas com a mesma forma) */
+.cena {
+  position: relative;
+  container-type: inline-size;
+  aspect-ratio: 100 / 63;
+  overflow: hidden;
+  border-radius: 1.4cqw;
+  pointer-events: none;
+}
+
+/* Na balança: o "mundo" do jogo (16:9), maior do que a cena e cortado à volta
+   da balança. Lá dentro, 1cqw = 1% do mundo (as medidas de medidas.js) */
+.mundo {
+  position: absolute;
+  container-type: inline-size;
+  /* vê-se do x 16 ao 84 e do y 13 ao 55 do mundo */
+  left: -25cqw;
+  top: -19.5cqw;
+  width: 150cqw;
+  aspect-ratio: 16 / 9;
+}
+
+/* Coisas posicionadas pelo centro (left/top = o centro) */
+.lugar,
+.caixa,
+.seta,
+.cartaoNumero,
+.visto,
+.contaMundo,
+.jaEstaMundo,
+.opcaoMundo {
+  position: absolute;
+  translate: -50% -50%;
+}
+
+/* ---------- O dedo ---------- */
+/* left/top = a ponta do dedo; as margens põem lá a ponta do 👆 */
+.dedo {
+  position: absolute;
+  z-index: 5;
   line-height: 1;
-  color: #5a3912;
-  white-space: nowrap;
+  margin: -0.07em 0 0 -0.43em;
 }
 
-.numeroDemo {
-  font-size: max(2rem, 7cqw);
+.mao {
+  display: block;
+  /* "fantasma": um brilho branco à volta, para se ver em qualquer fundo */
+  filter: drop-shadow(0 0 0.08em rgba(255, 255, 255, 0.95)) drop-shadow(0 0.05em 0.08em rgba(0, 0, 0, 0.3));
+}
+
+/* O que o dedo leva: centrado na ponta do dedo, um pouco acima */
+.levado {
+  position: absolute;
+  left: 0.03em;
+  top: -0.72em;
+  width: 0.8em;
+  opacity: 0.85;
+}
+
+.levado.cartaoNumero {
+  position: absolute;
+  translate: none;
+  width: auto;
+  font-size: 0.6em;
+  left: 0.15em;
+  top: -1.1em;
+}
+
+/* ---------- Balança ---------- */
+/* Um cubinho no chão: left/top = o centro da base */
+.noChao {
+  position: absolute;
+  translate: -50% -100%;
+}
+
+.cuboDoMundo {
+  display: block;
+  width: 5.6cqw;
+}
+
+/* O cartão da conta (só o fundo; cada parte tem o seu sítio, ver CONTAS) */
+.contaMundo {
+  height: 7.5cqw;
+  translate: 0 -50%;
+  background: #fffdf6;
+  border: 0.4cqw solid #f5c96a;
+  border-radius: 2cqw;
+}
+
+.parteDaConta {
+  position: absolute;
+  translate: -50% -50%;
+  font-size: 5.4cqw;
+  line-height: 1;
+}
+
+.jaEstaMundo,
+.opcaoMundo {
+  display: grid;
+  place-items: center;
+  width: 7cqw;
+  aspect-ratio: 1;
+  font-size: 5cqw;
+  line-height: 1;
+  border-radius: 50%;
+}
+
+.jaEstaMundo {
+  color: #fff;
+  background: #4caf50;
+  box-shadow: 0 0.5cqw 0 #2e7d32;
+}
+
+.opcaoMundo {
+  color: #5a3912;
+  background: #fffdf6;
+  border: 0.4cqw solid #f5c96a;
+  border-radius: 1.6cqw;
+}
+
+/* ---------- Lógica ---------- */
+.prateleira {
+  position: absolute;
+  left: 4cqw;
+  right: 4cqw;
+  height: 2cqw;
+  background: #a0703c;
+  border-radius: 1cqw;
+}
+
+.lugar {
+  display: grid;
+  place-items: center;
+  width: 13cqw;
+  aspect-ratio: 1;
+}
+
+.cuboDaCena {
+  display: block;
+  width: 13cqw;
+}
+
+.buraco {
+  border: 0.8cqw dashed #e0a100;
+  border-radius: 2cqw;
+  box-sizing: border-box;
+}
+
+.interrogacao {
+  font-size: 9cqw;
+  line-height: 1;
+  color: #e0a100;
+}
+
+/* ---------- Quantidades ---------- */
+.caixa {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  color: #f5c96a;
-  -webkit-text-stroke: 0.06em #5a3912;
-  paint-order: stroke fill;
+  justify-content: center;
+  gap: 0.6cqw;
+  min-width: 26cqw;
+  height: 16cqw;
+  padding: 0 1.4cqw;
+  box-sizing: border-box;
+  background: #fff;
+  border: 0.6cqw solid #e3c27a;
+  border-radius: 2cqw;
 }
 
-.pintas {
-  font-size: 0.5em;
-  letter-spacing: 0.1em;
+.caixaLarga {
+  min-width: 36cqw;
+}
+
+.linha2 {
+  position: absolute;
+  inset: 0;
+}
+
+.cuboPequeno {
+  display: block;
+  width: 9cqw;
+}
+
+.numeroCaixa {
+  font-size: 11cqw;
+  line-height: 1;
+  color: #e0a100;
+}
+
+.seta {
+  font-size: 7cqw;
+  color: #a0703c;
+}
+
+.cartaoNumero {
+  display: grid;
+  place-items: center;
+  width: 1.5em;
+  aspect-ratio: 1;
   color: #5a3912;
-  -webkit-text-stroke: 0;
+  background: #fffdf6;
+  border: 0.08em solid #f5c96a;
+  border-radius: 0.25em;
+  box-shadow: 0 0.06em 0 #d9a93f;
 }
 
+.noFundo {
+  font-size: 8cqw;
+}
+
+/* ---------- Cores e ✓ ---------- */
 .azul {
   color: #2f8fdc;
 }
@@ -80,41 +275,24 @@
 }
 
 .resultado {
-  display: inline-block;
   color: #e0a100;
 }
 
-/* Um "prato" onde os cubinhos vão chegando */
-.prato {
-  position: relative;
-  display: flex;
-  align-items: flex-end;
-  gap: 0.2cqw;
-  padding: 0 1.4cqw 0.4cqw;
-  border-bottom: max(3px, 0.5cqw) solid #2f5fa8;
-  border-radius: 0 0 40% 40%;
-}
-
-.cubinho {
-  display: block;
-  width: 5cqw;
-  min-width: 32px;
-  aspect-ratio: 1;
-}
-
-
 .visto {
-  position: absolute;
-  right: -2.4cqw;
-  top: -1cqw;
-  font-size: max(1.2rem, 3.6cqw);
+  z-index: 4;
+  font-size: 12cqw;
+  line-height: 1;
   color: #4caf50;
+  text-shadow: 0 0 0.1em #fff;
 }
 
 /* ---------- Botão ---------- */
 .comecar {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
   min-height: 44px;
-  padding: 0.35em 1.4em;
+  padding: 0.3em 1.3em 0.3em 0.5em;
   cursor: pointer;
   font: inherit;
   font-size: max(1.2rem, 3.2cqw);
@@ -124,4 +302,18 @@
   border-radius: 999px;
   box-shadow: 0 0.18em 0 #2e7d32;
   -webkit-tap-highlight-color: transparent;
+}
+
+/* O ▶ grande, numa bolinha branca: "carrega aqui" sem precisar de ler */
+.play {
+  display: grid;
+  place-items: center;
+  width: 1.5em;
+  aspect-ratio: 1;
+  padding-left: 0.12em;
+  box-sizing: border-box;
+  font-size: 1.1em;
+  color: #4caf50;
+  background: #fff;
+  border-radius: 50%;
 }

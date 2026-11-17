@@ -1,89 +1,319 @@
+import { DndContext } from '@dnd-kit/core'
 import { motion } from 'motion/react'
-import { useEffect, useState } from 'react'
-import styles from './Instrucoes.module.css'
+import { useEffect, useRef, useState } from 'react'
+import { DESCIDA_POR_CUBINHO } from '../../games/matematica/balanca'
+import Balanca from './Balanca'
 import { DesenhoCubinho } from './Cubinho'
+import {
+  CHAO_34,
+  CHAO_CONTAS,
+  CONTAS,
+  LOGICA,
+  PASSOS_34,
+  PASSOS_CONTAS,
+  PASSOS_LOGICA,
+  PASSOS_QUANTIDADES,
+  QUANTIDADES,
+  estadoNoPasso,
+} from './passosDasInstrucoes'
+import styles from './Instrucoes.module.css'
 
-// O objetivo de cada jogo
-const JOGOS = {
-  '3-4': {
-    titulo: 'Equilibra a balança!',
-    frase: 'Põe cubinhos no prato do braço esquerdo até a balança ficar direitinha.',
-  },
-  '5-6': {
-    titulo: 'Contas na balança!',
-    frase: 'Põe no prato do braço esquerdo os cubinhos de cada número, com a cor dele. Carrega no ✓ e escolhe o número certo.',
-  },
-  '7-8': {
-    titulo: 'Contas na balança!',
-    frase: 'Mostra a conta com cubinhos no prato do braço esquerdo, cada número com a sua cor. Carrega no ✓ e escolhe o número certo. Às vezes vais tirar cubinhos ou descobrir o número que falta.',
-  },
+/**
+ * Faz avançar os passos de uma demonstração, um a um, enquanto `aCorrer`.
+ * No fim chama aoAcabar(). Devolve o estado do passo atual.
+ * (Para recomeçar do início, a página muda o `key` da demonstração.)
+ */
+function usePassos(passos, aCorrer, aoAcabar) {
+  const [i, setI] = useState(0)
+  const acabar = useRef(aoAcabar)
+  useEffect(() => {
+    acabar.current = aoAcabar
+  })
+
+  useEffect(() => {
+    if (!aCorrer) return undefined
+    const ultimo = i >= passos.length - 1
+    const temporizador = setTimeout(() => (ultimo ? acabar.current?.() : setI(i + 1)), passos[i].ms)
+    return () => clearTimeout(temporizador)
+  }, [aCorrer, i, passos])
+
+  return { ...estadoNoPasso(passos, i), vez: i }
 }
 
 /**
- * Demonstração que se repete sozinha:
- * - 3–4: o número 3 (com as pintas) e os cubinhos a chegar, um a um, até serem 3
- * - 5–6 e 7–8: a conta 2 + 1, os cubinhos de cada cor a chegar e depois o 3
- * `passo` avança sozinho (0, 1, 2, ...); a demonstração tem 5 momentos.
+ * O dedo (igual ao dedo fantasma dos jogos): vai até `dedo` ([x, y] em cqw
+ * da cena), carrega `toca` vezes e pode levar um cubinho ou um cartão.
+ * - tamanho: tamanho do dedo, em cqw da cena
  */
-function Demo({ escalao, passo }) {
-  const momento = passo % 5 // 0 = vazio, 1..3 = chegam cubinhos, 4 = resultado
-  const cubinhos = Math.min(momento, 3)
-  // Nas contas: os 2 primeiros são azuis (o 2) e o terceiro verde (o 1)
-  const cores = escalao === '3-4' ? ['verde', 'verde', 'verde'] : ['azul', 'azul', 'verde']
+function Dedo({ estado, tamanho }) {
+  const { dedo, ultimoDedo, toca, leva, vez } = estado
+  const ponto = dedo ?? ultimoDedo
+  if (!ponto) return null
+  // Carregar: o dedo encolhe e volta, `toca` vezes
+  const carregar = toca > 0 ? { scale: [1, ...Array(toca).fill([0.78, 1]).flat()] } : { scale: 1 }
 
   return (
-    <div className={styles.demo} aria-hidden="true">
-      {escalao === '3-4' ? (
-        <span className={styles.numeroDemo}>
-          3<span className={styles.pintas}>•••</span>
-        </span>
-      ) : (
-        <span className={styles.conta}>
-          <span className={styles.azul}>2</span> + <span className={styles.verde}>1</span> ={' '}
-          <motion.span
-            key={momento === 4 ? 'certo' : 'pergunta'}
-            className={momento === 4 ? styles.resultado : undefined}
-            initial={{ scale: momento === 4 ? 0.3 : 1 }}
-            animate={{ scale: 1 }}
-          >
-            {momento === 4 ? 3 : '?'}
-          </motion.span>
-        </span>
-      )}
-
-      <span className={styles.prato}>
-        {cores.map((cor, i) => (
-          <motion.span
-            key={i}
-            animate={{ opacity: i < cubinhos ? 1 : 0, y: i < cubinhos ? 0 : -12 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 18 }}
-          >
-            <DesenhoCubinho cor={cor} className={styles.cubinho} />
-          </motion.span>
+    <motion.div
+      className={styles.dedo}
+      style={{ fontSize: `${tamanho}cqw` }}
+      initial={{ left: `${ponto[0]}cqw`, top: `${ponto[1] + 8}cqw`, opacity: 0 }}
+      animate={{ left: `${ponto[0]}cqw`, top: `${ponto[1]}cqw`, opacity: dedo ? 1 : 0 }}
+      transition={{ duration: 0.6, ease: 'easeInOut' }}
+    >
+      {leva != null &&
+        (typeof leva === 'number' ? (
+          <span className={`${styles.levado} ${styles.cartaoNumero}`}>{leva}</span>
+        ) : (
+          <DesenhoCubinho cor={leva} className={styles.levado} />
         ))}
-        {momento === 4 && (
-          <motion.span className={styles.visto} initial={{ scale: 0 }} animate={{ scale: 1 }}>
-            ✓
-          </motion.span>
-        )}
-      </span>
+      <motion.span key={vez} className={styles.mao} animate={carregar} transition={{ duration: 0.35 * Math.max(toca, 1) }}>
+        👆
+      </motion.span>
+    </motion.div>
+  )
+}
+
+/** O ✓ verde que salta quando a demonstração fica certa. */
+function Visto({ x, y }) {
+  return (
+    <motion.span
+      className={styles.visto}
+      style={{ left: `${x}cqw`, top: `${y}cqw` }}
+      initial={{ scale: 0 }}
+      animate={{ scale: [0, 1.4, 1] }}
+      transition={{ duration: 0.5 }}
+    >
+      ✓
+    </motion.span>
+  )
+}
+
+/** Uma cena com as suas medidas: lá dentro, 1cqw = 1% da largura da cena. */
+function Cena({ children }) {
+  return (
+    <div className={styles.cena} aria-hidden="true">
+      {children}
     </div>
   )
 }
 
+// ---------- 1. Balança ----------
+
 /**
- * Ecrã com o objetivo do jogo, antes de começar.
+ * A balança a sério do jogo, em ponto pequeno. Dentro do "mundo", as medidas
+ * são as do jogo (1cqw = 1% do mundo), por isso os pontos de medidas.js servem.
+ * - 3–4: o 3 no prato direito; o dedo põe 3 cubinhos verdes
+ * - 5–6 e 7–8: a conta 2 + 1, cubinhos com as cores, o ✓ e o número
+ */
+function DemoBalanca({ escalao, aCorrer, aoAcabar }) {
+  const contas = escalao !== '3-4'
+  const estado = usePassos(contas ? PASSOS_CONTAS : PASSOS_34, aCorrer, aoAcabar)
+  const chao = contas ? CHAO_CONTAS : CHAO_34
+  const direita = contas ? estado.direita : 3
+
+  return (
+    <Cena>
+      <div className={styles.mundo}>
+        <DndContext>
+          <Balanca
+            pratos={{ esquerda: estado.prato.map((cor, i) => ({ id: `p${i}`, cor })) }}
+            numeroDireita={direita}
+            pintas={!contas}
+            bloqueada
+            festejar={estado.certo}
+            porCubinho={DESCIDA_POR_CUBINHO[escalao]}
+          />
+        </DndContext>
+
+        {/* Os cubinhos no chão */}
+        {chao.map(({ id, cor, x, y }) => (
+          <motion.span
+            key={id}
+            className={styles.noChao}
+            style={{ left: `${x}cqw`, top: `${y}cqw` }}
+            animate={{ opacity: estado.chao.includes(id) ? 1 : 0, scale: estado.chao.includes(id) ? 1 : 0.5 }}
+          >
+            <DesenhoCubinho cor={cor} className={styles.cuboDoMundo} />
+          </motion.span>
+        ))}
+
+        {contas && <LinhaDaConta estado={estado} />}
+        {estado.certo && <Visto x={50} y={16} />}
+        <Dedo estado={estado} tamanho={9} />
+      </div>
+    </Cena>
+  )
+}
+
+/** Nas contas: o cartão "2 + 1 = ?", o ✓ e (depois) os números para escolher. */
+function LinhaDaConta({ estado }) {
+  const sitio = ([x, y]) => ({ left: `${x}cqw`, top: `${y}cqw` })
+  return (
+    <>
+      <span
+        className={styles.contaMundo}
+        style={{ ...sitio([CONTAS.cartao.de, CONTAS.cartao.y]), width: `${CONTAS.cartao.ate - CONTAS.cartao.de}cqw` }}
+      />
+      {CONTAS.partes.map(({ texto, cor, x }) => (
+        <span key={x} className={`${styles.parteDaConta} ${cor ? styles[cor] : ''}`} style={sitio([x, CONTAS.cartao.y])}>
+          {cor === 'resultado' && estado.fase === 'certo' ? 3 : texto}
+        </span>
+      ))}
+      {estado.fase === 'montar' && (
+        <span className={styles.jaEstaMundo} style={sitio(CONTAS.jaEsta)}>
+          ✓
+        </span>
+      )}
+      {estado.fase !== 'montar' &&
+        CONTAS.opcoes.map(({ numero, x, y }) => (
+          <motion.span
+            key={numero}
+            className={styles.opcaoMundo}
+            style={sitio([x, y])}
+            initial={{ scale: 0 }}
+            animate={{ scale: 1, opacity: estado.fase === 'certo' && numero === 3 ? 0 : 1 }}
+          >
+            {numero}
+          </motion.span>
+        ))}
+    </>
+  )
+}
+
+// ---------- 2. Lógica ----------
+
+function DemoLogica({ aCorrer, aoAcabar }) {
+  const estado = usePassos(PASSOS_LOGICA, aCorrer, aoAcabar)
+  const ultimo = LOGICA.fila.length - 1
+
+  return (
+    <Cena>
+      <span className={styles.prateleira} style={{ top: `${LOGICA.yDaFila + 7}cqw` }} />
+      {LOGICA.fila.map((cor, i) => (
+        <span
+          key={i}
+          className={`${styles.lugar} ${i === ultimo && !estado.cheio ? styles.buraco : ''}`}
+          style={{ left: `${LOGICA.xDaFila[i]}cqw`, top: `${LOGICA.yDaFila}cqw` }}
+        >
+          {cor && <DesenhoCubinho cor={cor} className={styles.cuboDaCena} />}
+          {i === ultimo &&
+            (estado.cheio ? (
+              <motion.span initial={{ scale: 0.3 }} animate={{ scale: [0.3, 1.25, 1] }}>
+                <DesenhoCubinho cor="azul" className={styles.cuboDaCena} />
+              </motion.span>
+            ) : (
+              <span className={styles.interrogacao}>?</span>
+            ))}
+        </span>
+      ))}
+
+      {LOGICA.opcoes.map(({ cor, x }) => (
+        <motion.span
+          key={cor}
+          className={styles.lugar}
+          style={{ left: `${x}cqw`, top: `${LOGICA.yDasOpcoes}cqw` }}
+          animate={{ opacity: cor === 'azul' && estado.apanhado ? 0 : 1 }}
+        >
+          <DesenhoCubinho cor={cor} className={styles.cuboDaCena} />
+        </motion.span>
+      ))}
+
+      {estado.certo && <Visto x={90} y={8} />}
+      <Dedo estado={estado} tamanho={13} />
+    </Cena>
+  )
+}
+
+// ---------- 3. Quantidades ----------
+
+function DemoQuantidades({ aCorrer, aoAcabar }) {
+  const estado = usePassos(PASSOS_QUANTIDADES, aCorrer, aoAcabar)
+  const { y, caixaDoNumero } = QUANTIDADES
+  const sitio = (x, yy) => ({ left: `${x}cqw`, top: `${yy}cqw` })
+
+  return (
+    <Cena>
+      {/* 1.ª linha: 3 cubinhos ➜ número */}
+      <span className={`${styles.caixa} ${styles.caixaLarga}`} style={sitio(24, y[0])}>
+        {[0, 1, 2].map((i) => (
+          <DesenhoCubinho key={i} cor="laranja" className={styles.cuboPequeno} />
+        ))}
+      </span>
+      <span className={styles.seta} style={sitio(48, y[0])}>
+        ➜
+      </span>
+      <span className={styles.caixa} style={sitio(caixaDoNumero, y[0])}>
+        {estado.linha1 ? (
+          <motion.span className={styles.numeroCaixa} initial={{ scale: 0.3 }} animate={{ scale: [0.3, 1.25, 1] }}>
+            3
+          </motion.span>
+        ) : (
+          <span className={styles.interrogacao}>?</span>
+        )}
+      </span>
+
+      {/* 2.ª linha: número ➜ cubinhos (mais clara até a 1.ª estar feita) */}
+      <motion.span className={styles.linha2} animate={{ opacity: estado.linha1 ? 1 : 0.35 }}>
+        <span className={`${styles.caixa} ${styles.caixaLarga}`} style={sitio(24, y[1])}>
+          <span className={`${styles.numeroCaixa} ${styles.azul}`}>2</span>
+        </span>
+        <span className={styles.seta} style={sitio(48, y[1])}>
+          ➜
+        </span>
+        <span className={styles.caixa} style={sitio(caixaDoNumero, y[1])}>
+          {estado.naCaixa === 0 && <span className={styles.interrogacao}>?</span>}
+          {Array.from({ length: estado.naCaixa }, (_, i) => (
+            <motion.span key={i} initial={{ y: '-3cqw', scale: 0.6 }} animate={{ y: 0, scale: 1 }}>
+              <DesenhoCubinho cor="azul" className={styles.cuboPequeno} />
+            </motion.span>
+          ))}
+        </span>
+      </motion.span>
+
+      {/* Em baixo: primeiro os cartões dos números, depois o monte de cubinhos */}
+      {!estado.linha1 &&
+        QUANTIDADES.cartoes.map(({ numero, x }) => (
+          <motion.span
+            key={numero}
+            className={`${styles.cartaoNumero} ${styles.noFundo}`}
+            style={sitio(x, QUANTIDADES.yDeBaixo)}
+            animate={{ opacity: numero === 3 && estado.cartaoLevado ? 0 : 1 }}
+          >
+            {numero}
+          </motion.span>
+        ))}
+      {estado.linha1 && !estado.certo && (
+        <motion.span
+          className={styles.lugar}
+          style={sitio(QUANTIDADES.monte, QUANTIDADES.yDeBaixo)}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+        >
+          <DesenhoCubinho cor="azul" className={styles.cuboDaCena} />
+        </motion.span>
+      )}
+
+      {estado.certo && <Visto x={90} y={8} />}
+      <Dedo estado={estado} tamanho={13} />
+    </Cena>
+  )
+}
+
+/**
+ * Ecrã com o objetivo do jogo, antes de começar. Só desenhos (as crianças
+ * mais pequenas não sabem ler): os 3 jogos lado a lado e, um de cada vez,
+ * o dedo mostra como se joga. O painel que está a mostrar fica maior.
  * Props: escalao ('3-4', '5-6', '7-8') e aoComecar (função do botão).
  */
 function Instrucoes({ escalao, aoComecar }) {
-  const jogo = JOGOS[escalao]
-  // Contador que avança sozinho, para a demonstração se mexer
-  const [passo, setPasso] = useState(0)
+  const [ativo, setAtivo] = useState(0) // o painel onde o dedo está a mostrar
+  const [volta, setVolta] = useState(0) // muda a cada demonstração: recomeça do zero
+  const seguinte = () => {
+    setAtivo((a) => (a + 1) % 3)
+    setVolta((v) => v + 1)
+  }
 
-  useEffect(() => {
-    const intervalo = setInterval(() => setPasso((p) => p + 1), 800)
-    return () => clearInterval(intervalo)
-  }, [])
+  const demos = [DemoBalanca, DemoLogica, DemoQuantidades]
 
   return (
     <motion.div
@@ -92,19 +322,46 @@ function Instrucoes({ escalao, aoComecar }) {
       animate={{ opacity: 1, scale: 1 }}
       transition={{ type: 'spring', stiffness: 260, damping: 20 }}
     >
-      <h2 className={styles.titulo}>{jogo.titulo}</h2>
-      <p className={styles.frase}>{jogo.frase}</p>
+      <h2 className={styles.titulo}>Matemática e Lógica!</h2>
 
-      <Demo escalao={escalao} passo={passo} />
+      <div className={styles.paineis}>
+        {demos.map((Demo, n) => {
+          const aMostrar = n === ativo
+          return (
+            <motion.div
+              key={n}
+              className={`${styles.painel} ${aMostrar ? styles.painelAtivo : ''}`}
+              animate={{ scale: aMostrar ? 1.06 : 0.94, opacity: aMostrar ? 1 : 0.55 }}
+              transition={{ type: 'spring', stiffness: 260, damping: 22 }}
+              // Tocar num painel mostra esse jogo
+              onClick={() => {
+                setAtivo(n)
+                setVolta((v) => v + 1)
+              }}
+            >
+              <Demo
+                key={aMostrar ? `a-${volta}` : 'parado'}
+                escalao={escalao}
+                aCorrer={aMostrar}
+                aoAcabar={seguinte}
+              />
+            </motion.div>
+          )
+        })}
+      </div>
 
       <motion.button
         type="button"
         className={styles.comecar}
         onClick={aoComecar}
+        aria-label="Vamos jogar!"
         whileTap={{ scale: 0.93 }}
         animate={{ scale: [1, 1.05, 1] }}
         transition={{ duration: 1.4, repeat: Infinity, ease: 'easeInOut' }}
       >
+        <span className={styles.play} aria-hidden="true">
+          ▶
+        </span>
         Vamos jogar!
       </motion.button>
     </motion.div>

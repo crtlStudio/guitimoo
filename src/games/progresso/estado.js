@@ -9,7 +9,7 @@
 // ============================================================
 import { apagarTotal } from '../estrelas'
 import { guardarProgresso, lerProgresso } from './guardar'
-import { adicionarEstrelas, guardarNaReserva, limparProgresso, marcarComoVistas } from './progresso'
+import { adicionarEstrelas, guardarNaReserva, limparProgresso, marcarComoVistas, marcarObjetivoVisto } from './progresso'
 
 let progresso = null // null = ainda a ler do telemóvel
 let leitura = null // a "promessa" da leitura (para só ler uma vez)
@@ -77,6 +77,11 @@ export function guardarPecasNaReserva(jogoId, quantas) {
  */
 export function marcarPecasVistas(mascoteId) {
   mudarProgresso((p) => marcarComoVistas(p, mascoteId))
+}
+
+/** A criança viu a página do objetivo da mascote (por omissão, a ativa): não volta a aparecer. */
+export function marcarObjetivoComoVisto(mascoteId) {
+  mudarProgresso((p) => marcarObjetivoVisto(p, mascoteId))
 }
 
 /**

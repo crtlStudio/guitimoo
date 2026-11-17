@@ -13,7 +13,9 @@ import {
   guardarNaReserva,
   limparProgresso,
   marcarComoVistas,
+  marcarObjetivoVisto,
   nivelDoEscalao,
+  objetivoJaVisto,
   nivelDosEscaloesAntigos,
   pecasEmFalta,
   pecasNovas,
@@ -372,6 +374,43 @@ describe('peças novas (construção)', () => {
       projeto: 0,
       pecas: { matematica: 0, portugues: 0, memoria: 0, horas: 0, detetive: 0 },
     })
+  })
+})
+
+describe('página do objetivo', () => {
+  it('cada mascote começa sem a ter visto', () => {
+    const p = comMascote()
+    expect(objetivoJaVisto(p)).toBe(false)
+    expect(objetivoJaVisto(p, 'panda')).toBe(false)
+  })
+
+  it('marcar só muda a mascote indicada (por omissão, a ativa)', () => {
+    let p = marcarObjetivoVisto(comMascote('sapo'))
+    expect(objetivoJaVisto(p, 'sapo')).toBe(true)
+    expect(objetivoJaVisto(p, 'panda')).toBe(false)
+    p = marcarObjetivoVisto(p, 'coruja')
+    expect(objetivoJaVisto(p, 'coruja')).toBe(true)
+  })
+
+  it('se já estava visto (ou a mascote não existe), devolve o mesmo progresso', () => {
+    const p = marcarObjetivoVisto(comMascote())
+    expect(marcarObjetivoVisto(p)).toBe(p)
+    expect(marcarObjetivoVisto(p, 'leao')).toBe(p)
+  })
+
+  it('não muda o progresso que recebe', () => {
+    const antes = comMascote()
+    marcarObjetivoVisto(antes)
+    expect(objetivoJaVisto(antes)).toBe(false)
+  })
+
+  it('progresso antigo (sem o campo) ou estragado: ainda não viu', () => {
+    const guardado = JSON.parse(JSON.stringify(marcarObjetivoVisto(comMascote())))
+    expect(objetivoJaVisto(repararProgresso(guardado))).toBe(true)
+    delete guardado.perfis.principal.mascotes.sapo.objetivoVisto
+    expect(objetivoJaVisto(repararProgresso(guardado))).toBe(false)
+    guardado.perfis.principal.mascotes.sapo.objetivoVisto = 'sim'
+    expect(objetivoJaVisto(repararProgresso(guardado))).toBe(false)
   })
 })
 

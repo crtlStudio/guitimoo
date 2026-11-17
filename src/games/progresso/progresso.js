@@ -25,6 +25,7 @@
 //             projeto: 1,             // o n.º do projeto (0 = o primeiro)
 //             pecas: { matematica: 2, ... },  // as peças desse projeto que já viu
 //           },
+//           objetivoVisto: true,      // já viu a página do objetivo desta mascote
 //         },
 //         ...
 //       },
@@ -77,7 +78,12 @@ function novoProjeto() {
 }
 
 function novaMascote() {
-  return { projetos: [novoProjeto()], reserva: zeroPorJogo(), vistas: { projeto: 0, pecas: zeroPorJogo() } }
+  return {
+    projetos: [novoProjeto()],
+    reserva: zeroPorJogo(),
+    vistas: { projeto: 0, pecas: zeroPorJogo() },
+    objetivoVisto: false,
+  }
 }
 
 function novoPerfil(nivel = null, mascoteAtiva = null) {
@@ -204,6 +210,24 @@ export function marcarComoVistas(progresso, mascoteId = perfilAtivo(progresso).m
   return mudarPerfil(progresso, (perfil) => {
     const mascote = perfil.mascotes[mascoteId]
     mascote.vistas = { projeto: mascote.projetos.length - 1, pecas: { ...mascote.projetos.at(-1).pecas } }
+  })
+}
+
+// ---------------- Página do objetivo ----------------
+
+/** Se a criança já viu a página do objetivo desta mascote (por omissão, a ativa). */
+export function objetivoJaVisto(progresso, mascoteId = perfilAtivo(progresso).mascoteAtiva) {
+  return perfilAtivo(progresso).mascotes[mascoteId]?.objetivoVisto === true
+}
+
+/**
+ * A criança viu a página do objetivo da mascote: não volta a aparecer.
+ * Se já estava marcado (ou a mascote não existe), devolve o mesmo progresso.
+ */
+export function marcarObjetivoVisto(progresso, mascoteId = perfilAtivo(progresso).mascoteAtiva) {
+  if (!existeMascote(mascoteId) || objetivoJaVisto(progresso, mascoteId)) return progresso
+  return mudarPerfil(progresso, (perfil) => {
+    perfil.mascotes[mascoteId].objetivoVisto = true
   })
 }
 
@@ -426,7 +450,13 @@ function repararMascote(m) {
       }))
     : []
   if (projetos.length === 0) projetos.push(novoProjeto())
-  return { projetos, reserva: repararPecas(m.reserva), vistas: repararVistas(m.vistas, projetos) }
+  return {
+    projetos,
+    reserva: repararPecas(m.reserva),
+    vistas: repararVistas(m.vistas, projetos),
+    // Guardado antes de existir a página do objetivo: ainda não a viu
+    objetivoVisto: m.objetivoVisto === true,
+  }
 }
 
 /**

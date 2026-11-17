@@ -4,7 +4,11 @@ import { prepararEfeitos } from '../../audio/efeitos'
 import BotaoConstrucao from '../../components/BotaoConstrucao'
 import EcraEscolha from '../../components/EcraEscolha'
 import IconeJogo from '../../components/IconeJogo'
-import { JOGOS } from '../../games/progresso/config'
+import IconeNivel from '../../components/IconeNivel'
+import { usePerfil } from '../../components/useProgresso'
+import { JOGOS, NIVEIS } from '../../games/progresso/config'
+import { mudarProgresso } from '../../games/progresso/estado'
+import { escolherNivel } from '../../games/progresso/progresso'
 import fundoJogos from '../../assets/fundo_niveis.jpg'
 import styles from './Jogos.module.css'
 
@@ -12,9 +16,11 @@ import styles from './Jogos.module.css'
  * Escolher o jogo. Cada botão tem a cor do jogo (a cor das peças que dá).
  * Os jogos inativos (ainda em construção) aparecem cinzentos, com "Em breve".
  * A rota de cada jogo é o seu id: '/matematica', '/portugues', ...
+ * Em cima, os 3 níveis em pequeno: tocar num muda a dificuldade aqui mesmo.
  */
 function Jogos() {
   const navegar = useNavigate()
+  const nivelAtual = usePerfil()?.nivel
 
   function escolher(id) {
     prepararEfeitos() // carrega os sons agora, que a criança já tocou no ecrã
@@ -23,6 +29,29 @@ function Jogos() {
 
   return (
     <EcraEscolha titulo="Que jogo vamos jogar?" voltar="/mascotes" imagem={fundoJogos}>
+      {/* Os níveis, em pequeno: o escolhido fica dourado e os outros mais claros */}
+      <div className={styles.niveis} role="group" aria-label="Nível">
+        {NIVEIS.map(({ id, nome }) => {
+          const escolhido = id === nivelAtual
+          return (
+            <motion.button
+              key={id}
+              type="button"
+              className={`${styles.nivel} ${escolhido ? styles.nivelEscolhido : ''}`}
+              onClick={() => mudarProgresso((p) => escolherNivel(p, id))}
+              aria-pressed={escolhido}
+              initial={{ opacity: 0, y: -12 }}
+              animate={{ opacity: escolhido ? 1 : 0.7, y: 0, scale: escolhido ? [1, 1.12, 1] : 1 }}
+              transition={{ duration: 0.35 }}
+              whileTap={{ scale: 0.9 }}
+            >
+              <IconeNivel nivel={id} className={styles.nivelIcone} />
+              <span className={styles.nivelNome}>{nome}</span>
+            </motion.button>
+          )
+        })}
+      </div>
+
       <nav className={styles.grelha} aria-label="Jogos">
         {JOGOS.map((jogo, i) => (
           <motion.button

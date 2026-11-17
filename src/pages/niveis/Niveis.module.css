@@ -1,30 +1,61 @@
 /*
- * 3 botões grandes ao centro da imagem. Medidas em cqw (1% da largura da
- * imagem dentro da moldura): fica igual em telemóvel, tablet e computador.
+ * A mascote escolhida à esquerda e os 3 níveis, uns por baixo dos outros,
+ * à direita. Medidas em cqw (1% da largura da imagem dentro da moldura; a
+ * altura da imagem é 56,25cqw): fica igual em telemóvel, tablet e computador.
+ *
+ *    mascote    │  [⭐ Fácil   ]
+ *               │  [⭐⭐ Médio  ]
+ *               │  [⭐⭐⭐ Difícil]
  */
+
+/* ---------- A mascote ---------- */
+.mascote {
+  position: absolute;
+  left: 8cqw;
+  bottom: 3cqw;
+  width: 34cqw;
+  height: 46cqw;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.mascoteImagem {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  font-size: max(4rem, 26cqw); /* se for emoji */
+  line-height: 1;
+  filter: drop-shadow(0 1cqw 1cqw rgba(0, 0, 0, 0.25));
+}
+
+/* ---------- Os 3 níveis ---------- */
 .botoes {
   position: absolute;
-  inset: 0;
+  right: 9cqw;
+  top: 0;
+  bottom: 0;
   display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: center;
-  gap: 4cqw;
+  gap: 2.6cqw;
   font-family: 'Fredoka', system-ui, sans-serif;
   font-weight: 600;
 }
 
-/* Botões quadrados com efeito vidro (como os das idades, antes) */
+/* Cartões compridos com efeito vidro: o ícone à esquerda e o nome à direita */
 .botao {
   position: relative;
-  width: 22cqw;
-  min-width: 96px;
-  aspect-ratio: 1;
-  padding: 0;
+  width: 40cqw;
+  height: 14cqw;
+  min-height: 56px;
+  padding: 0 3cqw;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  justify-content: center;
-  gap: 1cqw;
+  justify-content: flex-start;
+  gap: 3cqw;
   cursor: pointer;
   font: inherit;
   border-radius: 3cqw;
@@ -51,33 +82,15 @@
   filter: drop-shadow(0 0.2cqw 0.3cqw rgba(0, 0, 0, 0.3));
 }
 
-/*
- * O ícone é um quadrado com um círculo azul ao centro (65% da largura).
- * Mostramos só o círculo: a "janela" redonda tem o tamanho do círculo e a
- * imagem lá dentro é maior (1 / 0.64 = 156%), centrada no círculo.
- */
+/* O tamanho do ícone (o resto está no IconeNivel) */
 .icone {
-  position: relative;
-  width: 11cqw;
-  min-width: 48px;
-  aspect-ratio: 1;
-  overflow: hidden;
-  border-radius: 50%;
-  box-shadow: 0 0.4cqw 0.8cqw rgba(0, 0, 0, 0.25);
-}
-
-.icone img {
-  position: absolute;
-  width: 156.25%;
-  left: -28.1%;
-  top: -29.1%;
-  user-select: none;
-  -webkit-user-drag: none;
+  width: 10cqw;
+  min-width: 44px;
 }
 
 /* Texto dourado com contorno castanho, como os títulos */
 .nome {
-  font-size: max(1.3rem, 4.4cqw);
+  font-size: max(1.3rem, 5cqw);
   line-height: 1;
   color: #f5c96a;
   --contorno: #5a3912;

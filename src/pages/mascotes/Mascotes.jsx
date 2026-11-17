@@ -18,7 +18,8 @@ const POSICAO = {
 /**
  * Escolher a mascote: a criança escolhe quem vai ajudar a acabar o projeto.
  * A mascote que já estava escolhida tem uma estrela. Pode-se trocar sempre:
- * o progresso de cada mascote fica guardado.
+ * o progresso de cada mascote fica guardado. É a 1.ª escolha: a seguir,
+ * o nível (com a mascote escolhida ao lado).
  */
 function Mascotes() {
   const navegar = useNavigate()
@@ -26,11 +27,11 @@ function Mascotes() {
 
   function escolher(id) {
     mudarProgresso((progresso) => escolherMascote(progresso, id))
-    navegar('/jogos')
+    navegar('/nivel')
   }
 
   return (
-    <EcraEscolha titulo="Quem vais ajudar?" voltar="/nivel" imagem={imagemMascotes}>
+    <EcraEscolha titulo="Quem vais ajudar?" voltar="/" imagem={imagemMascotes}>
       <nav aria-label="Mascotes">
         {MASCOTES.map(({ id, nome }) => {
           // 'Sapo construtor' → 2 linhas: 'Sapo' e 'construtor'

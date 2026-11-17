@@ -3,8 +3,9 @@ import { usePerfil } from './useProgresso'
 
 /**
  * "Porteiro" das páginas: só as mostra se o que precisam já estiver escolhido.
- * - nivel: precisa do nível (senão vai para a escolha do nível)
  * - mascote: precisa da mascote (senão vai para a escolha da mascote)
+ * - nivel: precisa do nível (senão vai para a escolha do nível)
+ * A mascote vê-se primeiro: é a 1.ª coisa que se escolhe (depois, o nível).
  * Enquanto lê o progresso do telemóvel não mostra nada (é muito rápido).
  *
  * Usa-se no App.jsx à volta das rotas:
@@ -14,8 +15,8 @@ import { usePerfil } from './useProgresso'
 function Guarda({ nivel = false, mascote = false }) {
   const perfil = usePerfil()
   if (!perfil) return null
-  if (nivel && !perfil.nivel) return <Navigate to="/nivel" replace />
   if (mascote && !perfil.mascoteAtiva) return <Navigate to="/mascotes" replace />
+  if (nivel && !perfil.nivel) return <Navigate to="/nivel" replace />
   return <Outlet />
 }
 

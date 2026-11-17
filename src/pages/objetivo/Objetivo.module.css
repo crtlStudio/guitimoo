@@ -1,0 +1,28 @@
+/*
+ * Página do objetivo. Quase tudo vem do Construcao.module.css (o mesmo
+ * aspeto); aqui só está o que é desta página: o dedo e as estrelas.
+ */
+
+/* O dedo (igual ao dedo fantasma): left/top = a ponta do dedo */
+.dedo {
+  position: absolute;
+  z-index: 5;
+  margin: -0.07em 0 0 -0.43em;
+  font-size: max(2rem, 6cqw);
+  line-height: 1;
+  pointer-events: none;
+  /* "fantasma": um brilho branco à volta, para se ver em qualquer fundo */
+  filter: drop-shadow(0 0 0.5cqw rgba(255, 255, 255, 0.95)) drop-shadow(0 0.3cqw 0.5cqw rgba(0, 0, 0, 0.3));
+}
+
+/* As estrelas que saltam do botão do jogo (por cima do botão) */
+.estrela {
+  position: absolute;
+  left: 50%;
+  top: 38cqw;
+  z-index: 4;
+  font-size: max(1rem, 3.4cqw);
+  line-height: 1;
+  pointer-events: none;
+  filter: drop-shadow(0 0.2cqw 0.3cqw rgba(0, 0, 0, 0.3));
+}

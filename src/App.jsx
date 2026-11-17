@@ -5,6 +5,7 @@ import Niveis from './pages/niveis/Niveis'
 import Mascotes from './pages/mascotes/Mascotes'
 import Jogos from './pages/jogos/Jogos'
 import Construcao from './pages/construcao/Construcao'
+import Objetivo from './pages/objetivo/Objetivo'
 import Matematica from './pages/matematica/Matematica'
 import Portugues from './pages/portugues/Portugues'
 import Memoria from './pages/memoria/Memoria'
@@ -19,11 +20,13 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/nivel" element={<Niveis />} />
-      <Route element={<Guarda nivel />}>
-        <Route path="/mascotes" element={<Mascotes />} />
+      {/* Primeiro a mascote, depois o nível (o nível precisa da mascote) */}
+      <Route path="/mascotes" element={<Mascotes />} />
+      <Route element={<Guarda mascote />}>
+        <Route path="/nivel" element={<Niveis />} />
       </Route>
       <Route element={<Guarda nivel mascote />}>
+        <Route path="/objetivo" element={<Objetivo />} />
         <Route path="/jogos" element={<Jogos />} />
         <Route path="/construcao" element={<Construcao />} />
         <Route path="/matematica" element={<Matematica />} />

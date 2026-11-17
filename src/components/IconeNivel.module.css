@@ -1,0 +1,25 @@
+/*
+ * O ícone é um quadrado com um círculo azul ao centro (65% da largura).
+ * Mostramos só o círculo: a "janela" redonda tem o tamanho do círculo e a
+ * imagem lá dentro é maior (1 / 0.64 = 156%), centrada no círculo.
+ * A largura vem de fora (className).
+ */
+.icone {
+  position: relative;
+  display: block;
+  aspect-ratio: 1;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 50%;
+  box-shadow: 0 0.4cqw 0.8cqw rgba(0, 0, 0, 0.25);
+}
+
+.icone img {
+  position: absolute;
+  width: 156.25%;
+  max-width: none;
+  left: -28.1%;
+  top: -29.1%;
+  user-select: none;
+  -webkit-user-drag: none;
+}
