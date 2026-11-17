@@ -224,14 +224,18 @@
   place-items: center;
 }
 
+/* Bolinha verde com ✓: altura = largura (sempre redonda) e o ✓ cresce com
+   ela, sem tamanho mínimo (num telemóvel, um mínimo achatava a bolinha) */
 .certo {
   display: grid;
   place-items: center;
-  width: 5.6cqw;
-  aspect-ratio: 1;
+  width: 4.8cqw;
+  height: 4.8cqw;
+  box-sizing: border-box;
   font-family: 'Fredoka', system-ui, sans-serif;
   font-weight: 600;
-  font-size: max(1.3rem, 3.8cqw);
+  font-size: 2.9cqw;
+  line-height: 1;
   color: white;
   background: #3fa34d;
   border: max(2px, 0.3cqw) solid white;
