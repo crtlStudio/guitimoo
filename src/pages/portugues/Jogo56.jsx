@@ -5,6 +5,7 @@ import { gerarGrelha } from '../../games/portugues/grelha'
 import { proximaPalavra } from '../../games/portugues/memoria'
 import BalaoMascote from '../../components/BalaoMascote'
 import Festa from '../../components/Festa'
+import ImagemPalavra from '../../components/ImagemPalavra'
 import Grelha from './Grelha'
 import styles from './Jogo56.module.css'
 
@@ -14,11 +15,13 @@ const ESPERA_DEPOIS_DE_ACERTAR = 1800 // milissegundos até à palavra seguinte
 
 /**
  * Jogo dos 5–6 anos: encontrar a palavra (mostrada com emoji) na grelha 6x6.
+ * Uma ronda só (uma grelha): no fim chama aoProxima().
  * Props: aoAcertar() e aoErrar() — avisam a página (sons e estrelas);
+ * aoProxima() — passar à ronda seguinte (a página sorteia o jogo);
  * contador — o contador de estrelas, que fica por baixo do cartão da palavra.
  */
-function Jogo56({ aoAcertar, aoErrar: avisarErro, contador }) {
-  // A ronda atual: { palavra, emoji, letras } (null enquanto carrega)
+function Jogo56({ aoAcertar, aoErrar: avisarErro, aoProxima, contador }) {
+  // A ronda: { palavra, emoji, letras } (null enquanto carrega)
   const [ronda, setRonda] = useState(null)
   // Palavras encontradas nesta ronda: [{ palavra, celulas }]
   const [encontradas, setEncontradas] = useState([])
@@ -28,21 +31,16 @@ function Jogo56({ aoAcertar, aoErrar: avisarErro, contador }) {
   const temporizador = useRef(null)
   const jaComecou = useRef(false)
 
-  /** Tira a próxima palavra do saco e gera uma grelha nova com ela. */
-  async function novaRonda() {
-    const palavra = await proximaPalavra('5-6', TODAS)
-    const { emoji } = LISTA.find((p) => p.palavra === palavra)
-    const { letras } = gerarGrelha({ tamanho: 6, palavras: [palavra], direcoes: ['horizontal'] })
-    setRonda({ palavra, emoji, letras })
-    setEncontradas([])
-    setMensagem(null)
-  }
-
-  // Primeira ronda (o jaComecou evita gastar duas palavras em desenvolvimento)
+  // Tira a palavra do saco e gera a grelha (o jaComecou evita gastar duas
+  // palavras em desenvolvimento)
   useEffect(() => {
     if (jaComecou.current) return
     jaComecou.current = true
-    novaRonda()
+    proximaPalavra('5-6', TODAS).then((palavra) => {
+      const { emoji } = LISTA.find((p) => p.palavra === palavra)
+      const { letras } = gerarGrelha({ tamanho: 6, palavras: [palavra], direcoes: ['horizontal'] })
+      setRonda({ palavra, emoji, letras })
+    })
   }, [])
 
   // Ao sair do jogo, cancela a passagem automática para a ronda seguinte
@@ -52,7 +50,7 @@ function Jogo56({ aoAcertar, aoErrar: avisarErro, contador }) {
     const acabou = aoAcertar?.() // true = era a última: vem aí o ecrã de fim
     setEncontradas([{ palavra, celulas }])
     setMensagem((anterior) => ({ tipo: 'fim', vez: (anterior?.vez ?? 0) + 1 }))
-    if (!acabou) temporizador.current = setTimeout(novaRonda, ESPERA_DEPOIS_DE_ACERTAR)
+    if (!acabou) temporizador.current = setTimeout(() => aoProxima?.(), ESPERA_DEPOIS_DE_ACERTAR)
   }
 
   function aoErrar() {
@@ -98,9 +96,7 @@ function Jogo56({ aoAcertar, aoErrar: avisarErro, contador }) {
               exit={{ opacity: 0, scale: 0.6 }}
               transition={{ type: 'spring', stiffness: 260, damping: 16 }}
             >
-              <span className={styles.emoji} aria-hidden="true">
-                {ronda.emoji}
-              </span>
+              <ImagemPalavra palavra={ronda.palavra} emoji={ronda.emoji} className={styles.emoji} />
               {/* A palavra, letra a letra; ficam verdes quando é encontrada */}
               <span className={styles.palavra} aria-label={`Procura: ${ronda.palavra}`}>
                 {[...ronda.palavra].map((letra, i) => (

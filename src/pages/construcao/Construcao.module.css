@@ -378,6 +378,32 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+/* O "?" no canto de cima, à esquerda: ver outra vez a explicação do objetivo */
+.ajuda {
+  position: absolute;
+  left: 1.6cqw;
+  top: 1.6cqw;
+  width: 6cqw;
+  min-width: 40px;
+  aspect-ratio: 1;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  font-family: 'Fredoka', system-ui, sans-serif;
+  font-weight: 600;
+  font-size: max(1.2rem, 3.6cqw);
+  line-height: 1;
+  color: #5a3912;
+  cursor: pointer;
+  border-radius: 50%;
+  background: linear-gradient(to bottom, #ffe08a, #f5c96a);
+  border: max(3px, 0.4cqw) solid white;
+  box-shadow:
+    0 0.5cqw 0 #c99a2e,
+    0 0.8cqw 1.4cqw rgba(0, 0, 0, 0.3);
+  -webkit-tap-highlight-color: transparent;
+}
+
 /* ---------- Projeto acabado em grande ---------- */
 
 .verAcabado {

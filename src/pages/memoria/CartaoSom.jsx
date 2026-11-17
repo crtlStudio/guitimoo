@@ -1,5 +1,6 @@
 import { motion } from 'motion/react'
 import { somDoId } from '../../games/memoria/sorteio'
+import ImagemPalavra from '../../components/ImagemPalavra'
 import styles from './CartaoSom.module.css'
 
 /**
@@ -47,9 +48,7 @@ function CartaoSom({ id, aceso = false, bloqueado = false, estado = null, aoToca
       transition={{ type: 'spring', stiffness: 400, damping: 15 }}
       whileTap={bloqueado ? undefined : { scale: 0.92 }}
     >
-      <span className={styles.emoji} aria-hidden="true">
-        {som.emoji}
-      </span>
+      <ImagemPalavra palavra={som.id} emoji={som.emoji} className={styles.emoji} />
       <span className={styles.nome}>{som.nome}</span>
 
       {estado === 'certo' && (

@@ -37,6 +37,12 @@
   white-space: nowrap;
 }
 
+/* O desenho da palavra, ao lado dela: maior que as letras */
+.desenho {
+  font-size: 2em;
+  line-height: 1;
+}
+
 .destaque {
   color: #2f7d32;
   font-size: 1.25em;

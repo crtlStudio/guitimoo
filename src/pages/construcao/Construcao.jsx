@@ -270,6 +270,17 @@ function Construcao() {
         ▶
       </motion.button>
 
+      {/* Ver outra vez a explicação do objetivo (o ▶ de lá volta para aqui) */}
+      <motion.button
+        type="button"
+        className={styles.ajuda}
+        onClick={() => navegar('/objetivo', { state: { voltar: '/construcao' } })}
+        aria-label="Ver outra vez como se joga"
+        whileTap={{ scale: 0.88 }}
+      >
+        ?
+      </motion.button>
+
       {/* Um projeto acabado em grande, com festa; toca em qualquer lado para fechar */}
       <AnimatePresence>
         {verAcabado !== null && (

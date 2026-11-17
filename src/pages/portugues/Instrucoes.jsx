@@ -1,4 +1,5 @@
 import { motion } from 'motion/react'
+import ImagemPalavra from '../../components/ImagemPalavra'
 import styles from './Instrucoes.module.css'
 
 // O objetivo de cada jogo: título, frase curta e a demonstração animada.
@@ -131,9 +132,7 @@ function Instrucoes({ escalao, aoComecar }) {
 
       <div className={styles.exemplo}>
         {jogo.emoji && (
-          <span className={styles.emoji} aria-hidden="true">
-            {jogo.emoji}
-          </span>
+          <ImagemPalavra palavra="gato" emoji={jogo.emoji} className={styles.emoji} />
         )}
         <Demonstracao letras={jogo.letras} certas={jogo.certas} gesto={jogo.gesto} />
         {jogo.setas && (

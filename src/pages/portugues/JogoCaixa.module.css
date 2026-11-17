@@ -1,0 +1,230 @@
+/*
+ * Jogo da caixa das palavras. Medidas em cqw (1% da largura da imagem; a
+ * altura é 56.25cqw). Tudo desenhado em CSS (madeira em gradiente): quando
+ * houver imagens da caixa, dos cubos e do verso dos cartões, trocam-se aqui.
+ *
+ *   ┌──────────── caixa ────────────────────┐
+ *   │ [monte] │      [ cartão ]             │
+ *   │         │  ════ ranhura ════          │
+ *   │         │  [_][_][_][_]  ← lugares     │
+ *   └───────────────────────────────────────┘
+ *         [T] [G] [O] [A]   ← cubos, fora da caixa
+ */
+
+/* As cores da madeira */
+.caixa,
+.cubos,
+.lugares {
+  --madeira-clara: #e9c48f;
+  --madeira: #d4a066;
+  --madeira-escura: #a8692a;
+  --tinta: #5a3912;
+  --cubo: 7.4cqw;
+}
+
+/* Palavras compridas (6–7 letras + cubos a mais): cubos mais pequenos */
+.pequenos {
+  --cubo: 6.4cqw;
+}
+
+/* ---------- A caixa ---------- */
+.caixa {
+  position: absolute;
+  left: 7cqw;
+  right: 7cqw;
+  top: 7.5cqw; /* abaixo do contador de estrelas, que fica em cima ao centro */
+  height: 32cqw;
+  display: flex;
+  gap: 1.2cqw;
+  padding: 1.2cqw;
+  box-sizing: border-box;
+  border-radius: 1.6cqw;
+  /* as tábuas da borda */
+  background: linear-gradient(to bottom, var(--madeira-clara), var(--madeira));
+  box-shadow:
+    inset 0 0.3cqw 0 rgba(255, 255, 255, 0.45),
+    0 0.8cqw 0 var(--madeira-escura),
+    0 1.4cqw 2cqw rgba(0, 0, 0, 0.3);
+}
+
+/* Os dois "fundos" da caixa, mais escuros (a madeira lá dentro) */
+.compartimento,
+.meio {
+  position: relative;
+  border-radius: 1cqw;
+  background: linear-gradient(to bottom, #b77c42, #c88f55);
+  box-shadow: inset 0 0.6cqw 1cqw rgba(0, 0, 0, 0.3);
+}
+
+/* À esquerda: o monte dos próximos cartões */
+.compartimento {
+  width: 17cqw;
+  flex-shrink: 0;
+}
+
+/* O verso de um cartão (3 empilhados, um bocadinho desencontrados) */
+.verso {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 12cqw;
+  height: 16cqw;
+  translate: calc(-50% + var(--n) * 0.5cqw) calc(-50% - var(--n) * 0.6cqw);
+  border-radius: 1cqw;
+  border: 0.4cqw solid #fff;
+  background:
+    radial-gradient(circle at 50% 50%, #ffd36b 0 1.4cqw, transparent 1.5cqw),
+    repeating-linear-gradient(45deg, #2f80d8 0 1cqw, #4a95e6 1cqw 2cqw);
+  box-shadow: 0 0.3cqw 0.6cqw rgba(0, 0, 0, 0.3);
+}
+
+/* À direita: o cartão (em cima) e os lugares das letras (em baixo) */
+.meio {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1cqw 1cqw 1.4cqw;
+}
+
+/* A ranhura: uma fenda na madeira onde o cartão fica de pé */
+.ranhura {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 0.6cqw;
+  perspective: 60cqw;
+}
+
+.ranhura::after {
+  content: '';
+  position: absolute;
+  left: -4cqw;
+  right: -4cqw;
+  bottom: 0;
+  height: 1cqw;
+  border-radius: 999px;
+  background: #6e4319;
+  box-shadow: inset 0 0.3cqw 0.4cqw rgba(0, 0, 0, 0.5);
+}
+
+/* O cartão com a imagem (e a palavra) */
+.cartao {
+  width: 14cqw;
+  height: 15cqw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4cqw;
+  border-radius: 1cqw;
+  background: #fffdf6;
+  border: 0.35cqw solid #f5c96a;
+  box-shadow: 0 0.4cqw 0.8cqw rgba(0, 0, 0, 0.3);
+  backface-visibility: hidden;
+}
+
+.imagem {
+  font-size: 7.4cqw;
+  line-height: 1;
+}
+
+.palavra {
+  font-family: 'Fredoka', system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 3cqw;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  color: var(--tinta, #5a3912);
+}
+
+/* ---------- Os lugares das letras ---------- */
+.lugares {
+  display: flex;
+  gap: 1cqw;
+}
+
+.lugar {
+  position: relative;
+  width: var(--cubo);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  border-radius: 1cqw;
+  border: 0.35cqw dashed rgba(255, 240, 210, 0.85);
+  background: rgba(0, 0, 0, 0.12);
+}
+
+.lugarCheio {
+  border-color: transparent;
+  background: none;
+}
+
+/* Fácil: a letra clarinha no lugar, para encaixar a forma */
+.guia {
+  font-family: 'Fredoka', system-ui, sans-serif;
+  font-weight: 600;
+  font-size: calc(var(--cubo) * 0.6);
+  line-height: 1;
+  color: rgba(255, 245, 225, 0.55);
+}
+
+/* ---------- Os cubos de madeira com letras ---------- */
+.cubos {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 4cqw;
+  width: fit-content;
+  max-width: 86cqw;
+  margin-inline: auto;
+  display: flex;
+  gap: 1.6cqw;
+}
+
+.cubo {
+  width: var(--cubo);
+  aspect-ratio: 1;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  font-family: 'Fredoka', system-ui, sans-serif;
+  font-weight: 600;
+  font-size: calc(var(--cubo) * 0.6);
+  line-height: 1;
+  color: var(--tinta);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  border: 0;
+  border-radius: 1cqw;
+  /* madeira clara com veios e um lado mais escuro, como um cubo */
+  background:
+    repeating-linear-gradient(100deg, transparent 0 1.6cqw, rgba(168, 105, 42, 0.12) 1.6cqw 1.8cqw),
+    linear-gradient(to bottom, #f6dcb0, var(--madeira-clara));
+  box-shadow:
+    inset 0 0.25cqw 0 rgba(255, 255, 255, 0.6),
+    0 0.5cqw 0 var(--madeira-escura),
+    0 0.8cqw 1cqw rgba(0, 0, 0, 0.3);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.cubo:active {
+  cursor: grabbing;
+}
+
+/* O sítio de um cubo que já foi para a caixa (a fila não salta) */
+.cuboVazio {
+  width: var(--cubo);
+  aspect-ratio: 1;
+}
+
+/* ---------- O balão da mascote ---------- */
+.mensagem {
+  position: absolute;
+  right: 2%;
+  bottom: 14cqw;
+}

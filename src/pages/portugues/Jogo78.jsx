@@ -1,11 +1,13 @@
 import { motion } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
+import { tocarEfeito } from '../../audio/efeitos'
 import palavras from '../../data/palavras.json'
 import { gerarGrelha } from '../../games/portugues/grelha'
 import { proximasPalavras } from '../../games/portugues/memoria'
 import { corDaPalavra } from './cores'
 import BalaoMascote from '../../components/BalaoMascote'
 import Festa from '../../components/Festa'
+import ImagemPalavra from '../../components/ImagemPalavra'
 import Grelha from './Grelha'
 import styles from './Jogo78.module.css'
 
@@ -16,11 +18,13 @@ const ESPERA_DEPOIS_DE_ACABAR = 2200 // milissegundos até à grelha seguinte
 
 /**
  * Jogo dos 7–8 anos: encontrar 3 palavras numa grelha 8x8, em várias direções.
- * Cada palavra é uma pergunta. Props: aoAcertar() e aoErrar() — avisam a página;
+ * Uma ronda só (uma grelha): as 3 palavras contam como 1 vitória; no fim
+ * chama aoProxima() (a página sorteia o jogo seguinte).
+ * Props: aoAcertar() e aoErrar() — avisam a página; aoProxima() — ronda seguinte;
  * contador — o contador de estrelas, que fica por baixo da lista de palavras.
  */
-function Jogo78({ aoAcertar, aoErrar: avisarErro, contador }) {
-  // A ronda atual: { itens: [{ palavra, mostrar, emoji }], letras } (null enquanto carrega)
+function Jogo78({ aoAcertar, aoErrar: avisarErro, aoProxima, contador }) {
+  // A ronda: { itens: [{ palavra, mostrar, emoji }], letras } (null enquanto carrega)
   const [ronda, setRonda] = useState(null)
   // Palavras encontradas, pela ordem: [{ palavra, celulas }]
   const [encontradas, setEncontradas] = useState([])
@@ -30,28 +34,23 @@ function Jogo78({ aoAcertar, aoErrar: avisarErro, contador }) {
   const temporizador = useRef(null)
   const jaComecou = useRef(false)
 
-  /** Tira 3 palavras do saco e gera uma grelha nova com elas. */
-  async function novaRonda() {
-    const escolhidas = await proximasPalavras('7-8', TODAS, QUANTAS)
-    const itens = escolhidas.map((palavra) => {
-      const { mostrar, emoji } = LISTA.find((p) => p.palavra === palavra)
-      return { palavra, emoji, mostrar: mostrar ?? palavra }
-    })
-    const { letras } = gerarGrelha({
-      tamanho: 8,
-      palavras: escolhidas,
-      direcoes: ['horizontal', 'vertical', 'diagonalDesce', 'diagonalSobe'],
-    })
-    setRonda({ itens, letras })
-    setEncontradas([])
-    setMensagem(null)
-  }
-
-  // Primeira ronda (o jaComecou evita gastar palavras a dobrar em desenvolvimento)
+  // Tira 3 palavras do saco e gera a grelha (o jaComecou evita gastar
+  // palavras a dobrar em desenvolvimento)
   useEffect(() => {
     if (jaComecou.current) return
     jaComecou.current = true
-    novaRonda()
+    proximasPalavras('7-8', TODAS, QUANTAS).then((escolhidas) => {
+      const itens = escolhidas.map((palavra) => {
+        const { mostrar, emoji } = LISTA.find((p) => p.palavra === palavra)
+        return { palavra, emoji, mostrar: mostrar ?? palavra }
+      })
+      const { letras } = gerarGrelha({
+        tamanho: 8,
+        palavras: escolhidas,
+        direcoes: ['horizontal', 'vertical', 'diagonalDesce', 'diagonalSobe'],
+      })
+      setRonda({ itens, letras })
+    })
   }, [])
 
   useEffect(() => () => clearTimeout(temporizador.current), [])
@@ -63,12 +62,12 @@ function Jogo78({ aoAcertar, aoErrar: avisarErro, contador }) {
     setEncontradas(novas)
 
     if (novas.length === QUANTAS) {
-      // Encontrou as 3: fim da grelha (a página mostra o fim do jogo)
+      // Encontrou as 3: é uma vitória (só agora conta para as estrelas)
       const acabou = aoAcertar?.() // true = era a última: vem aí o ecrã de fim
       setMensagem((m) => ({ tipo: 'fim', vez: proxVez(m) }))
-      if (!acabou) temporizador.current = setTimeout(novaRonda, ESPERA_DEPOIS_DE_ACABAR)
+      if (!acabou) temporizador.current = setTimeout(() => aoProxima?.(), ESPERA_DEPOIS_DE_ACABAR)
     } else {
-      aoAcertar?.()
+      tocarEfeito('certo') // encontrou uma: o som de certo, mas ainda não é a vitória
       setMensagem((m) => ({ tipo: 'boa', vez: proxVez(m) }))
     }
   }
@@ -120,9 +119,7 @@ function Jogo78({ aoAcertar, aoErrar: avisarErro, contador }) {
                 animate={{ opacity: 1, x: 0, scale: encontrada ? [1, 1.1, 1] : 1 }}
                 transition={{ delay: encontrada ? 0 : i * 0.1 }}
               >
-                <span className={styles.emoji} aria-hidden="true">
-                  {emoji}
-                </span>
+                <ImagemPalavra palavra={palavra} emoji={emoji} className={styles.emoji} />
                 <span className={styles.texto}>{mostrar}</span>
                 {encontrada && (
                   <span className={styles.visto} aria-label="encontrada">

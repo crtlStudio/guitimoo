@@ -1,6 +1,6 @@
 import { motion } from 'motion/react'
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { prepararEfeitos, tocarEfeito } from '../../audio/efeitos'
 import EcraEscolha from '../../components/EcraEscolha'
 import Festa from '../../components/Festa'
@@ -67,13 +67,16 @@ function criarPassos(quantos) {
 }
 
 /**
- * Página do objetivo: aparece a seguir ao nível, na 1.ª vez com cada mascote.
+ * Página do objetivo: aparece a seguir ao nível, na 1.ª vez com cada mascote,
+ * e sempre que se toca no "?" da construção (aí, o ▶ e o voltar regressam lá).
  * Sem palavras: o dedo mostra que jogar dá estrelas, as estrelas dão peças
  * da cor do jogo, e as peças enchem de cor o projeto da mascote (a casa do
  * Sapo, o bosque do Panda, ...). O ▶ segue para os jogos.
  */
 function Objetivo() {
   const navegar = useNavigate()
+  // Vindo do "?" da construção, o ▶ e o voltar regressam lá
+  const regresso = useLocation().state?.voltar ?? null
   const mascote = useMascoteAtiva()
   const ativos = jogosAtivos()
   const [passos] = useState(() => criarPassos(ativos.length))
@@ -99,11 +102,11 @@ function Objetivo() {
   function seguir() {
     prepararEfeitos()
     marcarObjetivoComoVisto(mascote.id)
-    navegar('/jogos')
+    navegar(regresso ?? '/jogos')
   }
 
   return (
-    <EcraEscolha titulo={tituloAjuda(mascote)} voltar="/nivel">
+    <EcraEscolha titulo={tituloAjuda(mascote)} voltar={regresso ?? '/nivel'}>
       {/* A mascote: salta a cada peça e, na festa, aos pulos */}
       <div className={construcao.mascote}>
         <motion.span

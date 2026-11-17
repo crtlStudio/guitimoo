@@ -7,15 +7,15 @@
 
 Estou a continuar o GuitimOO (app de jogos educativos para crianças, React + Vite + Capacitor). Estou a aprender JavaScript: explica o que cada parte faz em linguagem simples. Antes de mudanças grandes, mostra-me primeiro o plano (ou um exemplo dos dados) e espera pela minha confirmação. Faz só o passo que eu pedir; não avances sozinho. Ignora as regras do graphify no CLAUDE.md (não está instalado). Só faz commit ou push quando eu pedir.
 
-**Tudo tem de ser muito visual.** As crianças mais pequenas não sabem ler. As explicações têm de ser curtas, com setas e círculos, e interativas.
+**Tudo tem de ser muito visual.** As crianças mais pequenas não sabem ler. As explicações têm de ser curtas, com o dedo fantasma a mostrar como se faz, e interativas.
 
 ## O conceito (tipo Tamagotchi, só com reforço positivo)
 
 - 4 mascotes companheiras. A criança escolhe uma e ajuda-a a acabar um projeto:
   - Sapo → casa
   - Panda → bosque de bambu
-  - Coruja → biblioteca
-  - Tartaruga → carrinha
+  - Coruja → biblioteca (estante)
+  - Tartaruga → carrinha (autocaravana)
 - 5 jogos, todos ativos:
   - 🟥 Matemática e Lógica (`matematica`)
   - 🟦 Português (`portugues`)
@@ -25,60 +25,61 @@ Estou a continuar o GuitimOO (app de jogos educativos para crianças, React + Vi
 - 75 estrelas de um jogo = 1 peça da cor desse jogo, para a mascote ativa. Cada projeto precisa de 5 peças de cada cor.
 - Há reserva para as peças a mais. Nunca se perde nada, e não há castigos.
 - 3 níveis (`facil`, `medio`, `dificil`). Por dentro, os jogos usam `'3-4'`, `'5-6'` e `'7-8'`.
-- Percurso: Início → `/nivel` → `/mascotes` → `/jogos` → `/<id do jogo>`. Há também o ecrã de construção de cada mascote.
-- Tudo fica no telemóvel com `@capacitor/preferences`, na chave `progresso`. No browser fica em `localStorage` com a chave `CapacitorStorage.progresso`.
+- **Percurso:** Início → `/mascotes` → `/nivel` (mascote à esquerda, 3 níveis na vertical) → `/objetivo` (só na 1.ª vez de cada mascote) → `/jogos` → `/<id do jogo>`.
+  - Nos jogos, o botão voltar leva às mascotes. Em `/jogos` há uma fila de níveis pequenos em cima para mudar a dificuldade.
+  - `/construcao` mostra o projeto da mascote a encher de cor. O botão `?` (canto superior esquerdo) volta a mostrar o objetivo; o ▶ (canto superior direito) vai jogar.
+- Tudo fica no telemóvel com `@capacitor/preferences`, na chave `progresso`. No browser fica em `localStorage` com a chave `CapacitorStorage.progresso`. Cada mascote guarda `objetivoVisto`.
 
 ## O que está feito
 
-- Progresso, escolha de nível, mascote e jogo, peças e reserva.
-- Ecrã de construção das mascotes.
-- Botão de apagar o progresso, com proteção para adultos.
-- Jogo do Detetive.
-- **Matemática com 3 jogos dentro, que se intercalam ao acaso** (não se escolhem; nunca saem mais de 2 iguais seguidos):
-  1. **Balança (contas).** O corpo da balança ficou mais pequeno e os braços do mesmo tamanho. O braço mais pesado desce e o mais leve sobe; mexe mais no fácil.
-     - No médio e no difícil, na **soma**, os cubos têm de ter as cores dos números do cartão: em 2 (azul) + 3 (verde), põem-se 2 azuis e 3 verdes. Se a quantidade está certa mas as cores não, aparece "Quase! Usa as cores dos números".
-  2. **Lógica.** Uma fila de cubos com um padrão e um **?**, e a criança escolhe o que falta. Não há balança.
-  3. **Quantidades.** Um quadro com cubos de um lado e números do outro, nos dois sentidos.
-- **Dedo fantasma** (`src/components/DedoFantasma.jsx` + `linhaDoTempo.js`). Aparece ao fim de 3 s sem a criança tocar no ecrã e mostra **como se faz, nunca a resposta certa**. Pode fazer sequências de gestos (tocar N vezes, arrastar, percorrer).
-  - Na soma: toca 2× no número azul e leva um cubo azul para o prato; depois faz o mesmo com o verde.
-  - A escolher o número: carrega 2× num número **errado**.
-  - Os sítios para onde o dedo aponta estão em `src/pages/matematica/ajuda.js`.
-- Os sons e músicas originais foram recuperados e **ficam**: a pasta `sons-originais/` e os `.mp3` em `src/assets/`. A app toca as versões `.m4a`, que são as mesmas músicas.
+- Progresso, escolha de mascote e nível, peças e reserva, ecrã de construção, apagar o progresso (com proteção para adultos).
+- **Página do objetivo** (`pages/objetivo/`): "Ajuda o Sapo Construtor", com o dedo fantasma a mostrar que jogar enche o projeto de cor.
+- **Imagens dos projetos** (`assets/icones_objetivo/`, componente `ImagemProjeto.jsx`).
+- **Matemática com 3 jogos que se intercalam ao acaso** (nunca mais de 2 iguais seguidos): balança (contas), lógica (padrões) e quantidades. As instruções mostram os 3 jogos, um de cada vez, com o dedo fantasma (`pages/matematica/passosDasInstrucoes.js`).
+- **Português com 5 rondas sorteadas** entre o jogo do nível e a **caixa das palavras**:
+  - Jogo do nível: balão da letra (fácil), sopa de letras com 1 palavra (médio), sopa com 3 palavras (difícil; as 3 contam como 1 vitória — decidido assim).
+  - Caixa das palavras (`games/portugues/caixa.js`, `pages/portugues/JogoCaixa.jsx`): sai um cartão do monte para a ranhura e a criança arrasta (ou toca) os cubos de madeira com as letras para os lugares. Ajudas a diminuir: fácil com palavras até 4 letras, palavra escrita e letras-guia; médio com a palavra escrita; difícil só com a imagem e 2 cubos a mais.
+- **Dedo fantasma** (`components/DedoFantasma.jsx`): aparece ao fim de 3 s sem toques e mostra **como se faz, nunca a resposta certa**.
+- **Ícones/ilustrações das palavras** (`assets/icones_gerais/`, componente `components/ImagemPalavra.jsx`):
+  - Carrega sozinho todos os `.png` da pasta. O nome do ficheiro é a palavra sem acentos e em minúsculas (`leao.png`). Imagem nova com o nome certo entra sem mexer no código.
+  - Se faltar a imagem, mostra o emoji.
+  - Nomes diferentes da palavra estão em `OUTROS_NOMES`: carrinha → camião, onda → mar, cino → sino, foguetao → foguete, uvas → uva.
+  - Já usado em: Português (todos os jogos e instruções), cartões da Memória dos sons e peças das mascotes (`imagemPeca` no `config.js`).
+  - As imagens devem ser pequenas (~180 px). As grandes reduzem-se e os originais ficam em `assets/icones_gerais_originais/` (não entram na app).
+- Detetive: todas as profissões e locais já têm imagem (`assets/detetive/`, em `.webp` 512×512; os `.png` ao lado são os originais).
+
+## Ícones que faltam (estou a fazê-los noutro PC)
+
+Nomes sugeridos, para pôr em `src/assets/icones_gerais/`:
+
+- **Português:** bola, laranja, rato
+- **Memória (sons):** cao, ovelha, galo, passaro, chuva, rio, vento, trovao, ambulancia, sirene, telefone, relogio (campainha pode usar o `sino`)
+- **Horas:** praia, girassol, borboleta, dormir, morcego, pijama, taca_cereais, jantar, escova_dentes, rebento, regar, pintainho_a_nascer, pintainho, arco_iris, nascer_do_sol, meias, sapatilhas, arvore, avo, almoco, lanche, natacao (recreio pode usar a `bola`)
+- **Detetive (pistas):** extintor, fogo, escada, estetoscopio, comprimidos, penso, frigideira, colher, saleiro, livros, lapis, esquadro, trator, milho, carro_policia, semaforo, chave_inglesa, parafuso, pneu, paleta, pincel, lapis_cera, planeta, microscopio, tubo_ensaio, placa_petri, mala, bussola, microfone, nota_musical, guitarra, martelo, tijolo, colete, bola_basquete, taca
+- **Peças das mascotes:** tijolo (sapo), rebento (panda), parafuso (tartaruga) — as mesmas das listas acima; o livro (coruja) já está.
+
+**Por ligar quando houver imagens:** as Horas e as pistas do Detetive ainda mostram emojis diretamente. Ligar ao `ImagemPalavra` (palavra + emoji de reserva), como no Português.
 
 ## Próximos passos (a combinar comigo)
 
-1. Testar bem a Matemática no tablet e afinar o que eu disser.
-2. Talvez: demonstração nas instruções para cada um dos 3 jogos da Matemática. Agora as instruções só explicam a balança.
-3. Levar o conceito dos **3 jogos dentro de cada jogo** e o **dedo fantasma** aos outros jogos: Português, Memória, Horas e Detetive. Para cada jogo, primeiro o plano e espero pela confirmação.
-
-## Pendente da minha parte (imagens)
-
-- Locais do Detetive: `espaco.webp` e `pavilhao.webp`.
-- Imagens dos projetos das mascotes a crescer.
+1. Juntar os ícones que faltam e ligar as Horas e o Detetive ao `ImagemPalavra`.
+2. Instruções do Português com o dedo fantasma a mostrar a caixa das palavras e o jogo do nível.
+3. Levar o conceito dos **vários jogos dentro de cada jogo** e o **dedo fantasma** à Memória, Horas e Detetive. Para cada jogo, primeiro o plano e espero pela confirmação.
+4. Imagens dos projetos das mascotes a crescer (minhas).
 
 ## Onde está cada coisa
 
-- `src/games/progresso/config.js`: tudo o que se afina (estrelas por peça, jogos, mascotes, níveis).
-- `src/games/progresso/*`: progresso, peças e reserva, como funções puras com testes.
+- `src/games/progresso/config.js`: tudo o que se afina (estrelas por peça, jogos, mascotes, peças, níveis).
+- `src/games/progresso/*`: progresso, peças, reserva e objetivo visto, como funções puras com testes.
 - `src/games/<jogo>/*`: as regras de cada jogo, sem ecrã e com testes.
 - `src/pages/<jogo>/*`: os ecrãs.
-- Matemática:
-  - `games/matematica/`:
-    - `contas.js`: contas e a regra das cores.
-    - `balanca.js`: quanto desce cada braço.
-    - `logica.js`, `quantidades.js`.
-    - `rodizio.js`: sorteia o jogo seguinte.
-  - `pages/matematica/`:
-    - `Matematica.jsx`: alterna os 3 jogos.
-    - `Jogo34.jsx`: fácil.
-    - `JogoContas.jsx`: médio e difícil.
-    - `JogoLogica.jsx`, `JogoQuantidades.jsx`.
-    - `Mesa.jsx`, `Balanca.jsx`, `Cubinho.jsx`, `medidas.js`.
-- As chaves antigas no telemóvel (`sapo:progresso:…` e outras) mantêm o nome **de propósito**, para não se perder progresso.
+- `src/data/palavras.json`: as palavras do Português por escalão (`palavra`, `mostrar` com acentos, `emoji`).
+- `src/games/matematica/rodizio.js`: `sortearTipo` (usado na Matemática e no Português para intercalar jogos).
+- As chaves antigas no telemóvel (`sapo:progresso:…`, `panda:saco:…`) mantêm o nome **de propósito**, para não se perder progresso.
 
 ## Como verificar
 
-- `npm test` (vitest, 315 testes; **não** usar `npx vitest`), `npx eslint src`, `npx vite build`.
+- `npm test` (vitest, 334 testes; **não** usar `npx vitest`), `npx eslint src`, `npx vite build`.
 - Para ver a app: `npx vite`. Para testes no browser usei `playwright-core` instalado fora do projeto, com o Chrome do sistema. O progresso pode ser preenchido à mão no `localStorage` (`CapacitorStorage.progresso`) para testar casos.
 
 ## Para começar

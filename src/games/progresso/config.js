@@ -8,8 +8,9 @@
 // - MASCOTES: os companheiros. Cada um tem um projeto para construir.
 //   `chamada` é o nome com o artigo, para as frases ("Ajuda o Sapo!").
 //   `peca` / `pecas` / `generoPeca` ('m' ou 'f'): o nome das peças, para as
-//   frases ("1 lego vermelho", "2 sementes vermelhas"). `emojiPeca` e
-//   `iconeProjeto` são provisórios, até haver imagens das peças e projetos.
+//   frases ("1 lego vermelho", "2 sementes vermelhas"). `imagemPeca` é o
+//   nome da imagem da peça na pasta icones_gerais; enquanto não houver,
+//   aparece o `emojiPeca`. `iconeProjeto` é o emoji de reserva do projeto.
 // - NIVEIS: a dificuldade, escolhida uma vez e igual para todos os jogos.
 //   `escalaoAntigo` é a faixa etária que se usava antes (para converter
 //   o que já estava guardado no telemóvel).
@@ -45,6 +46,7 @@ export const MASCOTES = [
     pecas: 'legos',
     generoPeca: 'm',
     emojiPeca: '🧱',
+    imagemPeca: 'tijolo',
   },
   {
     id: 'panda',
@@ -58,6 +60,7 @@ export const MASCOTES = [
     pecas: 'sementes',
     generoPeca: 'f',
     emojiPeca: '🌱',
+    imagemPeca: 'rebento',
   },
   {
     id: 'coruja',
@@ -71,6 +74,7 @@ export const MASCOTES = [
     pecas: 'livros',
     generoPeca: 'm',
     emojiPeca: '📕',
+    imagemPeca: 'livro',
   },
   {
     id: 'tartaruga',
@@ -84,6 +88,7 @@ export const MASCOTES = [
     pecas: 'peças',
     generoPeca: 'f',
     emojiPeca: '🔩',
+    imagemPeca: 'parafuso',
   },
 ]
 

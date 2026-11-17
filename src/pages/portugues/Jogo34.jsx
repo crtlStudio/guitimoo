@@ -5,6 +5,7 @@ import { criarRondaLetra, quantidadeDeLetras } from '../../games/portugues/letra
 import { proximaPalavra } from '../../games/portugues/memoria'
 import BalaoMascote from '../../components/BalaoMascote'
 import Festa from '../../components/Festa'
+import ImagemPalavra from '../../components/ImagemPalavra'
 import styles from './Jogo34.module.css'
 
 const LISTA = palavras['3-4'] // [{ palavra: 'GATO', emoji: '🐱' }, ...]
@@ -13,34 +14,31 @@ const ESPERA_DEPOIS_DE_ACERTAR = 1300 // milissegundos até à ronda seguinte
 
 /**
  * Jogo dos 3–4 anos: aparece uma letra num balão e a criança toca na igual.
- * Props: aoAcertar() e aoErrar() — avisam a página (sons e estrelas)
+ * Uma ronda só: no fim chama aoProxima() (a página sorteia o jogo seguinte).
+ * Props:
+ * - aoAcertar(), aoErrar(): avisam a página (sons e estrelas)
+ * - aoProxima(): passar à ronda seguinte
+ * - acertos: quantas rondas já ganhou neste jogo (a fila cresce de 4 para 6 letras)
  */
-function Jogo34({ aoAcertar, aoErrar }) {
-  // A ronda atual: { palavra, emoji, alvo, opcoes } (null enquanto carrega)
+function Jogo34({ aoAcertar, aoErrar, aoProxima, acertos = 0 }) {
+  // A ronda: { palavra, emoji, alvo, opcoes } (null enquanto carrega)
   const [ronda, setRonda] = useState(null)
-  // Quantas rondas a criança já acertou (faz a fila crescer de 4 para 6)
-  const [acertos, setAcertos] = useState(0)
   // A última letra tocada: { letra, certa, vez } (null = ainda nada nesta ronda)
   const [resposta, setResposta] = useState(null)
 
   const temporizador = useRef(null)
   const jaComecou = useRef(false)
 
-  /** Tira a próxima palavra do saco e prepara a ronda. */
-  async function novaRonda(acertosAteAgora) {
-    const palavra = await proximaPalavra('3-4', TODAS)
-    const { emoji } = LISTA.find((p) => p.palavra === palavra)
-    setRonda({ palavra, emoji, ...criarRondaLetra(palavra, quantidadeDeLetras(acertosAteAgora)) })
-    setResposta(null)
-  }
-
-  // Primeira ronda ao abrir o jogo. O jaComecou evita tirar duas palavras
-  // do saco quando o React corre este efeito duas vezes (modo de desenvolvimento).
+  // Tira a palavra do saco e prepara a ronda. O jaComecou evita tirar duas
+  // palavras do saco quando o React corre este efeito duas vezes (desenvolvimento).
   useEffect(() => {
     if (jaComecou.current) return
     jaComecou.current = true
-    novaRonda(0)
-  }, [])
+    proximaPalavra('3-4', TODAS).then((palavra) => {
+      const { emoji } = LISTA.find((p) => p.palavra === palavra)
+      setRonda({ palavra, emoji, ...criarRondaLetra(palavra, quantidadeDeLetras(acertos)) })
+    })
+  }, [acertos])
 
   // Ao sair do jogo, cancela a passagem automática para a ronda seguinte
   useEffect(() => () => clearTimeout(temporizador.current), [])
@@ -51,9 +49,7 @@ function Jogo34({ aoAcertar, aoErrar }) {
     if (letra === ronda.alvo) {
       const acabou = aoAcertar?.() // true = era a última: vem aí o ecrã de fim
       setResposta({ letra, certa: true })
-      const novosAcertos = acertos + 1
-      setAcertos(novosAcertos)
-      if (!acabou) temporizador.current = setTimeout(() => novaRonda(novosAcertos), ESPERA_DEPOIS_DE_ACERTAR)
+      if (!acabou) temporizador.current = setTimeout(() => aoProxima?.(), ESPERA_DEPOIS_DE_ACERTAR)
     } else {
       aoErrar?.()
       // `vez` conta os erros, para a animação de abanar repetir mesmo na mesma letra
@@ -82,7 +78,7 @@ function Jogo34({ aoAcertar, aoErrar }) {
             {ronda.alvo}
           </span>
           <span className={styles.exemplo}>
-            <span aria-hidden="true">{ronda.emoji}</span>{' '}
+            <ImagemPalavra palavra={ronda.palavra} emoji={ronda.emoji} className={styles.desenho} />{' '}
             <span className={styles.destaque}>{ronda.palavra[0]}</span>
             {ronda.palavra.slice(1)}
           </span>
