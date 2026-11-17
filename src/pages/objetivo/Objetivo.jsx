@@ -12,6 +12,7 @@ import { useMascoteAtiva } from '../../components/useProgresso'
 import { PECAS_POR_COR } from '../../games/progresso/config'
 import { marcarObjetivoComoVisto } from '../../games/progresso/estado'
 import { jogosAtivos } from '../../games/progresso/progresso'
+import { tituloAjuda } from '../../games/progresso/textos'
 // O mesmo aspeto da construção (a criança reconhece-o depois): usamos os estilos dela
 import construcao from '../construcao/Construcao.module.css'
 import styles from './Objetivo.module.css'
@@ -102,15 +103,7 @@ function Objetivo() {
   }
 
   return (
-    <EcraEscolha
-      titulo={
-        <span className={construcao.titulo}>
-          <ImagemMascote mascote={mascote} className={construcao.tituloMascote} />
-          <ImagemProjeto mascote={mascote} className={construcao.tituloProjeto} />
-        </span>
-      }
-      voltar="/nivel"
-    >
+    <EcraEscolha titulo={tituloAjuda(mascote)} voltar="/nivel">
       {/* A mascote: salta a cada peça e, na festa, aos pulos */}
       <div className={construcao.mascote}>
         <motion.span

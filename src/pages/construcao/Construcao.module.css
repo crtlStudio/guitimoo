@@ -8,13 +8,23 @@
 
 /* ---------- Mascote e balão ---------- */
 
+/*
+ * A mascote e o projeto assentam na mesma linha (o "chão"), a CHAO do fundo
+ * da imagem. Por isso os dois usam `bottom: var(--chao)` e crescem para cima.
+ */
+.mascote,
+.projeto {
+  --chao: 12cqw;
+}
+
 .mascote {
   position: absolute;
   left: 2cqw;
-  top: 9cqw;
+  bottom: var(--chao);
   width: 18cqw;
   display: flex;
   flex-direction: column;
+  justify-content: flex-end; /* o balão aparece por cima, a mascote não mexe */
   align-items: center;
   gap: 1cqw;
 }
@@ -33,27 +43,6 @@
   font-size: max(2.6rem, 13cqw); /* se for emoji */
   line-height: 1;
   filter: drop-shadow(0 0.6cqw 0.6cqw rgba(0, 0, 0, 0.25));
-}
-
-/* O título: a mascote pequenina e o projeto (🏠) */
-.titulo {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25em;
-}
-
-.tituloProjeto {
-  height: 1.1em;
-  width: auto;
-  font-size: 1em; /* se for emoji */
-  filter: drop-shadow(0 0.05em 0.05em rgba(0, 0, 0, 0.3));
-}
-
-.tituloMascote {
-  height: 1.15em;
-  width: auto;
-  font-size: 1em; /* se for emoji */
-  filter: drop-shadow(0 0.05em 0.05em rgba(0, 0, 0, 0.3));
 }
 
 /* Balão: [quadrado da cor] ➜ [ícone do jogo]. É um botão: leva ao jogo. */
@@ -137,11 +126,11 @@
 .projeto {
   position: absolute;
   left: 20cqw;
-  top: 6.5cqw;
+  bottom: var(--chao);
   width: 31cqw;
-  height: 42cqw;
+  height: 36cqw;
   display: grid;
-  place-items: center;
+  place-items: end center; /* assente no chão, ao centro */
 }
 
 /* As duas camadas ficam uma em cima da outra (e com o tamanho da imagem,
@@ -159,8 +148,8 @@
   display: block;
   width: auto;
   height: auto;
-  max-width: 31cqw;
-  max-height: 38cqw;
+  max-width: 25cqw;
+  max-height: 26cqw;
 }
 
 /* Sem cor: cinzento clarinho, como um desenho por pintar */

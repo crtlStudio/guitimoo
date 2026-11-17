@@ -55,6 +55,18 @@ export function oProximo(mascote) {
   return `${mascote.generoPeca === 'f' ? 'a próxima' : 'o próximo'} ${mascote.peca}`
 }
 
+/**
+ * O título da construção e do objetivo: "Ajuda" + o artigo da mascote + o
+ * nome com cada palavra em maiúscula.
+ *   tituloAjuda(SAPO)    →  'Ajuda o Sapo Construtor'
+ *   tituloAjuda(CORUJA)  →  'Ajuda a Coruja Sábia'
+ */
+export function tituloAjuda(mascote) {
+  const artigo = mascote.chamada.split(' ')[0] // 'o Sapo' → 'o'
+  const nome = mascote.nome.split(' ').map(comMaiuscula).join(' ')
+  return `Ajuda ${artigo} ${nome}`
+}
+
 /** A primeira letra em maiúscula: 'o Sapo' → 'O Sapo'. */
 export function comMaiuscula(texto) {
   return texto ? texto[0].toUpperCase() + texto.slice(1) : texto

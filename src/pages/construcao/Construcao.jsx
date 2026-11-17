@@ -13,6 +13,7 @@ import { useMascoteAtiva, usePerfil } from '../../components/useProgresso'
 import { PECAS_POR_COR } from '../../games/progresso/config'
 import { marcarPecasVistas, progressoAtual } from '../../games/progresso/estado'
 import { corQueMaisFalta, jogosAtivos, pecasNovas, projetoAtual } from '../../games/progresso/progresso'
+import { tituloAjuda } from '../../games/progresso/textos'
 import styles from './Construcao.module.css'
 
 /**
@@ -100,15 +101,7 @@ function Construcao() {
   const reservaComPecas = ativos.filter((j) => reserva[j.id] > 0)
 
   return (
-    <EcraEscolha
-      titulo={
-        <span className={styles.titulo}>
-          <ImagemMascote mascote={mascote} className={styles.tituloMascote} />
-          <ImagemProjeto mascote={mascote} className={styles.tituloProjeto} />
-        </span>
-      }
-      voltar="/jogos"
-    >
+    <EcraEscolha titulo={tituloAjuda(mascote)} voltar="/jogos">
       {/* A mascote, com um balão que mostra o jogo para onde a mão aponta */}
       <div className={styles.mascote}>
         <AnimatePresence>

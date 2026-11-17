@@ -1,6 +1,17 @@
 import { describe, expect, it } from 'vitest'
 import { JOGOS, MASCOTES } from './config'
-import { comMaiuscula, doDa, estasPecas, nomeDaCor, nomeDasPecas, oProximo, pecasDaCor, porExtenso, todasAsPecas } from './textos'
+import {
+  comMaiuscula,
+  doDa,
+  estasPecas,
+  nomeDaCor,
+  nomeDasPecas,
+  oProximo,
+  pecasDaCor,
+  porExtenso,
+  tituloAjuda,
+  todasAsPecas,
+} from './textos'
 
 const mascote = (id) => MASCOTES.find((m) => m.id === id)
 const jogo = (id) => JOGOS.find((j) => j.id === id)
@@ -62,5 +73,14 @@ describe('porExtenso', () => {
 
   it('recusa números fora do intervalo', () => {
     for (const n of [19, 100, 2.5, '50']) expect(() => porExtenso(n)).toThrow(RangeError)
+  })
+})
+
+describe('tituloAjuda', () => {
+  it('"Ajuda" + o artigo + o nome com maiúsculas, para cada mascote', () => {
+    expect(tituloAjuda(mascote('sapo'))).toBe('Ajuda o Sapo Construtor')
+    expect(tituloAjuda(mascote('panda'))).toBe('Ajuda o Panda Jardineiro')
+    expect(tituloAjuda(mascote('coruja'))).toBe('Ajuda a Coruja Sábia')
+    expect(tituloAjuda(mascote('tartaruga'))).toBe('Ajuda a Tartaruga Viajante')
   })
 })
