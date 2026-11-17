@@ -4,6 +4,7 @@ import { perguntaMedio } from '../../games/detetive/regras'
 import EscolherPessoa from './EscolherPessoa'
 import Lupa from './Lupa'
 import { usePergunta } from './usePergunta'
+import Pista from './Pista'
 import styles from './Jogo56.module.css'
 
 /**
@@ -57,7 +58,7 @@ function Jogo56({ aoAcertar, aoErrar }) {
                 >
                   <Lupa className={styles.lupa} quieta={i > 0}>
                     <span role="img" aria-label={`Pista ${i + 1}`}>
-                      {pista}
+                      <Pista emoji={pista} />
                     </span>
                   </Lupa>
                 </motion.div>

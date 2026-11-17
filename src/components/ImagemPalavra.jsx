@@ -8,13 +8,29 @@ const FICHEIROS = import.meta.glob('../assets/icones_gerais/*.png', {
   import: 'default',
 })
 
-// Imagens com nome diferente da palavra (nome do ficheiro → palavra)
+// Imagens que também servem para outra palavra (nome do ficheiro → palavra).
+// A imagem continua a responder pelo nome do ficheiro e passa a responder
+// também pela outra palavra.
 const OUTROS_NOMES = {
   carrinha: 'camiao',
   onda: 'mar',
   cino: 'sino',
   foguetao: 'foguete',
   uvas: 'uva',
+  galinha: 'galo', // a imagem é um galo
+  raio: 'trovao',
+  bola_futebol: 'bola',
+  girasol: 'girassol',
+  sapatinhas: 'sapatilhas',
+  nascer_sol: 'nascer_do_sol',
+  busola: 'bussola',
+  semafro: 'semaforo',
+  nota_musica: 'nota_musical',
+  espiga_milho: 'milho',
+  mala_viagem: 'mala',
+  globo: 'planeta',
+  trofeu: 'taca',
+  semear: 'rebento',
 }
 
 /** 'LEÃO' → 'leao': sem acentos e em minúsculas, como os nomes dos ficheiros. */
@@ -29,7 +45,8 @@ function chaveDaPalavra(palavra) {
 const IMAGENS = {}
 for (const [caminho, endereco] of Object.entries(FICHEIROS)) {
   const nome = caminho.split('/').pop().replace('.png', '')
-  IMAGENS[OUTROS_NOMES[nome] ?? nome] = endereco
+  IMAGENS[nome] = endereco
+  if (OUTROS_NOMES[nome]) IMAGENS[OUTROS_NOMES[nome]] = endereco
 }
 
 /** O endereço da imagem de uma palavra, ou null se ainda não houver imagem. */
@@ -45,7 +62,8 @@ function imagemDaPalavra(palavra) {
  * está escrita ou dita à volta.
  *
  * Props:
- * - palavra: 'GATO', 'LEÃO', 'gato'... (acentos e maiúsculas não importam)
+ * - palavra: 'GATO', 'LEÃO', 'gato'... (acentos e maiúsculas não importam;
+ *   pode faltar: fica o emoji)
  * - emoji: o emoji de reserva
  * - className: o tamanho em cada sítio
  */

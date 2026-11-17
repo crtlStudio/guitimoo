@@ -1,0 +1,122 @@
+/* Cartão com os painéis, ao centro, por cima do fundo (a largura vem do componente) */
+.cartao {
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  top: 50%;
+  translate: 0 -44%; /* um pouco abaixo do meio, para não tapar as estrelas */
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.4cqw;
+  padding: 1.2cqw 2cqw 1.8cqw;
+  text-align: center;
+  font-family: 'Fredoka', system-ui, sans-serif;
+  font-weight: 600;
+  color: #5a3912;
+  background: rgba(255, 253, 246, 0.95);
+  border: max(2px, 0.4cqw) solid #f5c96a;
+  border-radius: 3cqw;
+  box-shadow: 0 0.8cqw 2cqw rgba(0, 0, 0, 0.22);
+}
+
+.titulo {
+  margin: 0;
+  font-size: max(1.1rem, 3.4cqw);
+  line-height: 1.1;
+  color: #2f7d32;
+}
+
+/* ---------- Os painéis, lado a lado (as colunas vêm do componente) ---------- */
+.paineis {
+  display: grid;
+  gap: 1.6cqw;
+  width: 100%;
+}
+
+.painel {
+  padding: 0.6cqw;
+  cursor: pointer;
+  background: #fff6dc;
+  border: max(2px, 0.3cqw) solid #f5dd9e;
+  border-radius: 2cqw;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* O painel onde o dedo está a mostrar: dourado e a brilhar */
+.painelAtivo {
+  border-color: #f5b82e;
+  box-shadow: 0 0 0 max(2px, 0.4cqw) rgba(245, 184, 46, 0.45), 0 0.6cqw 1.4cqw rgba(0, 0, 0, 0.18);
+}
+
+/* ---------- A cena de cada demonstração ---------- */
+/* Lá dentro, 1cqw = 1% da largura da cena (todas com a mesma forma) */
+.cena {
+  position: relative;
+  container-type: inline-size;
+  aspect-ratio: 100 / 63;
+  overflow: hidden;
+  border-radius: 1.4cqw;
+  pointer-events: none;
+}
+
+/* ---------- O dedo ---------- */
+/* left/top = a ponta do dedo; as margens põem lá a ponta do 👆 */
+.dedo {
+  position: absolute;
+  z-index: 5;
+  line-height: 1;
+  margin: -0.07em 0 0 -0.43em;
+}
+
+.mao {
+  display: block;
+  /* "fantasma": um brilho branco à volta, para se ver em qualquer fundo */
+  filter: drop-shadow(0 0 0.08em rgba(255, 255, 255, 0.95)) drop-shadow(0 0.05em 0.08em rgba(0, 0, 0, 0.3));
+}
+
+/* ---------- O ✓ (left/top = o centro) ---------- */
+.visto {
+  position: absolute;
+  translate: -50% -50%;
+  z-index: 4;
+  font-size: 12cqw;
+  line-height: 1;
+  color: #4caf50;
+  text-shadow: 0 0 0.1em #fff;
+}
+
+/* ---------- Botão ---------- */
+.comecar {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  min-height: 44px;
+  padding: 0.3em 1.3em 0.3em 0.5em;
+  cursor: pointer;
+  font: inherit;
+  font-size: max(1.2rem, 3.2cqw);
+  color: #fff;
+  background: #4caf50;
+  border: 0;
+  border-radius: 999px;
+  box-shadow: 0 0.18em 0 #2e7d32;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* O ▶ grande, numa bolinha branca: "carrega aqui" sem precisar de ler */
+.play {
+  display: grid;
+  place-items: center;
+  width: 1.5em;
+  aspect-ratio: 1;
+  padding-left: 0.12em;
+  box-sizing: border-box;
+  font-size: 1.1em;
+  color: #4caf50;
+  background: #fff;
+  border-radius: 50%;
+}

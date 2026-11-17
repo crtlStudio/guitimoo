@@ -1,13 +1,13 @@
 [
-  { "texto": "vai tomar o pequeno-almoço", "emoji": "🥣", "de": 7, "ate": 9 },
-  { "texto": "vai para a escola", "emoji": "🏫", "de": 8, "ate": 10 },
-  { "texto": "vai visitar a avó", "emoji": "👵", "de": 9, "ate": 21 },
-  { "texto": "vai brincar no recreio", "emoji": "⚽", "de": 10, "ate": 12 },
-  { "texto": "vai almoçar", "emoji": "🍽️", "de": 12, "ate": 14 },
-  { "texto": "vai ao parque", "emoji": "🌳", "de": 14, "ate": 17 },
-  { "texto": "vai lanchar", "emoji": "🧃", "de": 16, "ate": 18 },
-  { "texto": "vai à natação", "emoji": "🏊", "de": 17, "ate": 19 },
-  { "texto": "vai jantar", "emoji": "🍲", "de": 19, "ate": 21 },
-  { "texto": "vai lavar os dentes", "emoji": "🪥", "de": 20, "ate": 22 },
-  { "texto": "vai dormir", "emoji": "😴", "de": 21, "ate": 23 }
+  { "texto": "vai tomar o pequeno-almoço", "emoji": "🥣", "imagem": "taca_cereais", "de": 7, "ate": 9 },
+  { "texto": "vai para a escola", "emoji": "🏫", "imagem": "escola", "de": 8, "ate": 10 },
+  { "texto": "vai visitar a avó", "emoji": "👵", "imagem": "avo", "de": 9, "ate": 21 },
+  { "texto": "vai brincar no recreio", "emoji": "⚽", "imagem": "bola", "de": 10, "ate": 12 },
+  { "texto": "vai almoçar", "emoji": "🍽️", "imagem": "almoco", "de": 12, "ate": 14 },
+  { "texto": "vai ao parque", "emoji": "🌳", "imagem": "arvore", "de": 14, "ate": 17 },
+  { "texto": "vai lanchar", "emoji": "🧃", "imagem": "bolacha", "de": 16, "ate": 18 },
+  { "texto": "vai à natação", "emoji": "🏊", "imagem": "natacao", "de": 17, "ate": 19 },
+  { "texto": "vai jantar", "emoji": "🍲", "imagem": "jantar", "de": 19, "ate": 21 },
+  { "texto": "vai lavar os dentes", "emoji": "🪥", "imagem": "escova_dentes", "de": 20, "ate": 22 },
+  { "texto": "vai dormir", "emoji": "😴", "imagem": "dormir", "de": 21, "ate": 23 }
 ]

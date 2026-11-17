@@ -5,6 +5,7 @@ import BalaoMascote from '../../components/BalaoMascote'
 import { lembrarUsada, lerProgresso, registarResposta } from '../../games/horas/memoria'
 import { baralharPassos, nomeDoNivel, sortearMomento, sortearRotina } from '../../games/horas/sorteio'
 import styles from './Jogo34.module.css'
+import ImagemPalavra from '../../components/ImagemPalavra'
 
 const ESCALAO = '3-4'
 const ESPERA_DEPOIS_DE_ACERTAR = 1800
@@ -124,7 +125,7 @@ function Jogo34({ aoAcertar, aoErrar }) {
           >
             <div className={styles.cena}>
               <span className={styles.cenaEmoji} aria-hidden="true">
-                {ronda.momento.emoji}
+                <ImagemPalavra palavra={ronda.momento.imagem} emoji={ronda.momento.emoji} />
               </span>
               <span className={styles.cenaTexto}>{ronda.momento.texto}</span>
             </div>
@@ -175,7 +176,7 @@ function Jogo34({ aoAcertar, aoErrar }) {
                         transition={{ type: 'spring', stiffness: 400, damping: 15 }}
                       >
                         <span className={styles.cartaEmoji} aria-hidden="true">
-                          {carta.emoji}
+                          <ImagemPalavra palavra={carta.imagem} emoji={carta.emoji} />
                         </span>
                         <span className={styles.cartaTexto}>{carta.texto}</span>
                       </motion.div>
@@ -207,7 +208,7 @@ function Jogo34({ aoAcertar, aoErrar }) {
                     onTap={() => tentarColocar(carta)}
                   >
                     <span className={styles.cartaEmoji} aria-hidden="true">
-                      {carta.emoji}
+                      <ImagemPalavra palavra={carta.imagem} emoji={carta.emoji} />
                     </span>
                     <span className={styles.cartaTexto}>{carta.texto}</span>
                   </motion.button>

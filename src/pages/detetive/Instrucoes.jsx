@@ -2,6 +2,7 @@ import { motion } from 'motion/react'
 import { PROFISSOES } from '../../games/detetive/profissoes'
 import Lupa from './Lupa'
 import Retrato, { ImagemLocal } from './Retrato'
+import Pista from './Pista'
 import styles from './Instrucoes.module.css'
 
 // O objetivo de cada nível: título, frase curta e a demonstração.
@@ -54,7 +55,7 @@ function Demonstracao({ pista, pessoas, certa }) {
   return (
     <div className={styles.demo} aria-hidden="true">
       <Lupa className={styles.lupa} quieta>
-        {pista}
+        <Pista emoji={pista} />
       </Lupa>
       <div className={styles.pessoas}>
         {pessoas.map((pessoa, i) => (
@@ -126,7 +127,7 @@ function DemonstracaoPistas({ pistas, pessoas, certa }) {
       <div className={styles.lupas}>
         {pistas.map((pista, i) => (
           <Lupa key={i} className={styles.lupaPequena} quieta>
-            {i === 0 && pista}
+            {i === 0 && <Pista emoji={pista} />}
             {i === 1 && (
               <span className={styles.troca}>
                 <motion.span
@@ -137,7 +138,7 @@ function DemonstracaoPistas({ pistas, pessoas, certa }) {
                   ?
                 </motion.span>
                 <motion.span animate={{ opacity: [0, 0, 1, 1, 1, 1, 0] }} transition={{ ...repetir, times: tempos }}>
-                  {pista}
+                  <Pista emoji={pista} />
                 </motion.span>
               </span>
             )}

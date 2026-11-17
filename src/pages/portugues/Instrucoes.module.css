@@ -1,120 +1,258 @@
 /*
- * Cartão com o objetivo do jogo, ao centro.
- * Medidas em cqw (1% da largura da imagem; a altura da imagem é 56.25cqw).
+ * As cenas das instruções do Português. O cartão, os painéis, o dedo e o ✓
+ * estão em components/demonstracao. Aqui, 1cqw = 1% da largura da cena
+ * (a cena mede 100 × 63).
  */
-.cartao {
+
+/* Coisas posicionadas pelo centro (left/top = o centro) */
+.balao,
+.letra,
+.grelha,
+.procurar,
+.verso,
+.ranhura,
+.cartaoCaixa,
+.lugar,
+.cubo {
   position: absolute;
-  left: 50%;
-  width: 56cqw;
-  top: 50%;
-  translate: -50% -50%; /* centrado (translate não choca com o motion) */
+  translate: -50% -50%;
   box-sizing: border-box;
+}
+
+/* ---------- 1. O balão da letra ---------- */
+.balao {
+  display: flex;
+  align-items: center;
+  gap: 3cqw;
+  padding: 1cqw 4cqw;
+  background: #fff;
+  border: 0.6cqw solid #f5c96a;
+  border-radius: 4cqw;
+  box-shadow: 0 0.6cqw 0 #e3b14f;
+}
+
+.letraGrande {
+  font-size: 19cqw;
+  line-height: 1;
+  color: #e0a100;
+}
+
+.exemploDoBalao {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1cqw;
-  padding: 1.6cqw 2.4cqw 2cqw;
-  text-align: center;
-  font-family: 'Fredoka', system-ui, sans-serif;
-  font-weight: 600;
-  color: #5a3912;
-  background: rgba(255, 253, 246, 0.95);
-  border: max(2px, 0.4cqw) solid #f5c96a;
-  border-radius: 3cqw;
-  box-shadow: 0 0.8cqw 2cqw rgba(0, 0, 0, 0.22);
-}
-
-.titulo {
-  margin: 0;
-  font-size: max(1.15rem, 4cqw);
-  line-height: 1.1;
-  color: #2f7d32;
-}
-
-.frase {
-  margin: 0;
-  font-size: max(0.85rem, 2.3cqw);
-  line-height: 1.25;
-}
-
-/* ---------- Demonstração ---------- */
-.exemplo {
-  display: flex;
-  align-items: center;
-  gap: 1.6cqw;
-}
-
-.emoji {
-  font-size: max(1.8rem, 5.5cqw);
+  gap: 0.6cqw;
+  font-size: 5cqw;
   line-height: 1;
 }
 
-.demo {
-  position: relative;
-  padding-bottom: 3cqw; /* espaço para o dedo, por baixo das letras */
+.imagemDoBalao {
+  font-size: 10cqw;
+  line-height: 1;
 }
 
-.fila {
-  display: flex;
-  gap: 0.8cqw; /* igual a ESPACO no Instrucoes.jsx */
+.destaque {
+  color: #e0a100;
 }
 
 .letra {
-  width: 5.4cqw; /* igual a CAIXA no Instrucoes.jsx */
-  aspect-ratio: 1;
   display: grid;
   place-items: center;
-  font-size: max(1rem, 3.4cqw);
+  width: 13cqw;
+  aspect-ratio: 1;
+  font-size: 9cqw;
   line-height: 1;
-  border-radius: 0.9cqw;
   background: #fff3cf;
-  color: #5a3912;
+  border: 0.5cqw solid #f5c96a;
+  border-radius: 2.4cqw;
+  box-shadow: 0 0.6cqw 0 #e3b14f;
+  transition: background-color 0.2s, color 0.2s;
 }
 
-/* O dedo começa no canto esquerdo e o motion move-o (x) até às letras */
-.dedo {
-  position: absolute;
-  left: 0;
-  top: 2.8cqw;
-  margin-left: -1.8cqw; /* centra o dedo no ponto indicado */
-  font-size: max(1.4rem, 4cqw);
-  line-height: 1;
-  pointer-events: none;
-  filter: drop-shadow(0 0.3cqw 0.3cqw rgba(0, 0, 0, 0.3));
+.letraCerta {
+  color: #fff;
+  background: #7ed957;
+  border-color: #5cb83a;
 }
 
-/* ---------- Direções (7–8), ao lado da demonstração ---------- */
-.setas {
-  margin: 0 0 3cqw; /* alinha com as letras (a demo tem espaço para o dedo por baixo) */
-  display: grid;
-  grid-template-columns: repeat(2, auto);
-  gap: 0.5cqw;
-}
-
-.seta {
-  width: 3.6cqw;
-  min-width: 24px;
+/* ---------- 2. A sopa de letras ---------- */
+/* A grelha: left/top = o canto de cima (não o centro) */
+.grelha {
+  translate: none;
   aspect-ratio: 1;
   display: grid;
-  place-items: center;
-  font-size: max(1rem, 2.4cqw);
-  line-height: 1;
-  color: #fff;
-  background: #5ec8f2;
-  border-radius: 0.8cqw;
+  grid-template-columns: repeat(var(--lado), 1fr);
+  grid-template-rows: repeat(var(--lado), 1fr);
+  gap: 0.5cqw;
+  padding: 0.8cqw;
+  background: #fffdf6;
+  border: 0.5cqw solid #f5c96a;
+  border-radius: 2.4cqw;
 }
 
-/* ---------- Botão ---------- */
-.comecar {
-  min-height: 44px;
-  padding: 0.35em 1.4em;
-  cursor: pointer;
-  font: inherit;
-  font-size: max(1.2rem, 3.2cqw);
+.celula {
+  display: grid;
+  place-items: center;
+  font-size: calc(26cqw / var(--lado));
+  line-height: 1;
+  border-radius: 1.2cqw;
+  transition: background-color 0.15s, color 0.15s, transform 0.15s;
+}
+
+/* A ser selecionada pelo dedo: amarela e um pouco maior */
+.marcada {
+  background: #ffd84d;
+  transform: scale(1.08);
+}
+
+/* De uma palavra encontrada: com a cor dessa palavra */
+.encontrada {
   color: #fff;
-  background: #4caf50;
-  border: 0;
+  background: var(--cor);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+/* À direita: o que procurar (imagem e palavra) */
+.procurar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6cqw;
+  min-width: 26cqw;
+  padding: 1cqw 2cqw;
+  font-size: 5cqw;
+  line-height: 1;
+  letter-spacing: 0.05em;
+  background: #fffdf6;
+  border: 0.5cqw solid #f5c96a;
+  border-radius: 2.4cqw;
+}
+
+.procurada {
+  color: var(--cor);
+  border-color: var(--cor);
+}
+
+.imagemProcurar {
+  font-size: 9cqw;
+  line-height: 1;
+}
+
+.vistoPequeno {
+  position: absolute;
+  right: -2cqw;
+  top: -2cqw;
+  display: grid;
+  place-items: center;
+  width: 6cqw;
+  aspect-ratio: 1;
+  font-size: 4cqw;
+  color: #fff;
+  background: var(--cor);
+  border-radius: 50%;
+}
+
+/* ---------- 3. A caixa das palavras ---------- */
+/* A caixa de madeira (left/top/right/bottom: não é pelo centro) */
+.caixa {
+  position: absolute;
+  left: 4cqw;
+  right: 4cqw;
+  top: 2cqw;
+  height: 39cqw;
+  border-radius: 2.4cqw;
+  background: linear-gradient(to bottom, #b77c42, #c88f55);
+  border: 1.4cqw solid #d4a066;
+  box-sizing: border-box;
+  box-shadow: inset 0 0.8cqw 1.4cqw rgba(0, 0, 0, 0.3), 0 1cqw 0 #a8692a;
+}
+
+/* O monte dos próximos cartões, virados para baixo */
+.verso {
+  width: 13cqw;
+  height: 18cqw;
+  border-radius: 1.4cqw;
+  border: 0.5cqw solid #fff;
+  background:
+    radial-gradient(circle at 50% 50%, #ffd36b 0 2cqw, transparent 2.1cqw),
+    repeating-linear-gradient(45deg, #2f80d8 0 1.4cqw, #4a95e6 1.4cqw 2.8cqw);
+  box-shadow: 0 0.4cqw 0.8cqw rgba(0, 0, 0, 0.3);
+}
+
+/* A fenda onde o cartão fica de pé */
+.ranhura {
+  width: 34cqw;
+  height: 1.6cqw;
   border-radius: 999px;
-  box-shadow: 0 0.18em 0 #2e7d32;
-  -webkit-tap-highlight-color: transparent;
+  background: #6e4319;
+}
+
+.cartaoCaixa {
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6cqw;
+  width: 17cqw;
+  height: 20cqw;
+  translate: -50% -55%;
+  background: #fffdf6;
+  border: 0.5cqw solid #f5c96a;
+  border-radius: 1.6cqw;
+  box-shadow: 0 0.5cqw 1cqw rgba(0, 0, 0, 0.3);
+}
+
+.imagemCartao {
+  font-size: 10cqw;
+  line-height: 1;
+}
+
+.palavraCartao {
+  font-size: 4.2cqw;
+  line-height: 1;
+  letter-spacing: 0.06em;
+}
+
+.lugar {
+  display: grid;
+  place-items: center;
+  width: 9cqw;
+  aspect-ratio: 1;
+  border: 0.45cqw dashed rgba(255, 240, 210, 0.85);
+  border-radius: 1.4cqw;
+  background: rgba(0, 0, 0, 0.12);
+}
+
+.guia {
+  font-size: 6cqw;
+  line-height: 1;
+  color: rgba(255, 245, 225, 0.55);
+}
+
+/* Um cubo de madeira com uma letra (igual aos do jogo) */
+.cubo {
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 9cqw;
+  aspect-ratio: 1;
+  font-size: 6cqw;
+  line-height: 1;
+  color: #5a3912;
+  border-radius: 1.4cqw;
+  background:
+    repeating-linear-gradient(100deg, transparent 0 2cqw, rgba(168, 105, 42, 0.12) 2cqw 2.3cqw),
+    linear-gradient(to bottom, #f6dcb0, #e9c48f);
+  box-shadow:
+    inset 0 0.35cqw 0 rgba(255, 255, 255, 0.6),
+    0 0.7cqw 0 #a8692a;
+}
+
+/* O cubo que o dedo leva: centrado por cima da ponta do dedo. O dedo mede
+   13cqw e a ponta fica a 0.43em da esquerda (5.6cqw) e 0.07em do topo (1cqw). */
+.levado {
+  left: 5.6cqw;
+  top: -3.5cqw;
+  opacity: 0.9;
 }

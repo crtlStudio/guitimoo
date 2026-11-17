@@ -22,6 +22,7 @@ import {
 import { tocarEfeito } from '../../audio/efeitos'
 import Relogio from './Relogio'
 import styles from './JogoRelogio.module.css'
+import ImagemPalavra from '../../components/ImagemPalavra'
 
 const ESCALAO = '7-8'
 const ESPERA_DEPOIS_DE_ACERTAR = 1800
@@ -174,7 +175,7 @@ function Jogo78({ aoAcertar, aoErrar }) {
           <>
             <p className={styles.pergunta}>
               <span className={styles.emojiPergunta} aria-hidden="true">
-                {atividade.emoji}
+                <ImagemPalavra palavra={atividade.imagem} emoji={atividade.emoji} />
               </span>
               {quem} {atividade.texto} {aHora(alvo)}!
             </p>

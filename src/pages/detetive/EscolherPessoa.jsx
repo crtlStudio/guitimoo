@@ -2,6 +2,7 @@ import { motion } from 'motion/react'
 import BalaoMascote from '../../components/BalaoMascote'
 import Festa from '../../components/Festa'
 import Retrato from './Retrato'
+import Pista from './Pista'
 import styles from './EscolherPessoa.module.css'
 
 /**
@@ -66,7 +67,7 @@ function EscolherPessoa({ opcoes, resposta, pista, numero, aoTocar }) {
                   animate={{ scale: 1, y: '0cqw' }}
                   transition={{ type: 'spring', stiffness: 300, damping: 14, delay: 0.15 }}
                 >
-                  {pista}
+                  <Pista emoji={pista} />
                 </motion.span>
               )}
             </motion.button>

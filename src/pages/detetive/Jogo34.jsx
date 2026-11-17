@@ -3,6 +3,7 @@ import { perguntaFacil } from '../../games/detetive/regras'
 import EscolherPessoa from './EscolherPessoa'
 import Lupa from './Lupa'
 import { usePergunta } from './usePergunta'
+import Pista from './Pista'
 import styles from './Jogo34.module.css'
 
 /**
@@ -30,7 +31,7 @@ function Jogo34({ aoAcertar, aoErrar }) {
         >
           <Lupa className={styles.lupa}>
             <span role="img" aria-label="A pista">
-              {pergunta.pista}
+              <Pista emoji={pergunta.pista} />
             </span>
           </Lupa>
         </motion.div>

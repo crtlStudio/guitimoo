@@ -1,6 +1,7 @@
 import { DndContext } from '@dnd-kit/core'
 import { motion } from 'motion/react'
-import { useEffect, useRef, useState } from 'react'
+import { Cena, Dedo, InstrucoesEmPaineis, Visto } from '../../components/demonstracao/Demonstracao'
+import { usePassos } from '../../components/demonstracao/usePassos'
 import { DESCIDA_POR_CUBINHO } from '../../games/matematica/balanca'
 import Balanca from './Balanca'
 import { DesenhoCubinho } from './Cubinho'
@@ -14,87 +15,13 @@ import {
   PASSOS_LOGICA,
   PASSOS_QUANTIDADES,
   QUANTIDADES,
-  estadoNoPasso,
 } from './passosDasInstrucoes'
 import styles from './Instrucoes.module.css'
 
-/**
- * Faz avançar os passos de uma demonstração, um a um, enquanto `aCorrer`.
- * No fim chama aoAcabar(). Devolve o estado do passo atual.
- * (Para recomeçar do início, a página muda o `key` da demonstração.)
- */
-function usePassos(passos, aCorrer, aoAcabar) {
-  const [i, setI] = useState(0)
-  const acabar = useRef(aoAcabar)
-  useEffect(() => {
-    acabar.current = aoAcabar
-  })
-
-  useEffect(() => {
-    if (!aCorrer) return undefined
-    const ultimo = i >= passos.length - 1
-    const temporizador = setTimeout(() => (ultimo ? acabar.current?.() : setI(i + 1)), passos[i].ms)
-    return () => clearTimeout(temporizador)
-  }, [aCorrer, i, passos])
-
-  return { ...estadoNoPasso(passos, i), vez: i }
-}
-
-/**
- * O dedo (igual ao dedo fantasma dos jogos): vai até `dedo` ([x, y] em cqw
- * da cena), carrega `toca` vezes e pode levar um cubinho ou um cartão.
- * - tamanho: tamanho do dedo, em cqw da cena
- */
-function Dedo({ estado, tamanho }) {
-  const { dedo, ultimoDedo, toca, leva, vez } = estado
-  const ponto = dedo ?? ultimoDedo
-  if (!ponto) return null
-  // Carregar: o dedo encolhe e volta, `toca` vezes
-  const carregar = toca > 0 ? { scale: [1, ...Array(toca).fill([0.78, 1]).flat()] } : { scale: 1 }
-
-  return (
-    <motion.div
-      className={styles.dedo}
-      style={{ fontSize: `${tamanho}cqw` }}
-      initial={{ left: `${ponto[0]}cqw`, top: `${ponto[1] + 8}cqw`, opacity: 0 }}
-      animate={{ left: `${ponto[0]}cqw`, top: `${ponto[1]}cqw`, opacity: dedo ? 1 : 0 }}
-      transition={{ duration: 0.6, ease: 'easeInOut' }}
-    >
-      {leva != null &&
-        (typeof leva === 'number' ? (
-          <span className={`${styles.levado} ${styles.cartaoNumero}`}>{leva}</span>
-        ) : (
-          <DesenhoCubinho cor={leva} className={styles.levado} />
-        ))}
-      <motion.span key={vez} className={styles.mao} animate={carregar} transition={{ duration: 0.35 * Math.max(toca, 1) }}>
-        👆
-      </motion.span>
-    </motion.div>
-  )
-}
-
-/** O ✓ verde que salta quando a demonstração fica certa. */
-function Visto({ x, y }) {
-  return (
-    <motion.span
-      className={styles.visto}
-      style={{ left: `${x}cqw`, top: `${y}cqw` }}
-      initial={{ scale: 0 }}
-      animate={{ scale: [0, 1.4, 1] }}
-      transition={{ duration: 0.5 }}
-    >
-      ✓
-    </motion.span>
-  )
-}
-
-/** Uma cena com as suas medidas: lá dentro, 1cqw = 1% da largura da cena. */
-function Cena({ children }) {
-  return (
-    <div className={styles.cena} aria-hidden="true">
-      {children}
-    </div>
-  )
+/** O que o dedo leva na Matemática: um cubinho (cor) ou um cartão (número). */
+function desenharLevado(leva) {
+  if (typeof leva === 'number') return <span className={`${styles.levado} ${styles.cartaoNumero}`}>{leva}</span>
+  return <DesenhoCubinho cor={leva} className={styles.levado} />
 }
 
 // ---------- 1. Balança ----------
@@ -139,7 +66,7 @@ function DemoBalanca({ escalao, aCorrer, aoAcabar }) {
 
         {contas && <LinhaDaConta estado={estado} />}
         {estado.certo && <Visto x={50} y={16} />}
-        <Dedo estado={estado} tamanho={9} />
+        <Dedo estado={estado} tamanho={9} desenharLevado={desenharLevado} />
       </div>
     </Cena>
   )
@@ -219,7 +146,7 @@ function DemoLogica({ aCorrer, aoAcabar }) {
       ))}
 
       {estado.certo && <Visto x={90} y={8} />}
-      <Dedo estado={estado} tamanho={13} />
+      <Dedo estado={estado} tamanho={13} desenharLevado={desenharLevado} />
     </Cena>
   )
 }
@@ -294,77 +221,24 @@ function DemoQuantidades({ aCorrer, aoAcabar }) {
       )}
 
       {estado.certo && <Visto x={90} y={8} />}
-      <Dedo estado={estado} tamanho={13} />
+      <Dedo estado={estado} tamanho={13} desenharLevado={desenharLevado} />
     </Cena>
   )
 }
 
 /**
- * Ecrã com o objetivo do jogo, antes de começar. Só desenhos (as crianças
- * mais pequenas não sabem ler): os 3 jogos lado a lado e, um de cada vez,
- * o dedo mostra como se joga. O painel que está a mostrar fica maior.
+ * Ecrã com o objetivo do jogo, antes de começar: os 3 jogos lado a lado e,
+ * um de cada vez, o dedo mostra como se joga (ver InstrucoesEmPaineis).
  * Props: escalao ('3-4', '5-6', '7-8') e aoComecar (função do botão).
  */
 function Instrucoes({ escalao, aoComecar }) {
-  const [ativo, setAtivo] = useState(0) // o painel onde o dedo está a mostrar
-  const [volta, setVolta] = useState(0) // muda a cada demonstração: recomeça do zero
-  const seguinte = () => {
-    setAtivo((a) => (a + 1) % 3)
-    setVolta((v) => v + 1)
-  }
-
-  const demos = [DemoBalanca, DemoLogica, DemoQuantidades]
-
   return (
-    <motion.div
-      className={styles.cartao}
-      initial={{ opacity: 0, scale: 0.85 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-    >
-      <h2 className={styles.titulo}>Matemática e Lógica!</h2>
-
-      <div className={styles.paineis}>
-        {demos.map((Demo, n) => {
-          const aMostrar = n === ativo
-          return (
-            <motion.div
-              key={n}
-              className={`${styles.painel} ${aMostrar ? styles.painelAtivo : ''}`}
-              animate={{ scale: aMostrar ? 1.06 : 0.94, opacity: aMostrar ? 1 : 0.55 }}
-              transition={{ type: 'spring', stiffness: 260, damping: 22 }}
-              // Tocar num painel mostra esse jogo
-              onClick={() => {
-                setAtivo(n)
-                setVolta((v) => v + 1)
-              }}
-            >
-              <Demo
-                key={aMostrar ? `a-${volta}` : 'parado'}
-                escalao={escalao}
-                aCorrer={aMostrar}
-                aoAcabar={seguinte}
-              />
-            </motion.div>
-          )
-        })}
-      </div>
-
-      <motion.button
-        type="button"
-        className={styles.comecar}
-        onClick={aoComecar}
-        aria-label="Vamos jogar!"
-        whileTap={{ scale: 0.93 }}
-        animate={{ scale: [1, 1.05, 1] }}
-        transition={{ duration: 1.4, repeat: Infinity, ease: 'easeInOut' }}
-      >
-        <span className={styles.play} aria-hidden="true">
-          ▶
-        </span>
-        Vamos jogar!
-      </motion.button>
-    </motion.div>
+    <InstrucoesEmPaineis
+      titulo="Matemática e Lógica!"
+      demos={[DemoBalanca, DemoLogica, DemoQuantidades]}
+      escalao={escalao}
+      aoComecar={aoComecar}
+    />
   )
 }
 

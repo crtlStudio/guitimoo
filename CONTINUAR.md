@@ -47,25 +47,22 @@ Estou a continuar o GuitimOO (app de jogos educativos para crianças, React + Vi
   - Já usado em: Português (todos os jogos e instruções), cartões da Memória dos sons e peças das mascotes (`imagemPeca` no `config.js`).
   - As imagens devem ser pequenas (~180 px). As grandes reduzem-se e os originais ficam em `assets/icones_gerais_originais/` (não entram na app).
 - Detetive: todas as profissões e locais já têm imagem (`assets/detetive/`, em `.webp` 512×512; os `.png` ao lado são os originais).
+- **Instruções com painéis e dedo** (`components/demonstracao/`): o cartão com os painéis, o dedo, o ✓ e o motor dos passos, partilhados. Usado na Matemática (3 painéis) e no Português (jogo do nível + caixa das palavras); as coreografias estão em `pages/<jogo>/passosDasInstrucoes.js`.
+- **Horas e Detetive com imagens:** cada item das Horas tem `imagem` no JSON (`rotinas.json`, `atividades.json`); as pistas do Detetive têm o nome da imagem em `IMAGEM_DA_PISTA` (`games/detetive/profissoes.js`) e desenham-se com `pages/detetive/Pista.jsx`.
 
-## Ícones que faltam (estou a fazê-los noutro PC)
+## Ícones que faltam (estou a fazê-los)
 
-Nomes sugeridos, para pôr em `src/assets/icones_gerais/`:
+Põem-se em `src/assets/icones_gerais/` com estes nomes (~180 px). Já estão ligados nos jogos: até haver imagem aparece o emoji, e a imagem entra sozinha.
 
-- **Português:** bola, laranja, rato
-- **Memória (sons):** cao, ovelha, galo, passaro, chuva, rio, vento, trovao, ambulancia, sirene, telefone, relogio (campainha pode usar o `sino`)
-- **Horas:** praia, girassol, borboleta, dormir, morcego, pijama, taca_cereais, jantar, escova_dentes, rebento, regar, pintainho_a_nascer, pintainho, arco_iris, nascer_do_sol, meias, sapatilhas, arvore, avo, almoco, lanche, natacao (recreio pode usar a `bola`)
-- **Detetive (pistas):** extintor, fogo, escada, estetoscopio, comprimidos, penso, frigideira, colher, saleiro, livros, lapis, esquadro, trator, milho, carro_policia, semaforo, chave_inglesa, parafuso, pneu, paleta, pincel, lapis_cera, planeta, microscopio, tubo_ensaio, placa_petri, mala, bussola, microfone, nota_musical, guitarra, martelo, tijolo, colete, bola_basquete, taca
-- **Peças das mascotes:** tijolo (sapo), rebento (panda), parafuso (tartaruga) — as mesmas das listas acima; o livro (coruja) já está.
+- **Detetive (pistas):** oculos_protecao (cientista)
 
-**Por ligar quando houver imagens:** as Horas e as pistas do Detetive ainda mostram emojis diretamente. Ligar ao `ImagemPalavra` (palavra + emoji de reserva), como no Português.
+Nomes de ficheiro diferentes da palavra estão em `OUTROS_NOMES` (`components/ImagemPalavra.jsx`): por exemplo galinha → galo, raio → trovão, girasol → girassol, semear → rebento, globo → planeta, trofeu → taça.
 
 ## Próximos passos (a combinar comigo)
 
-1. Juntar os ícones que faltam e ligar as Horas e o Detetive ao `ImagemPalavra`.
-2. Instruções do Português com o dedo fantasma a mostrar a caixa das palavras e o jogo do nível.
-3. Levar o conceito dos **vários jogos dentro de cada jogo** e o **dedo fantasma** à Memória, Horas e Detetive. Para cada jogo, primeiro o plano e espero pela confirmação.
-4. Imagens dos projetos das mascotes a crescer (minhas).
+1. Fazer os ícones que faltam (lista acima).
+2. Levar o conceito dos **vários jogos dentro de cada jogo** e o **dedo fantasma** à Memória, Horas e Detetive. Para cada jogo, primeiro o plano e espero pela confirmação.
+3. Imagens dos projetos das mascotes a crescer (minhas).
 
 ## Onde está cada coisa
 

@@ -1,81 +1,81 @@
 {
   "momentos": [
-    { "id": "praia", "emoji": "🏖️", "texto": "Brincar na praia", "momento": "dia" },
-    { "id": "escola", "emoji": "🏫", "texto": "Ir para a escola", "momento": "dia" },
-    { "id": "flores", "emoji": "🌻", "texto": "Regar as flores", "momento": "dia" },
-    { "id": "bola", "emoji": "⚽", "texto": "Jogar à bola no parque", "momento": "dia" },
-    { "id": "borboletas", "emoji": "🦋", "texto": "Ver as borboletas", "momento": "dia" },
-    { "id": "galo", "emoji": "🐓", "texto": "O galo canta de manhã", "momento": "dia" },
-    { "id": "dormir", "emoji": "😴", "texto": "Dormir na cama", "momento": "noite" },
-    { "id": "estrelas", "emoji": "🌟", "texto": "Ver as estrelas", "momento": "noite" },
-    { "id": "lua", "emoji": "🌙", "texto": "A lua no céu", "momento": "noite" },
-    { "id": "morcegos", "emoji": "🦇", "texto": "Os morcegos a voar", "momento": "noite" },
-    { "id": "coruja", "emoji": "🦉", "texto": "A coruja acordada", "momento": "noite" },
-    { "id": "pijama", "emoji": "🛌", "texto": "Vestir o pijama e deitar", "momento": "noite" }
+    { "id": "praia", "emoji": "🏖️", "texto": "Brincar na praia", "momento": "dia", "imagem": "praia" },
+    { "id": "escola", "emoji": "🏫", "texto": "Ir para a escola", "momento": "dia", "imagem": "escola" },
+    { "id": "flores", "emoji": "🌻", "texto": "Regar as flores", "momento": "dia", "imagem": "regar" },
+    { "id": "bola", "emoji": "⚽", "texto": "Jogar à bola no parque", "momento": "dia", "imagem": "bola" },
+    { "id": "borboletas", "emoji": "🦋", "texto": "Ver as borboletas", "momento": "dia", "imagem": "borboleta" },
+    { "id": "galo", "emoji": "🐓", "texto": "O galo canta de manhã", "momento": "dia", "imagem": "galo" },
+    { "id": "dormir", "emoji": "😴", "texto": "Dormir na cama", "momento": "noite", "imagem": "dormir" },
+    { "id": "estrelas", "emoji": "🌟", "texto": "Ver as estrelas", "momento": "noite", "imagem": "estrela" },
+    { "id": "lua", "emoji": "🌙", "texto": "A lua no céu", "momento": "noite", "imagem": "lua" },
+    { "id": "morcegos", "emoji": "🦇", "texto": "Os morcegos a voar", "momento": "noite", "imagem": "morcego" },
+    { "id": "coruja", "emoji": "🦉", "texto": "A coruja acordada", "momento": "noite", "imagem": "coruja" },
+    { "id": "pijama", "emoji": "🛌", "texto": "Vestir o pijama e deitar", "momento": "noite", "imagem": "pijama" }
   ],
   "rotinas": [
     {
       "id": "manha",
       "passos": [
-        { "emoji": "⏰", "texto": "Acordar" },
-        { "emoji": "🥣", "texto": "Pequeno-almoço" },
-        { "emoji": "🏫", "texto": "Escola" }
+        { "emoji": "⏰", "texto": "Acordar", "imagem": "relogio" },
+        { "emoji": "🥣", "texto": "Pequeno-almoço", "imagem": "taca_cereais" },
+        { "emoji": "🏫", "texto": "Escola", "imagem": "escola" }
       ]
     },
     {
       "id": "noite",
       "passos": [
-        { "emoji": "🍲", "texto": "Jantar" },
-        { "emoji": "🪥", "texto": "Lavar os dentes" },
-        { "emoji": "😴", "texto": "Dormir" }
+        { "emoji": "🍲", "texto": "Jantar", "imagem": "jantar" },
+        { "emoji": "🪥", "texto": "Lavar os dentes", "imagem": "escova_dentes" },
+        { "emoji": "😴", "texto": "Dormir", "imagem": "dormir" }
       ]
     },
     {
       "id": "flor",
       "passos": [
-        { "emoji": "🌱", "texto": "Semear" },
-        { "emoji": "💧", "texto": "Regar" },
-        { "emoji": "🌻", "texto": "A flor cresce" }
+        { "emoji": "🌱", "texto": "Semear", "imagem": "rebento" },
+        { "emoji": "💧", "texto": "Regar", "imagem": "regar" },
+        { "emoji": "🌻", "texto": "A flor cresce", "imagem": "girassol" }
       ]
     },
     {
       "id": "pintainho",
       "passos": [
-        { "emoji": "🥚", "texto": "Ovo" },
-        { "emoji": "🐣", "texto": "A nascer" },
-        { "emoji": "🐥", "texto": "Pintainho" }
+        { "emoji": "🥚", "texto": "Ovo", "imagem": "ovo" },
+        { "emoji": "🐥", "texto": "Pintainho", "imagem": "pintainho" },
+        { "emoji": "🐓", "texto": "Galo", "imagem": "galo" }
       ]
     },
     {
       "id": "chuva",
       "passos": [
-        { "emoji": "☁️", "texto": "Nuvens" },
-        { "emoji": "🌧️", "texto": "Chuva" },
-        { "emoji": "🌈", "texto": "Arco-íris" }
+        { "emoji": "☁️", "texto": "Nuvens", "imagem": "nuvem" },
+        { "emoji": "🌧️", "texto": "Chuva", "imagem": "chuva" },
+        { "emoji": "🌈", "texto": "Arco-íris", "imagem": "arco_iris" }
       ]
     },
     {
       "id": "dia",
       "passos": [
-        { "emoji": "🌅", "texto": "Manhã" },
-        { "emoji": "☀️", "texto": "Tarde" },
-        { "emoji": "🌙", "texto": "Noite" }
+        { "emoji": "🌅", "texto": "Manhã", "imagem": "nascer_do_sol" },
+        { "emoji": "☀️", "texto": "Tarde", "imagem": "sol" },
+        { "emoji": "🌙", "texto": "Noite", "imagem": "lua" }
       ]
     },
     {
       "id": "passeio",
       "passos": [
-        { "emoji": "🧦", "texto": "Calçar as meias" },
-        { "emoji": "👟", "texto": "Calçar os sapatos" },
-        { "emoji": "🌳", "texto": "Ir passear" }
+        { "emoji": "🧦", "texto": "Calçar as meias", "imagem": "meias" },
+        { "emoji": "👟", "texto": "Calçar os sapatos", "imagem": "sapatilhas" },
+        { "emoji": "🌳", "texto": "Ir passear", "imagem": "arvore" }
       ]
     },
     {
       "id": "bolo",
       "passos": [
-        { "emoji": "🥚", "texto": "Juntar os ovos" },
+        { "emoji": "🥚", "texto": "Juntar os ovos", "imagem": "ovo" },
         { "emoji": "🥣", "texto": "Mexer a massa" },
-        { "emoji": "🎂", "texto": "Bolo pronto" }
+        { "emoji": "🎂", "texto": "Bolo pronto", "imagem": "bolo" }
       ]
     }
   ]

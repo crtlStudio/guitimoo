@@ -9,6 +9,7 @@
 //   faltar aparece com o emoji.
 // - pistas: 3 objetos que a profissão usa (as pistas do detetive).
 //   Cada pista só existe numa profissão, para não haver dúvidas.
+//   O desenho de cada pista está em IMAGEM_DA_PISTA (mais abaixo).
 // - local: onde trabalha (para o nível difícil), também único.
 // ============================================================
 
@@ -80,7 +81,7 @@ export const PROFISSOES = [
     id: 'cientista',
     nome: 'a cientista',
     emoji: '👩‍🔬',
-    pistas: ['🔬', '🧪', '🧫'],
+    pistas: ['🔬', '🧪', '🥽'],
     local: { id: 'laboratorio', nome: 'o laboratório', emoji: '🧬' },
   },
   {
@@ -112,3 +113,53 @@ export const PROFISSOES = [
     local: { id: 'pavilhao', nome: 'o pavilhão', emoji: '🏟️' },
   },
 ]
+
+/**
+ * O nome da imagem de cada pista, em src/assets/icones_gerais (ver
+ * components/ImagemPalavra.jsx). A pista que ainda não tiver imagem
+ * aparece com o emoji.
+ */
+export const IMAGEM_DA_PISTA = {
+  '🧯': 'extintor',
+  '🔥': 'fogo',
+  '🪜': 'escada',
+  '🩺': 'estetoscopio',
+  '💊': 'comprimidos',
+  '🩹': 'penso',
+  '🍳': 'frigideira',
+  '🥄': 'colher',
+  '🧂': 'saleiro',
+  '📚': 'livros',
+  '✏️': 'lapis',
+  '📐': 'esquadro',
+  '🚜': 'trator',
+  '🌽': 'milho',
+  '🥕': 'cenoura',
+  '🚓': 'carro_policia',
+  '🚨': 'sirene',
+  '🚦': 'semaforo',
+  '🔧': 'chave_inglesa',
+  '🔩': 'parafuso',
+  '🛞': 'pneu',
+  '🎨': 'paleta',
+  '🖌️': 'pincel',
+  '🖍️': 'lapis_cera',
+  '🚀': 'foguete',
+  '🌙': 'lua',
+  '🪐': 'planeta',
+  '🔬': 'microscopio',
+  '🧪': 'tubo_ensaio',
+  '🥽': 'oculos_protecao',
+  '✈️': 'aviao',
+  '🧳': 'mala',
+  '🧭': 'bussola',
+  '🎤': 'microfone',
+  '🎵': 'nota_musical',
+  '🎸': 'guitarra',
+  '🔨': 'martelo',
+  '🧱': 'tijolo',
+  '🦺': 'colete',
+  '🏀': 'bola_basquete',
+  '👟': 'sapatilhas',
+  '🏆': 'taca',
+}
